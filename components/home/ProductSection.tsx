@@ -41,7 +41,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                   flexDirection="column"
                   align="center"
                   w="25%"
-                  mx={6}
+                  px={6}
                   key={dp.sys.id}
                 >
                   <Image
