@@ -24,6 +24,8 @@ export type PageSection = {
     sectionSubHeading: string;
     sectionParagraph?: string;
     videoUrl?: string;
+    youtubeVideoId?: string;
+    youtubeVideoAltText?: string;
     featuredProducts?: string[];
     sequence: number;
     page: {
@@ -48,6 +50,29 @@ export type PageSection = {
         title: string;
       };
     };
+    displayedProducts?: [
+      {
+        sys: { id: string };
+        fields: {
+          productDescription: string;
+          productName: string;
+          relativeUrl: string;
+          productImage: {
+            fields: {
+              title: string;
+              file: {
+                fileName: string;
+                url: string;
+                contentType: string;
+              };
+            };
+            sys: {
+              id: string;
+            };
+          };
+        };
+      }
+    ];
   };
   sys: {
     id: string;

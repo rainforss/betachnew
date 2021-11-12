@@ -5,6 +5,7 @@ import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import ClientFeatureSection from "../components/home/ClientFeatureSection";
 import HeroSection from "../components/home/HeroSection";
+import ProductSection from "../components/home/ProductSection";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
 import { CONTENTFUL_CDN_API_ROOT, sections } from "../utils/constants";
@@ -22,7 +23,10 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
   const sectionMap: { [key: string]: any } = {
     Hero: HeroSection,
     CaseStudy: ClientFeatureSection,
+    ProductOffering: ProductSection,
   };
+
+  console.log(props.pageSections);
 
   useEffect(() => {
     //Used to monitor section change, not supported on IE
