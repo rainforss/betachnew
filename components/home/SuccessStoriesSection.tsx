@@ -1,0 +1,90 @@
+import { Box, Center, Flex, Heading, Image } from "@chakra-ui/react";
+import * as React from "react";
+import Carousel from "react-multi-carousel";
+import { PageSection } from "../../utils/types";
+import AnchorSection from "../AnchorSection";
+import "react-multi-carousel/lib/styles.css";
+import { betachGreen } from "../../utils/constants";
+
+interface ISuccessStoriesSectionProps {
+  pageSection: PageSection;
+}
+
+const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps> =
+  ({ pageSection }) => {
+    const responsive = {
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 5,
+        slidesToSlide: 1, // optional, default to 1.
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2,
+        slidesToSlide: 2, // optional, default to 1.
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1,
+        slidesToSlide: 1, // optional, default to 1.
+      },
+    };
+    return (
+      <AnchorSection
+        sectionId={pageSection.fields.sectionId || "success-stories"}
+        key={pageSection.sys.id}
+      >
+        <Box w="100%" mb={24} pb={24}>
+          <Flex flexDirection="column" w="90%" mx="auto" align="center">
+            <Heading
+              color="blackAlpha.900"
+              fontSize="2.5rem"
+              fontWeight="bold"
+              mb={6}
+              mt={24}
+            >
+              {pageSection.fields.sectionMainHeading || "Success Stories"}
+            </Heading>
+          </Flex>
+          <Box w="90%" h="20px" mx="auto" mt={8} mb={16} bg={betachGreen}></Box>
+          {pageSection.fields.carouselImages && (
+            <Box w="90%" mx="auto">
+              <Carousel
+                swipeable={false}
+                draggable={false}
+                showDots={false}
+                arrows={false}
+                responsive={responsive}
+                ssr={true} // means to render carousel on server-side.
+                infinite={true}
+                autoPlay={true}
+                autoPlaySpeed={3000}
+                keyBoardControl={true}
+                customTransition="all 1s"
+                transitionDuration={1000}
+                containerClass="carousel-container"
+                removeArrowOnDeviceType={["tablet", "mobile"]}
+                dotListClass="custom-dot-list-style"
+                itemClass="carousel-item-padding-40-px"
+              >
+                {pageSection.fields.carouselImages.map((c) => (
+                  <Center height="100px" key={c.sys.id}>
+                    <Image
+                      mx="auto"
+                      objectFit="contain"
+                      maxWidth="80%"
+                      maxH="100px"
+                      src={c.fields.file.url}
+                      alt={c.fields.file.fileName}
+                    />
+                  </Center>
+                ))}
+              </Carousel>
+            </Box>
+          )}
+        </Box>
+      </AnchorSection>
+    );
+  };
+
+export default SuccessStoriesSection;

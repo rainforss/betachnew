@@ -3,9 +3,12 @@ import resolveResponse from "contentful-resolve-response";
 import type { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
+import BusinessBanterSection from "../components/home/BusinessBanterSection";
 import ClientFeatureSection from "../components/home/ClientFeatureSection";
 import HeroSection from "../components/home/HeroSection";
+import NewsSection from "../components/home/NewsSection";
 import ProductSection from "../components/home/ProductSection";
+import SuccessStoriesSection from "../components/home/SuccessStoriesSection";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
 import { CONTENTFUL_CDN_API_ROOT, sections } from "../utils/constants";
@@ -24,6 +27,9 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
     Hero: HeroSection,
     CaseStudy: ClientFeatureSection,
     ProductOffering: ProductSection,
+    Podcast: BusinessBanterSection,
+    News: NewsSection,
+    ClientsDisplay: SuccessStoriesSection,
   };
 
   console.log(props.pageSections);
@@ -61,11 +67,13 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
   }, [router.events]);
   return (
     <Layout>
-      {props.pageSections?.map((s) =>
-        sectionMap[s.fields.sectionType.replace(" ", "")]({
-          pageSection: s,
-          key: s.sys.id,
-        })
+      {props.pageSections?.map(
+        (s) =>
+          sectionMap[s.fields.sectionType.replace(" ", "")] &&
+          sectionMap[s.fields.sectionType.replace(" ", "")]({
+            pageSection: s,
+            key: s.sys.id,
+          })
       )}
       <SectionControl sections={props.pageSections} currentHash={currentHash} />
     </Layout>

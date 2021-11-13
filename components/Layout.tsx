@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import * as React from "react";
+import Footer from "./Footer";
 import Header from "./Header";
 
 interface ILayoutProps {
@@ -8,9 +9,10 @@ interface ILayoutProps {
 
 const Layout: React.FunctionComponent<ILayoutProps> = (props) => {
   return (
-    <Box w="100%" h="200vh">
+    <Box w="100%">
       <Header />
       {props.children}
+      <Footer />
     </Box>
   );
 };

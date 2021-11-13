@@ -1,16 +1,16 @@
+import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/image";
-import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import * as React from "react";
+import { betachGreen, royalblue } from "../../utils/constants";
 import { PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
-import { betachGreen, royalblue } from "../../utils/constants";
 
-interface IProductSectionProps {
+interface INewsSectionProps {
   pageSection: PageSection;
 }
 
-const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
+const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
   pageSection,
 }) => {
   return (
@@ -18,44 +18,41 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
       sectionId={pageSection.fields.sectionId || "introduction"}
       key={pageSection.sys.id}
     >
-      <Box w="100%" mb={24}>
+      <Box w="100%" my={24}>
         <Flex flexDirection="column" w="90%" mx="auto" align="center">
-          <Heading
-            color="blackAlpha.900"
-            fontSize="1.5rem"
-            fontWeight="bold"
-            mb={6}
-            mt={24}
-          >
-            {pageSection.fields.sectionMainHeading ||
-              "Explore Dynamics 365 applications"}
-          </Heading>
-          <Text as="h3" fontSize="2.5rem" fontWeight="extrabold" mb={24}>
-            {pageSection.fields.sectionSubHeading || "Choose your fit."}
-          </Text>
-
           <Flex>
             {pageSection.fields.displayedProducts &&
               pageSection.fields.displayedProducts.map((dp) => (
                 <Flex
                   flexDirection="column"
                   align="center"
-                  w="25%"
+                  w="33%"
                   px={6}
                   key={dp.sys.id}
                 >
-                  <Image
-                    src={dp.fields.productImage.fields.file.url}
-                    alt={dp.fields.productImage.fields.file.fileName}
-                    objectFit="contain"
-                  />
-                  <Text as="h5" fontWeight="bold" color={betachGreen}>
+                  <Text
+                    as="h5"
+                    fontWeight="extrabold"
+                    color="blackAlpha.800"
+                    fontSize="2.5rem"
+                  >
                     {dp.fields.productName}
                   </Text>
+                  {dp.fields.subheading && (
+                    <Text
+                      as="h5"
+                      fontWeight="bold"
+                      color="blackAlpha.800"
+                      fontSize="1.3rem"
+                      textAlign="center"
+                    >
+                      {dp.fields.subheading}
+                    </Text>
+                  )}
                   <Text as="p" textAlign="center" my={8} lineHeight="2">
                     {dp.fields.productDescription}
                   </Text>
-                  <NextLink href={dp.fields.relativeUrl}>
+                  <NextLink href={dp.fields.ctaButtonLink}>
                     <Text
                       as="span"
                       py={4}
@@ -64,7 +61,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                       color="whiteAlpha.800"
                       borderRadius="300px"
                     >
-                      {pageSection.fields.ctaButtonText || "Learn more"}
+                      {dp.fields.ctaButtonText || "Learn more"}
                     </Text>
                   </NextLink>
                 </Flex>
@@ -76,4 +73,4 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
   );
 };
 
-export default ProductSection;
+export default NewsSection;

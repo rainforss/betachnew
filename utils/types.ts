@@ -56,7 +56,10 @@ export type PageSection = {
         fields: {
           productDescription: string;
           productName: string;
+          subheading: string;
           relativeUrl: string;
+          ctaButtonText: string;
+          ctaButtonLink: string;
           productImage: {
             fields: {
               title: string;
@@ -69,6 +72,19 @@ export type PageSection = {
             sys: {
               id: string;
             };
+          };
+        };
+      }
+    ];
+    carouselImages?: [
+      {
+        sys: { id: string };
+        fields: {
+          title: string;
+          file: {
+            fileName: string;
+            url: string;
+            contentType: string;
           };
         };
       }
