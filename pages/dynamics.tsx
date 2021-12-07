@@ -1,7 +1,10 @@
-import resolveResponse from "contentful-resolve-response";
-import type { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
+import { PageSection } from "../utils/types";
+import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
+import cca from "../utils/cca";
+import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import BusinessBanterSection from "../components/home/BusinessBanterSection";
 import ClientFeatureSection from "../components/home/ClientFeatureSection";
 import HeroSection from "../components/home/HeroSection";
@@ -10,15 +13,16 @@ import ProductSection from "../components/home/ProductSection";
 import SuccessStoriesSection from "../components/home/SuccessStoriesSection";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
-import { CONTENTFUL_CDN_API_ROOT } from "../utils/constants";
-import { PageSection } from "../utils/types";
+import fetch from "node-fetch";
 
-interface HomeProps {
+interface DynamicsProps {
   pageSections?: PageSection[];
   error?: any;
+  accessToken?: string;
+  pages: any;
 }
 
-const Home: NextPage<HomeProps> = (props: HomeProps) => {
+const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   const [currentHash, setCurrentHash] = useState("");
   const [changingHash, setChangingHash] = useState(false);
   const router = useRouter();
@@ -64,12 +68,21 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
   }, [router.events]);
   return (
     <Layout>
-      {props.pageSections?.map(
-        (s) =>
-          sectionMap[s.fields.sectionType.replace(" ", "")] &&
-          sectionMap[s.fields.sectionType.replace(" ", "")]({
-            pageSection: s,
-            key: s.sys.id,
+      {props.pages?.map(
+        (s: any) =>
+          sectionMap[
+            s[
+              "bsi_sectiontype@OData.Community.Display.V1.FormattedValue"
+            ].replace(" ", "")
+          ] &&
+          sectionMap[
+            s[
+              "bsi_sectiontype@OData.Community.Display.V1.FormattedValue"
+            ].replace(" ", "")
+          ]({
+            dynamicsPageSection: s,
+            key: s.pagesectionid,
+            accessToken: props.accessToken,
           })
       )}
       <SectionControl sections={props.pageSections} currentHash={currentHash} />
@@ -77,21 +90,32 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
   );
 };
 
-export default Home;
-
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   try {
-    const response = await fetch(
-      `${CONTENTFUL_CDN_API_ROOT}/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master/entries?access_token=${process.env.CONTENTFUL_DELIVERY_API_KEY}&order=fields.sequence&content_type=section&fields.page.sys.id=63GFhidC1yGFFnTmkqYhni&include=10`
+    const tokenResponse = await getClientCredentialsToken(cca);
+    const accessToken = tokenResponse?.accessToken;
+    const config = new WebApiConfig(
+      "9.1",
+      accessToken,
+      "https://betachplayground.crm.dynamics.com"
     );
-    const pageSections = resolveResponse(await response.json());
+    const pages = (
+      await retrieveMultiple(
+        config,
+        "bsi_pagesections",
+        "$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea",
+        { representation: true }
+      )
+    ).value;
+
     return {
       props: {
-        pageSections,
+        accessToken,
+        pages,
       },
     };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.message);
     return {
       props: {
         error,
@@ -99,3 +123,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
   }
 };
+
+export default Dynamics;
