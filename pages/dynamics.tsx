@@ -18,7 +18,7 @@ interface DynamicsProps {
   pageSections?: PageSection[];
   error?: any;
   accessToken?: string;
-  pages: any;
+  dynamicPageSections: any;
 }
 
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
@@ -67,7 +67,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   }, [router.events]);
   return (
     <Layout>
-      {props.pages?.map(
+      {props.dynamicPageSections?.map(
         (s: any) =>
           sectionMap[
             s[
@@ -98,19 +98,18 @@ export const getStaticProps: GetStaticProps = async () => {
       accessToken,
       "https://betachplayground.crm.dynamics.com"
     );
-    const pages = (
+    const dynamicPageSections = (
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        "$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea",
+        "$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea&$orderby=createdon asc&$expand=bsi_ProductOffering_PageSection_bsi_PageS",
         { representation: true }
       )
     ).value;
-
     return {
       props: {
         accessToken,
-        pages,
+        dynamicPageSections,
       },
     };
   } catch (error: any) {
