@@ -13,7 +13,6 @@ import ProductSection from "../components/home/ProductSection";
 import SuccessStoriesSection from "../components/home/SuccessStoriesSection";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
-import fetch from "node-fetch";
 
 interface DynamicsProps {
   pageSections?: PageSection[];

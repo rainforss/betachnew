@@ -10,10 +10,9 @@ const cachePlugin = cachePluginFunc(cacheLocation);
 
 const clientConfig: Configuration = {
   auth: {
-    clientId: "24c804f6-d1ae-47f4-8e5a-644d7eb6d7f8",
-    authority:
-      "https://login.microsoftonline.com/0ec9a656-9268-4720-abb2-bab4029df654",
-    clientSecret: "~iv7Q~dfK1nTb1DUdPVRUW7wS4E0EGRO-loAR",
+    clientId: process.env.CLIENT_ID!,
+    authority: `https://login.microsoftonline.com/${process.env.TENANT_ID}`,
+    clientSecret: process.env.CLIENT_SECRET,
   },
   cache: {
     cachePlugin,
