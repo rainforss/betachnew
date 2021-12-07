@@ -84,7 +84,10 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
             accessToken: props.accessToken,
           })
       )}
-      <SectionControl sections={props.pageSections} currentHash={currentHash} />
+      <SectionControl
+        dynamicsPageSections={props.dynamicPageSections}
+        currentHash={currentHash}
+      />
     </Layout>
   );
 };
