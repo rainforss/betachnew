@@ -5,13 +5,13 @@ import NextLink from "next/link";
 import { royalblue } from "../utils/constants";
 
 interface INavbarItemProps {
-  faceMenuItem: MenuItem;
-  dropdownItems?: MenuItem[];
+  faceMenuItem: any;
+  dropdownItems?: any[];
 }
 
 const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
   return (
-    <NextLink href={props.faceMenuItem.url}>
+    <NextLink href={props.faceMenuItem.bsi_linkurl}>
       <Text
         as="span"
         mx={2}
@@ -25,7 +25,7 @@ const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
             : "whiteAlpha.800"
         }
       >
-        {props.faceMenuItem.name}
+        {props.faceMenuItem.bsi_name}
       </Text>
     </NextLink>
   );

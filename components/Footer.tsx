@@ -10,84 +10,33 @@ import {
 } from "react-icons/fa";
 import { betachGreen } from "../utils/constants";
 
-interface IFooterProps {}
+interface IFooterProps {
+  menuItems: any[];
+}
 
-const Footer: React.FunctionComponent<IFooterProps> = (props) => {
+const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
   return (
     <Box w="100%" h="35vh" bg="blackAlpha.900">
       <Flex w="90%" h="25vh" mx="auto" py="5vh">
-        <Flex
-          w="33%"
-          h="80%"
-          justifyContent="flex-start"
-          flexDirection="column"
-        >
-          <Text as="h5" color="whiteAlpha.900" mb={8}>
-            Betach Solutions
-          </Text>
-          <Text as="p" color="whiteAlpha.700">
-            Suite 100, 801 Manning Road NE Calgary, AB, Canada T2E 7M8
-          </Text>
-          <Flex flexDirection="column" color="whiteAlpha.700">
-            <NextLink href="tel:+14039842473">
-              <Link>+1 (403) 984-2473</Link>
-            </NextLink>
-            <NextLink href="mailto:info@betach.com">
-              <Link>info@betach.com</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>Privacy Policy & Cookies</Link>
-            </NextLink>
+        {menuItems.map((m) => (
+          <Flex
+            key={m.bsi_navigationmenuitemid}
+            w="22%"
+            h="80%"
+            justifyContent="flex-start"
+            flexDirection="column"
+          >
+            <Text as="h5" color="whiteAlpha.900" mb={8}>
+              {m.bsi_name}
+            </Text>
+            {m.bsi_NavigationMenuSubItem_NavigationMenuI.map((b: any) => (
+              <Text as="p" color="whiteAlpha.700">
+                {b.bsi_name}
+              </Text>
+            ))}
           </Flex>
-        </Flex>
-        <Flex
-          w="20%"
-          h="100%"
-          justifyContent="flex-start"
-          flexDirection="column"
-        >
-          <Text as="h5" color="whiteAlpha.900" mb={8}>
-            Info
-          </Text>
-          <Flex flexDirection="column" color="whiteAlpha.700">
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>About Us</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>Partners</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>Success Stories</Link>
-            </NextLink>
-          </Flex>
-        </Flex>
-        <Flex
-          w="20%"
-          h="100%"
-          justifyContent="flex-start"
-          flexDirection="column"
-        >
-          <Text as="h5" color="whiteAlpha.900" mb={8}>
-            Resources
-          </Text>
-          <Flex flexDirection="column" color="whiteAlpha.700">
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>Careers</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>Blogs</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>Events</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>News</Link>
-            </NextLink>
-            <NextLink href="/eventsmaster/2020/6/10/build-remote-work-capabilities-securely-and-quickly">
-              <Link>eBooks</Link>
-            </NextLink>
-          </Flex>
-        </Flex>
+        ))}
+
         <Flex
           w="30%"
           h="100%"

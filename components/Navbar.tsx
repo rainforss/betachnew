@@ -1,22 +1,22 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Flex, IconButton } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import * as React from "react";
-import { menuItems } from "../utils/constants";
 import MenuItemDropdown from "./NavbarItem";
 
-interface INavbarProps {}
+interface INavbarProps {
+  menuItems: any[];
+}
 
-const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
+const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
   return (
     <Flex justify="space-around" fontSize="0.8rem" align="center">
       {menuItems.map((mi) => (
         <MenuItemDropdown
-          key={mi.face.url}
-          faceMenuItem={mi.face}
-          dropdownItems={mi.dropdown}
+          key={mi.bsi_linkurl}
+          faceMenuItem={mi}
+          dropdownItems={mi.bsi_NavigationMenuSubItem_NavigationMenuI}
         />
       ))}
-      <SearchIcon ml={2} fontSize="1.1rem" />
     </Flex>
   );
 };

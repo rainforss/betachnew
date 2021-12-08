@@ -5,14 +5,16 @@ import Header from "./Header";
 
 interface ILayoutProps {
   children?: React.ReactNode | string;
+  headerMenuItems: any[];
+  footerMenuItems: any[];
 }
 
 const Layout: React.FunctionComponent<ILayoutProps> = (props) => {
   return (
     <Box w="100%">
-      <Header />
+      <Header menuItems={props.headerMenuItems} />
       {props.children}
-      <Footer />
+      <Footer menuItems={props.footerMenuItems} />
     </Box>
   );
 };

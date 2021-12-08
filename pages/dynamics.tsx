@@ -18,7 +18,9 @@ interface DynamicsProps {
   pageSections?: PageSection[];
   error?: any;
   accessToken?: string;
-  dynamicPageSections: any;
+  dynamicPageSections: any[];
+  dynamicHeaderMenuItems: any[];
+  dynamicFooterMenuItems: any[];
 }
 
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
@@ -66,7 +68,10 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
     };
   }, [router.events]);
   return (
-    <Layout>
+    <Layout
+      headerMenuItems={props.dynamicHeaderMenuItems}
+      footerMenuItems={props.dynamicFooterMenuItems}
+    >
       {props.dynamicPageSections?.map(
         (s: any) =>
           sectionMap[
@@ -109,10 +114,28 @@ export const getStaticProps: GetStaticProps = async () => {
         { representation: true }
       )
     ).value;
+    const dynamicHeaderMenuItems = (
+      await retrieveMultiple(
+        config,
+        "bsi_navigationmenuitems",
+        "$filter=_bsi_navigationmenu_value eq 05038781-a557-ec11-8f8f-0022481ccfea&$expand=bsi_NavigationMenuSubItem_NavigationMenuI",
+        { representation: true }
+      )
+    ).value;
+    const dynamicFooterMenuItems = (
+      await retrieveMultiple(
+        config,
+        "bsi_navigationmenuitems",
+        "$filter=_bsi_navigationmenu_value eq 7fa63997-b257-ec11-8f8f-0022481ccfea&$expand=bsi_NavigationMenuSubItem_NavigationMenuI",
+        { representation: true }
+      )
+    ).value;
     return {
       props: {
         accessToken,
         dynamicPageSections,
+        dynamicHeaderMenuItems,
+        dynamicFooterMenuItems,
       },
     };
   } catch (error: any) {
