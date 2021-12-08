@@ -16,6 +16,6 @@ export default async function getToken(
     const accessToken = tokenResponse?.accessToken;
     res.status(200).json({ accessToken });
   } catch (error: any) {
-    res.status(400).json({ error });
+    res.status(400).json({ error: error.message });
   }
 }
