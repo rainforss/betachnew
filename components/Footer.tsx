@@ -30,7 +30,11 @@ const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
               {m.bsi_name}
             </Text>
             {m.bsi_NavigationMenuSubItem_NavigationMenuI.map((b: any) => (
-              <Text as="p" color="whiteAlpha.700">
+              <Text
+                key={b.bsi_NavigationMenuSubItem_NavigationMenuI}
+                as="p"
+                color="whiteAlpha.700"
+              >
                 {b.bsi_name}
               </Text>
             ))}
