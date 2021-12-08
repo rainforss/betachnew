@@ -4,6 +4,7 @@ import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 import { royalblue } from "../../utils/constants";
 import { PageSection } from "../../utils/types";
+import React from "react";
 
 interface IHeroSectionProps {
   pageSection?: PageSection;
@@ -26,10 +27,10 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
       const image = await response.json();
       setImageData((prevstate) => image.value);
     }
-    if (dynamicsPageSection) {
+    if (dynamicsPageSection && accessToken && !imageData) {
       getImageString(accessToken);
     }
-  }, [dynamicsPageSection, accessToken]);
+  }, [accessToken, dynamicsPageSection, imageData]);
 
   if (pageSection) {
     return (
@@ -89,8 +90,9 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
         <Center
           id="hero-background"
           bgImage={
-            `data:image/jpg;base64,${imageData}` ||
-            `data:image/jpg;base64,${dynamicsPageSection.bsi_backgroundimage}`
+            imageData
+              ? `data:image/jpg;base64,${imageData}`
+              : `data:image/jpg;base64,${dynamicsPageSection.bsi_backgroundimage}`
           }
           bgSize="cover"
           bgPos="center"
@@ -135,5 +137,4 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
   }
   return null;
 };
-
 export default HeroSection;

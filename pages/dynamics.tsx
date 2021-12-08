@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import { PageSection } from "../utils/types";
 import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
 import cca from "../utils/cca";
@@ -17,7 +17,7 @@ import SectionControl from "../components/SectionControl";
 interface DynamicsProps {
   pageSections?: PageSection[];
   error?: any;
-  accessToken?: string;
+  // accessToken?: string;
   dynamicPageSections: any[];
   dynamicHeaderMenuItems: any[];
   dynamicFooterMenuItems: any[];
@@ -26,6 +26,7 @@ interface DynamicsProps {
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   const [currentHash, setCurrentHash] = useState("");
   const [changingHash, setChangingHash] = useState(false);
+  const [accessToken, setAccessToken] = useState("");
   const router = useRouter();
   const sectionMap: { [key: string]: any } = {
     Hero: HeroSection,
@@ -67,6 +68,18 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
       router.events.off("hashChangeStart", onHashChangeStart);
     };
   }, [router.events]);
+
+  useEffect(() => {
+    async function getToken() {
+      const response: any = await fetch("/api/getToken");
+      const tokenResponse = await response.json();
+      const token = tokenResponse.accessToken;
+      setAccessToken(() => token);
+    }
+    if (!accessToken) {
+      getToken();
+    }
+  }, [accessToken]);
   return (
     <Layout
       headerMenuItems={props.dynamicHeaderMenuItems}
@@ -86,7 +99,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
           ]({
             dynamicsPageSection: s,
             key: s.pagesectionid,
-            accessToken: props.accessToken,
+            accessToken,
           })
       )}
       <SectionControl
@@ -132,7 +145,6 @@ export const getStaticProps: GetStaticProps = async () => {
     ).value;
     return {
       props: {
-        accessToken,
         dynamicPageSections,
         dynamicHeaderMenuItems,
         dynamicFooterMenuItems,

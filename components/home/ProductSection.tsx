@@ -20,7 +20,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
 }) => {
   const [imageCollection, setImageCollection] = useState<string[]>([]);
   useEffect(() => {
-    if (dynamicsPageSection) {
+    if (dynamicsPageSection && imageCollection.length === 0 && accessToken) {
       const promises: any[] = [];
       dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS.forEach(
         (po: any) =>
@@ -38,7 +38,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
         setImageCollection((prevstate) => values);
       });
     }
-  }, [dynamicsPageSection, accessToken]);
+  }, [dynamicsPageSection, accessToken, imageCollection.length]);
   if (pageSection) {
     return (
       <AnchorSection

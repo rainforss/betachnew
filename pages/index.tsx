@@ -62,19 +62,18 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
       router.events.off("hashChangeStart", onHashChangeStart);
     };
   }, [router.events]);
-  return (
-    <Layout>
-      {props.pageSections?.map(
-        (s) =>
-          sectionMap[s.fields.sectionType.replace(" ", "")] &&
-          sectionMap[s.fields.sectionType.replace(" ", "")]({
-            pageSection: s,
-            key: s.sys.id,
-          })
-      )}
-      <SectionControl sections={props.pageSections} currentHash={currentHash} />
-    </Layout>
-  );
+  return null;
+  // <Layout>
+  //   {props.pageSections?.map(
+  //     (s) =>
+  //       sectionMap[s.fields.sectionType.replace(" ", "")] &&
+  //       sectionMap[s.fields.sectionType.replace(" ", "")]({
+  //         pageSection: s,
+  //         key: s.sys.id,
+  //       })
+  //   )}
+  //   <SectionControl sections={props.pageSections} currentHash={currentHash} />
+  // </Layout>
 };
 
 export default Home;
