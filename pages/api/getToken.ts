@@ -4,13 +4,18 @@ import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken
 
 type Data = {
   accessToken?: string;
+  error?: any;
 };
 
 export default async function getToken(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const tokenResponse = await getClientCredentialsToken(cca);
-  const accessToken = tokenResponse?.accessToken;
-  res.status(200).json({ accessToken });
+  try {
+    const tokenResponse = await getClientCredentialsToken(cca);
+    const accessToken = tokenResponse?.accessToken;
+    res.status(200).json({ accessToken });
+  } catch (error: any) {
+    res.status(400).json({ error });
+  }
 }
