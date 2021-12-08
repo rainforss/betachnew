@@ -4,7 +4,7 @@ import { Configuration } from "@azure/msal-node";
 //This part runs in the server, use commonjs import
 const msal = require("@azure/msal-node");
 
-const cacheLocation = "../data/cache.json";
+const cacheLocation = process.cwd() + "data/cache.json";
 
 const cachePlugin = cachePluginFunc(cacheLocation);
 
