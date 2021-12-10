@@ -13,7 +13,8 @@ import ProductSection from "../components/home/ProductSection";
 import SuccessStoriesSection from "../components/home/SuccessStoriesSection";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
-
+import nodefetch from "node-fetch";
+import { promises as fs } from "fs";
 interface DynamicsProps {
   pageSections?: PageSection[];
   error?: any;
@@ -143,6 +144,17 @@ export const getStaticProps: GetStaticProps = async () => {
         { representation: true }
       )
     ).value;
+    const imageRes = (await nodefetch(
+      `https://betachplayground.crm.dynamics.com/api/data/v9.1/bsi_pagesections(8d35266f-f556-ec11-8f8f-0022481ccfea)/bsi_backgroundimage/?size=full`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )) as any;
+    const imageBody = await imageRes.json();
+    console.log(imageBody);
+    await fs.writeFile(
+      process.cwd() + "/public/hero_image.jpg",
+      imageBody.value,
+      "base64"
+    );
     return {
       props: {
         dynamicPageSections,

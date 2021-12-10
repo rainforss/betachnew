@@ -1,10 +1,11 @@
-import { Center, Flex, Heading, Text } from "@chakra-ui/layout";
+import { Box, Center, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useState, useEffect } from "react";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 import { royalblue } from "../../utils/constants";
 import { PageSection } from "../../utils/types";
 import React from "react";
+import Image from "next/image";
 
 interface IHeroSectionProps {
   pageSection?: PageSection;
@@ -18,6 +19,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
   accessToken,
 }) => {
   const [imageData, setImageData] = useState("");
+
   useEffect(() => {
     async function getImageString(token: string) {
       const response: any = await fetch(
@@ -89,19 +91,18 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
       >
         <Center
           id="hero-background"
-          bgImage={
-            imageData
-              ? `data:image/jpg;base64,${imageData}`
-              : `data:image/jpg;base64,${dynamicsPageSection.bsi_backgroundimage}`
-          }
+          bgImage="/hero_image.jpg"
           bgSize="cover"
           bgPos="center"
+          w="100%"
           h="80vh"
           minH="80vh"
           bgAttachment="fixed"
           bgRepeat="no-repeat"
+          flexDirection="column"
+          position="relative"
         >
-          <Flex w="90%" justify="center" align="center">
+          <Flex w="90%" justify="center" align="center" zIndex={9}>
             <Flex direction="column" mr={12}>
               <Heading color="whiteAlpha.900" fontSize="3.5rem" mb={6}>
                 {dynamicsPageSection.bsi_mainheading ||

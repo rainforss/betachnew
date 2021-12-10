@@ -17,27 +17,38 @@ interface IFooterProps {
 const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
   return (
     <Box w="100%" h="35vh" bg="blackAlpha.900">
-      <Flex w="90%" h="25vh" mx="auto" py="5vh">
+      <Flex w="90%" mx="auto" py="5vh">
         {menuItems.map((m) => (
           <Flex
             key={m.bsi_navigationmenuitemid}
             w="22%"
             h="80%"
+            px={6}
             justifyContent="flex-start"
             flexDirection="column"
           >
             <Text as="h5" color="whiteAlpha.900" mb={8}>
               {m.bsi_name}
             </Text>
-            {m.bsi_NavigationMenuSubItem_NavigationMenuI.map((b: any) => (
-              <Text
-                key={b.bsi_NavigationMenuSubItem_NavigationMenuI}
-                as="p"
-                color="whiteAlpha.700"
-              >
-                {b.bsi_name}
-              </Text>
-            ))}
+            {m.bsi_NavigationMenuSubItem_NavigationMenuI.map((b: any) =>
+              b.bsi_linkurl ? (
+                <NextLink
+                  href={b.bsi_linkurl}
+                  key={b.bsi_navigationmenusubitemid}
+                  passHref
+                >
+                  <Link color="whiteAlpha.700">{b.bsi_name}</Link>
+                </NextLink>
+              ) : (
+                <Text
+                  key={b.bsi_navigationmenusubitemid}
+                  as="p"
+                  color="whiteAlpha.700"
+                >
+                  {b.bsi_name}
+                </Text>
+              )
+            )}
           </Flex>
         ))}
 
@@ -53,7 +64,6 @@ const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
             color="whiteAlpha.900"
             mb={8}
           >
-            <Icon fontSize="1.2rem" as={FaSearch} />
             <Icon fontSize="1.2rem" as={FaFacebookF} />
             <Icon fontSize="1.2rem" as={FaTwitter} />
             <Icon fontSize="1.2rem" as={FaYoutube} />
