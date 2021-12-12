@@ -2,12 +2,12 @@ import { Center, Flex, Heading, Text } from "@chakra-ui/layout";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 import { royalblue } from "../../utils/constants";
-import { PageSection } from "../../utils/types";
+import { DynamicsPageSection, PageSection } from "../../utils/types";
 import React from "react";
 
 interface IHeroSectionProps {
   pageSection?: PageSection;
-  dynamicsPageSection?: any;
+  dynamicsPageSection?: DynamicsPageSection;
   accessToken: string;
 }
 

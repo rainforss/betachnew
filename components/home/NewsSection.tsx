@@ -3,9 +3,10 @@ import * as React from "react";
 import { royalblue } from "../../utils/constants";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
+import { DynamicsPageSection } from "../../utils/types";
 
 interface INewsSectionProps {
-  dynamicsPageSection: any;
+  dynamicsPageSection: DynamicsPageSection;
 }
 
 const NewsSection: React.FunctionComponent<INewsSectionProps> = ({

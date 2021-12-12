@@ -1,14 +1,14 @@
 import { Box, Center, Flex, Heading, Image } from "@chakra-ui/react";
 import * as React from "react";
 import Carousel from "react-multi-carousel";
-import { PageSection } from "../../utils/types";
+import { DynamicsPageSection, PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import "react-multi-carousel/lib/styles.css";
 import { betachGreen } from "../../utils/constants";
 
 interface ISuccessStoriesSectionProps {
   pageSection?: PageSection;
-  dynamicsPageSection?: any;
+  dynamicsPageSection?: DynamicsPageSection;
 }
 
 const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps> =

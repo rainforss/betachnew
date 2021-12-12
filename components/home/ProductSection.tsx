@@ -1,13 +1,13 @@
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import { PageSection } from "../../utils/types";
+import { DynamicsPageSection, PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 import { betachGreen, royalblue } from "../../utils/constants";
 
 interface IProductSectionProps {
   pageSection?: PageSection;
-  dynamicsPageSection?: any;
+  dynamicsPageSection?: DynamicsPageSection;
   accessToken: string;
 }
 

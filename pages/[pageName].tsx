@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { DynamicsPageSection, PageSection } from "../utils/types";
 import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
 import cca from "../utils/cca";
@@ -18,8 +18,9 @@ import {
   dynamicsPageSectionsQuery,
   productOfferingQuery,
 } from "../utils/queries";
+import { ParsedUrlQuery } from "querystring";
 
-interface DynamicsProps {
+interface DynamicsPagesProps {
   pageSections?: PageSection[];
   error?: any;
   // accessToken?: string;
@@ -28,7 +29,13 @@ interface DynamicsProps {
   dynamicsFooterMenuItems: any[];
 }
 
-const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
+interface IParams extends ParsedUrlQuery {
+  pageName: string;
+}
+
+const DynamicsPages: NextPage<DynamicsPagesProps> = (
+  props: DynamicsPagesProps
+) => {
   const [currentHash, setCurrentHash] = useState("");
   const [changingHash, setChangingHash] = useState(false);
   const [accessToken, setAccessToken] = useState("");
@@ -100,7 +107,34 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const tokenResponse = await getClientCredentialsToken(cca);
+  const accessToken = tokenResponse?.accessToken;
+  const config = new WebApiConfig(
+    "9.1",
+    accessToken,
+    "https://betachplayground.crm.dynamics.com"
+  );
+  const dynamicsPagesResult = (
+    await retrieveMultiple(config, "bsi_webpages", "$select=bsi_name")
+  ).value;
+  const paths: (
+    | string
+    | {
+        params: IParams;
+        locale?: string | undefined;
+      }
+  )[] = [];
+  dynamicsPagesResult.forEach((pr) =>
+    paths.push({ params: { pageName: (pr.bsi_name as string).toLowerCase() } })
+  );
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (req) => {
   try {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
@@ -109,12 +143,28 @@ export const getStaticProps: GetStaticProps = async () => {
       accessToken,
       "https://betachplayground.crm.dynamics.com"
     );
+    const { pageName } = req.params as IParams;
+    const dynamicsPageResult = (
+      await retrieveMultiple(
+        config,
+        "bsi_webpages",
+        `$filter=bsi_name eq '${pageName}'&$select=bsi_webpageid`
+      )
+    ).value;
+    if (dynamicsPageResult.length === 0) {
+      return {
+        redirect: {
+          destination: "/404",
+          permanent: true,
+        },
+      };
+    }
 
     const dynamicsPageSections = (
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        `$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea&${dynamicsPageSectionsQuery}`,
+        `$filter= _bsi_webpage_value eq ${dynamicsPageResult[0].bsi_webpageid}&${dynamicsPageSectionsQuery}`,
         { representation: true }
       )
     ).value;
@@ -175,4 +225,4 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-export default Dynamics;
+export default DynamicsPages;

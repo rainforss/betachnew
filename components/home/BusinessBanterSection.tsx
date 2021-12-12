@@ -1,9 +1,10 @@
 import { Center, Flex, Heading, Text } from "@chakra-ui/layout";
 import * as React from "react";
+import { DynamicsPageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 
 interface IBusinessBanterSectionProps {
-  dynamicsPageSection: any;
+  dynamicsPageSection: DynamicsPageSection;
 }
 
 const BusinessBanterSection: React.FunctionComponent<IBusinessBanterSectionProps> =
@@ -11,7 +12,7 @@ const BusinessBanterSection: React.FunctionComponent<IBusinessBanterSectionProps
     return (
       <AnchorSection
         sectionId={dynamicsPageSection.bsi_sectionid || "business-banter"}
-        key={dynamicsPageSection.bsi_secitonid}
+        key={dynamicsPageSection.bsi_pagesectionid}
       >
         <Center
           bgImage={dynamicsPageSection.bsi_Background.bsi_cdnurl}

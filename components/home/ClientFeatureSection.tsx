@@ -1,12 +1,12 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/layout";
 import * as React from "react";
 import { betachGreen } from "../../utils/constants";
-import { PageSection } from "../../utils/types";
+import { DynamicsPageSection, PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 
 interface IClientFeatureSectionProps {
   pageSection?: PageSection;
-  dynamicsPageSection?: any;
+  dynamicsPageSection?: DynamicsPageSection;
 }
 
 const ClientFeatureSection: React.FunctionComponent<IClientFeatureSectionProps> =
@@ -85,7 +85,7 @@ const ClientFeatureSection: React.FunctionComponent<IClientFeatureSectionProps> 
       return (
         <AnchorSection
           sectionId={
-            dynamicsPageSection.sectionid || "tarin-resources-casestudy"
+            dynamicsPageSection.bsi_sectionid || "tarin-resources-casestudy"
           }
           key={dynamicsPageSection.bsi_pagesectionid}
         >
