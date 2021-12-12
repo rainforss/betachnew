@@ -1,35 +1,32 @@
-import resolveResponse from "contentful-resolve-response";
-import type { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
+import { PageSection } from "../utils/types";
+import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
+import cca from "../utils/cca";
+import {
+  retrieveMultiple,
+  WebApiConfig,
+  retrieve,
+} from "dataverse-webapi/lib/node";
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect, useState } from "react";
-import BusinessBanterSection from "../components/home/BusinessBanterSection";
-import ClientFeatureSection from "../components/home/ClientFeatureSection";
-import HeroSection from "../components/home/HeroSection";
-import NewsSection from "../components/home/NewsSection";
-import ProductSection from "../components/home/ProductSection";
-import SuccessStoriesSection from "../components/home/SuccessStoriesSection";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
-import { CONTENTFUL_CDN_API_ROOT } from "../utils/constants";
-import { PageSection } from "../utils/types";
+import sectionConfig from "../components/designed-sections/sections.config";
 
-interface HomeProps {
+interface DynamicsProps {
   pageSections?: PageSection[];
   error?: any;
+  // accessToken?: string;
+  dynamicPageSections: any[];
+  dynamicHeaderMenuItems: any[];
+  dynamicFooterMenuItems: any[];
 }
 
-const Home: NextPage<HomeProps> = (props: HomeProps) => {
+const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   const [currentHash, setCurrentHash] = useState("");
   const [changingHash, setChangingHash] = useState(false);
+  const [accessToken, setAccessToken] = useState("");
   const router = useRouter();
-  const sectionMap: { [key: string]: any } = {
-    Hero: HeroSection,
-    CaseStudy: ClientFeatureSection,
-    ProductOffering: ProductSection,
-    Podcast: BusinessBanterSection,
-    News: NewsSection,
-    ClientsDisplay: SuccessStoriesSection,
-  };
 
   useEffect(() => {
     //Used to monitor section change, not supported on IE
@@ -62,35 +59,108 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
       router.events.off("hashChangeStart", onHashChangeStart);
     };
   }, [router.events]);
-  return null;
-  // <Layout>
-  //   {props.pageSections?.map(
-  //     (s) =>
-  //       sectionMap[s.fields.sectionType.replace(" ", "")] &&
-  //       sectionMap[s.fields.sectionType.replace(" ", "")]({
-  //         pageSection: s,
-  //         key: s.sys.id,
-  //       })
-  //   )}
-  //   <SectionControl sections={props.pageSections} currentHash={currentHash} />
-  // </Layout>
+
+  useEffect(() => {
+    async function getToken() {
+      const response: any = await fetch("/api/getToken");
+      const tokenResponse = await response.json();
+      const token = tokenResponse.accessToken;
+      setAccessToken(() => token);
+    }
+    if (!accessToken) {
+      getToken();
+    }
+  }, [accessToken]);
+
+  return (
+    <Layout
+      headerMenuItems={props.dynamicHeaderMenuItems}
+      footerMenuItems={props.dynamicFooterMenuItems}
+    >
+      {props.dynamicPageSections?.map(
+        (s: any) =>
+          sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
+          sectionConfig[s["bsi_DesignedSection"].bsi_name]({
+            dynamicsPageSection: s,
+            key: s.pagesectionid,
+            accessToken,
+          })
+      )}
+      <SectionControl
+        dynamicsPageSections={props.dynamicPageSections}
+        currentHash={currentHash}
+      />
+    </Layout>
+  );
 };
 
-export default Home;
-
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   try {
-    const response = await fetch(
-      `${CONTENTFUL_CDN_API_ROOT}/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master/entries?access_token=${process.env.CONTENTFUL_DELIVERY_API_KEY}&order=fields.sequence&content_type=section&fields.page.sys.id=63GFhidC1yGFFnTmkqYhni&include=10`
+    const tokenResponse = await getClientCredentialsToken(cca);
+    const accessToken = tokenResponse?.accessToken;
+    const config = new WebApiConfig(
+      "9.1",
+      accessToken,
+      "https://betachplayground.crm.dynamics.com"
     );
-    const pageSections = resolveResponse(await response.json());
+
+    const dynamicPageSections = (
+      await retrieveMultiple(
+        config,
+        "bsi_pagesections",
+        "$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea&$select=bsi_name,bsi_pagesectionid,bsi_videourl,bsi_paragraph,bsi_ctabuttonlink,bsi_ctabuttontext,bsi_youtubevideoid,_bsi_designedsection_value,bsi_youtubevideoalttext,bsi_hasctabutton,bsi_mainheading,bsi_subheading,bsi_sectionid,bsi_featuredproducts&$orderby=bsi_sequence asc&$expand=bsi_ProductOffering_PageSection_bsi_PageS($select=bsi_productofferingid,bsi_name,bsi_productimage,bsi_productdescription,bsi_relativeurl,bsi_ctabuttontext,bsi_ctabuttonlink),bsi_ImageAsset_PageSection_bsi_PageSectio,bsi_DesignedSection($select=bsi_name),bsi_Background($select=bsi_cdnurl)",
+        { representation: true }
+      )
+    ).value;
+
+    for (const section of dynamicPageSections) {
+      const productOfferingRequest: any[] = [];
+      (section as any).bsi_ProductOffering_PageSection_bsi_PageS.forEach(
+        (po: any) => {
+          productOfferingRequest.push(
+            retrieve(
+              config,
+              "bsi_productofferings",
+              po.bsi_productofferingid,
+              "$select=bsi_productofferingid,bsi_name,bsi_productdescription,bsi_relativeurl,bsi_ctabuttontext&$expand=bsi_ImageAsset_ProductOffering_bsi_Produc($select=bsi_cdnurl,bsi_name)"
+            )
+          );
+        }
+      );
+      const result = await Promise.all(productOfferingRequest);
+      section.bsi_ProductOffering_PageSection_bsi_PageS = [...result];
+    }
+
+    const dynamicHeaderMenuItemsRequest = retrieveMultiple(
+      config,
+      "bsi_navigationmenuitems",
+      "$filter=_bsi_navigationmenu_value eq 05038781-a557-ec11-8f8f-0022481ccfea&$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)",
+      { representation: true }
+    );
+    const dynamicFooterMenuItemsRequest = retrieveMultiple(
+      config,
+      "bsi_navigationmenuitems",
+      "$filter=_bsi_navigationmenu_value eq 7fa63997-b257-ec11-8f8f-0022481ccfea&$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)",
+      { representation: true }
+    );
+
+    const promises = [
+      dynamicHeaderMenuItemsRequest,
+      dynamicFooterMenuItemsRequest,
+    ];
+
+    const results = await Promise.all(promises);
+
+    const [dynamicHeaderMenuItems, dynamicFooterMenuItems] = results;
     return {
       props: {
-        pageSections,
+        dynamicPageSections: dynamicPageSections,
+        dynamicHeaderMenuItems: dynamicHeaderMenuItems.value,
+        dynamicFooterMenuItems: dynamicFooterMenuItems.value,
       },
     };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.message);
     return {
       props: {
         error,
@@ -98,3 +168,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
   }
 };
+
+export default Dynamics;
