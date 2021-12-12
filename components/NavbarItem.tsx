@@ -1,6 +1,5 @@
-import { Text } from "@chakra-ui/layout";
+import { Link } from "@chakra-ui/layout";
 import * as React from "react";
-import { MenuItem } from "../utils/types";
 import NextLink from "next/link";
 import { royalblue } from "../utils/constants";
 
@@ -11,9 +10,8 @@ interface INavbarItemProps {
 
 const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
   return (
-    <NextLink href={props.faceMenuItem.bsi_linkurl}>
-      <Text
-        as="span"
+    <NextLink href={props.faceMenuItem.bsi_linkurl} passHref>
+      <Link
         mx={2}
         py={2}
         px={props.dropdownItems?.length !== 0 ? 1 : 4}
@@ -26,7 +24,7 @@ const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
         }
       >
         {props.faceMenuItem.bsi_name}
-      </Text>
+      </Link>
     </NextLink>
   );
 };
