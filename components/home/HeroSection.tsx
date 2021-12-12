@@ -1,11 +1,9 @@
-import { Box, Center, Flex, Heading, Text } from "@chakra-ui/layout";
-import { useState, useEffect } from "react";
+import { Center, Flex, Heading, Text } from "@chakra-ui/layout";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 import { royalblue } from "../../utils/constants";
 import { PageSection } from "../../utils/types";
 import React from "react";
-import Image from "next/image";
 
 interface IHeroSectionProps {
   pageSection?: PageSection;
@@ -16,24 +14,7 @@ interface IHeroSectionProps {
 const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
   pageSection,
   dynamicsPageSection,
-  accessToken,
 }) => {
-  const [imageData, setImageData] = useState("");
-
-  useEffect(() => {
-    async function getImageString(token: string) {
-      const response: any = await fetch(
-        `https://betachplayground.crm.dynamics.com/api/data/v9.1/bsi_pagesections(${dynamicsPageSection.bsi_pagesectionid})/bsi_backgroundimage/?size=full`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const image = await response.json();
-      setImageData((prevstate) => image.value);
-    }
-    if (dynamicsPageSection && accessToken && !imageData) {
-      getImageString(accessToken);
-    }
-  }, [accessToken, dynamicsPageSection, imageData]);
-
   if (pageSection) {
     return (
       <AnchorSection
@@ -91,7 +72,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
       >
         <Center
           id="hero-background"
-          bgImage="/hero_image.jpg"
+          bgImage={dynamicsPageSection.bsi_Background.bsi_cdnurl}
           bgSize="cover"
           bgPos="center"
           w="100%"

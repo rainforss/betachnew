@@ -1,11 +1,10 @@
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 import { betachGreen, royalblue } from "../../utils/constants";
-import { getImageStrings } from "../../utils/getImageStrings";
 
 interface IProductSectionProps {
   pageSection?: PageSection;
@@ -16,29 +15,10 @@ interface IProductSectionProps {
 const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
   pageSection,
   dynamicsPageSection,
-  accessToken,
 }) => {
   const [imageCollection, setImageCollection] = useState<string[]>([]);
-  useEffect(() => {
-    if (dynamicsPageSection && imageCollection.length === 0 && accessToken) {
-      const promises: any[] = [];
-      dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS.forEach(
-        (po: any) =>
-          promises.push(
-            getImageStrings(
-              accessToken,
-              "bsi_productofferings",
-              po.bsi_productofferingid,
-              "bsi_productimage"
-            )
-          )
-      );
-      console.log(promises);
-      Promise.all(promises).then((values) => {
-        setImageCollection((prevstate) => values);
-      });
-    }
-  }, [dynamicsPageSection, accessToken, imageCollection.length]);
+
+  console.log(dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS);
   if (pageSection) {
     return (
       <AnchorSection
@@ -138,9 +118,8 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                     >
                       <Image
                         src={
-                          imageCollection.length !== 0
-                            ? `data:image/png;base64,${imageCollection[index]}`
-                            : `data:image/png;base64,${dp.bsi_productimage}`
+                          dp.bsi_ImageAsset_ProductOffering_bsi_Produc[0]
+                            .bsi_cdnurl
                         }
                         alt={dp.bsi_name}
                         width="80%"
