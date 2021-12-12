@@ -1,6 +1,5 @@
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import { useState } from "react";
 import { PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
@@ -16,9 +15,6 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
   pageSection,
   dynamicsPageSection,
 }) => {
-  const [imageCollection, setImageCollection] = useState<string[]>([]);
-
-  console.log(dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS);
   if (pageSection) {
     return (
       <AnchorSection

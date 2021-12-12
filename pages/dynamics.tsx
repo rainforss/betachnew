@@ -108,7 +108,7 @@ export const getStaticProps: GetStaticProps = async () => {
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        "$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea&$select=bsi_name,bsi_pagesectionid,bsi_videourl,bsi_paragraph,bsi_ctabuttonlink,bsi_ctabuttontext,bsi_youtubevideoid,_bsi_designedsection_value,bsi_youtubevideoalttext,bsi_hasctabutton,bsi_mainheading,bsi_subheading,bsi_sectionid,bsi_featuredproducts&$orderby=createdon asc&$expand=bsi_ProductOffering_PageSection_bsi_PageS($select=bsi_productofferingid,bsi_name,bsi_productimage,bsi_productdescription,bsi_relativeurl,bsi_ctabuttontext),bsi_ImageAsset_PageSection_bsi_PageSectio,bsi_DesignedSection($select=bsi_name),bsi_Background($select=bsi_cdnurl)",
+        "$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea&$select=bsi_name,bsi_pagesectionid,bsi_videourl,bsi_paragraph,bsi_ctabuttonlink,bsi_ctabuttontext,bsi_youtubevideoid,_bsi_designedsection_value,bsi_youtubevideoalttext,bsi_hasctabutton,bsi_mainheading,bsi_subheading,bsi_sectionid,bsi_featuredproducts&$orderby=bsi_sequence asc&$expand=bsi_ProductOffering_PageSection_bsi_PageS($select=bsi_productofferingid,bsi_name,bsi_productimage,bsi_productdescription,bsi_relativeurl,bsi_ctabuttontext,bsi_ctabuttonlink),bsi_ImageAsset_PageSection_bsi_PageSectio,bsi_DesignedSection($select=bsi_name),bsi_Background($select=bsi_cdnurl)",
         { representation: true }
       )
     ).value;

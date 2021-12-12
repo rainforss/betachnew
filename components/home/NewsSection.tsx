@@ -1,71 +1,71 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/image";
+import { Box, Flex, Link, Text } from "@chakra-ui/layout";
 import * as React from "react";
-import { betachGreen, royalblue } from "../../utils/constants";
-import { PageSection } from "../../utils/types";
+import { royalblue } from "../../utils/constants";
 import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 
 interface INewsSectionProps {
-  pageSection: PageSection;
+  dynamicsPageSection: any;
 }
 
 const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
-  pageSection,
+  dynamicsPageSection,
 }) => {
   return (
     <AnchorSection
-      sectionId={pageSection.fields.sectionId || "introduction"}
-      key={pageSection.sys.id}
+      sectionId={dynamicsPageSection.bsi_sectionid || "introduction"}
+      key={dynamicsPageSection.bsi_sectionid}
     >
       <Box w="100%" my={24}>
         <Flex flexDirection="column" w="90%" mx="auto" align="center">
           <Flex>
-            {pageSection.fields.displayedProducts &&
-              pageSection.fields.displayedProducts.map((dp) => (
-                <Flex
-                  flexDirection="column"
-                  align="center"
-                  w="33%"
-                  px={6}
-                  key={dp.sys.id}
-                >
-                  <Text
-                    as="h5"
-                    fontWeight="extrabold"
-                    color="blackAlpha.800"
-                    fontSize="2.5rem"
+            {dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS &&
+              dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS.map(
+                (dp: any) => (
+                  <Flex
+                    flexDirection="column"
+                    align="center"
+                    w="33%"
+                    px={6}
+                    key={dp.bsi_productofferingid}
                   >
-                    {dp.fields.productName}
-                  </Text>
-                  {dp.fields.subheading && (
                     <Text
                       as="h5"
-                      fontWeight="bold"
+                      fontWeight="extrabold"
                       color="blackAlpha.800"
-                      fontSize="1.3rem"
-                      textAlign="center"
+                      fontSize="2.5rem"
                     >
-                      {dp.fields.subheading}
+                      {dp.bsi_name}
                     </Text>
-                  )}
-                  <Text as="p" textAlign="center" my={8} lineHeight="2">
-                    {dp.fields.productDescription}
-                  </Text>
-                  <NextLink href={dp.fields.ctaButtonLink}>
-                    <Text
-                      as="span"
-                      py={4}
-                      px={6}
-                      bg={royalblue}
-                      color="whiteAlpha.800"
-                      borderRadius="300px"
-                    >
-                      {dp.fields.ctaButtonText || "Learn more"}
+                    {dp.bsi_subheading && (
+                      <Text
+                        as="h5"
+                        fontWeight="bold"
+                        color="blackAlpha.800"
+                        fontSize="1.3rem"
+                        textAlign="center"
+                      >
+                        {dp.bsi_subheading}
+                      </Text>
+                    )}
+                    <Text as="p" textAlign="center" my={8} lineHeight="2">
+                      {dp.bsi_productdescription}
                     </Text>
-                  </NextLink>
-                </Flex>
-              ))}
+                    <NextLink href={dp.bsi_relativeurl || "/test"} passHref>
+                      <Link
+                        as="span"
+                        py={4}
+                        px={6}
+                        bg={royalblue}
+                        color="whiteAlpha.800"
+                        borderRadius="300px"
+                      >
+                        {dp.bsi_ctaButtonText || "Learn more"}
+                      </Link>
+                    </NextLink>
+                  </Flex>
+                )
+              )}
           </Flex>
         </Flex>
       </Box>

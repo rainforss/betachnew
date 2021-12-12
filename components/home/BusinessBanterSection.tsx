@@ -1,21 +1,20 @@
 import { Center, Flex, Heading, Text } from "@chakra-ui/layout";
 import * as React from "react";
-import { PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 
 interface IBusinessBanterSectionProps {
-  pageSection: PageSection;
+  dynamicsPageSection: any;
 }
 
 const BusinessBanterSection: React.FunctionComponent<IBusinessBanterSectionProps> =
-  ({ pageSection }) => {
+  ({ dynamicsPageSection }) => {
     return (
       <AnchorSection
-        sectionId={pageSection.fields.sectionId || "business-banter"}
-        key={pageSection.sys.id}
+        sectionId={dynamicsPageSection.bsi_sectionid || "business-banter"}
+        key={dynamicsPageSection.bsi_secitonid}
       >
         <Center
-          bgImage={pageSection.fields.sectionBackgroundImage.fields.file.url}
+          bgImage={dynamicsPageSection.bsi_Background.bsi_cdnurl}
           bgSize="cover"
           bgPos="center"
           h="80vh"
@@ -26,16 +25,15 @@ const BusinessBanterSection: React.FunctionComponent<IBusinessBanterSectionProps
           <Flex w="90%" justify="center" flexDirection="column" align="center">
             <Flex direction="column" mb={12}>
               <Heading as="h2" color="whiteAlpha.900" fontSize="3rem" mb={6}>
-                {pageSection.fields.sectionMainHeading || "BUSINESS BANTER"}
+                {dynamicsPageSection.bsi_mainheading || "BUSINESS BANTER"}
               </Heading>
               <Text as="h3" textAlign="center">
-                {pageSection.fields.sectionSubHeading ||
+                {dynamicsPageSection.bsi_subheading ||
                   "Stay up to date with the business world with our Podcast"}
               </Text>
             </Flex>
             <iframe
               title="Betach‘s Business Banter - Episode 6 featuring Professor Theo Stratopoulos"
-              allowTransparency={true}
               height="450px"
               width="80%"
               style={{ border: "none", minWidth: "min(100%, 430px)" }}
