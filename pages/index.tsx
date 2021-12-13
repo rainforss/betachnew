@@ -26,6 +26,7 @@ interface DynamicsProps {
   dynamicsPageSections: DynamicsPageSection[];
   dynamicsHeaderMenuItems: any[];
   dynamicsFooterMenuItems: any[];
+  companyLogoUrl: string;
 }
 
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
@@ -82,6 +83,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      companyLogoUrl={props.companyLogoUrl}
     >
       {props.dynamicsPageSections?.map(
         (s: any) =>
@@ -110,11 +112,28 @@ export const getStaticProps: GetStaticProps = async () => {
       "https://betachplayground.crm.dynamics.com"
     );
 
+    const dynamicsPageResult: any[] = (
+      await retrieveMultiple(
+        config,
+        "bsi_webpages",
+        `$filter=bsi_name eq 'Home'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
+      )
+    ).value;
+    console.log(dynamicsPageResult);
+    if (dynamicsPageResult.length === 0) {
+      return {
+        redirect: {
+          destination: "/404",
+          permanent: false,
+        },
+      };
+    }
+
     const dynamicsPageSections = (
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        `$filter= _bsi_webpage_value eq 1330693a-f556-ec11-8f8f-0022481ccfea&${dynamicsPageSectionsQuery}`,
+        `$filter= _bsi_webpage_value eq ${dynamicsPageResult[0].bsi_webpageid}&${dynamicsPageSectionsQuery}`,
         { representation: true }
       )
     ).value;
@@ -163,6 +182,8 @@ export const getStaticProps: GetStaticProps = async () => {
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
+        companyLogoUrl:
+          dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },
     };
   } catch (error: any) {

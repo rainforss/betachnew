@@ -19,6 +19,7 @@ import {
   productOfferingQuery,
 } from "../utils/queries";
 import { ParsedUrlQuery } from "querystring";
+import { D365_WEBSITE_ID } from "../utils/constants";
 
 interface DynamicsPagesProps {
   pageSections?: PageSection[];
@@ -27,6 +28,7 @@ interface DynamicsPagesProps {
   dynamicsPageSections: DynamicsPageSection[];
   dynamicsHeaderMenuItems: any[];
   dynamicsFooterMenuItems: any[];
+  companyLogoUrl: string;
 }
 
 interface IParams extends ParsedUrlQuery {
@@ -89,6 +91,7 @@ const DynamicsPages: NextPage<DynamicsPagesProps> = (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      companyLogoUrl={props.companyLogoUrl}
     >
       {props.dynamicsPageSections?.map(
         (s: any) =>
@@ -115,9 +118,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     accessToken,
     "https://betachplayground.crm.dynamics.com"
   );
-  const dynamicsPagesResult = (
-    await retrieveMultiple(config, "bsi_webpages", "$select=bsi_name")
-  ).value;
+  const dynamicsPagesResult: any = await retrieve(
+    config,
+    "bsi_websites",
+    D365_WEBSITE_ID,
+    "$select=bsi_name&$expand=bsi_WebPage_Website_bsi_Website($select=bsi_name)"
+  );
   const paths: (
     | string
     | {
@@ -125,14 +131,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
         locale?: string | undefined;
       }
   )[] = [];
-  dynamicsPagesResult.forEach((pr) =>
+  dynamicsPagesResult.bsi_WebPage_Website_bsi_Website.forEach((pr: any) =>
     paths.push({
       params: {
         pageName: (pr.bsi_name as String).toLowerCase().replace(/ /g, "-"),
       },
     })
   );
-  console.log(paths);
   return {
     paths,
     fallback: false,
@@ -151,13 +156,14 @@ export const getStaticProps: GetStaticProps = async (req) => {
     const { pageName } = req.params as IParams;
     const webpageName = pageName.replace(/-/g, " ");
 
-    const dynamicsPageResult = (
+    const dynamicsPageResult: any[] = (
       await retrieveMultiple(
         config,
         "bsi_webpages",
-        `$filter=bsi_name eq '${webpageName}'&$select=bsi_webpageid`
+        `$filter=bsi_name eq '${webpageName}'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
       )
     ).value;
+    console.log(dynamicsPageResult);
     if (dynamicsPageResult.length === 0) {
       return {
         redirect: {
@@ -220,6 +226,8 @@ export const getStaticProps: GetStaticProps = async (req) => {
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
+        companyLogoUrl:
+          dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },
     };
   } catch (error: any) {
