@@ -145,6 +145,7 @@ const ClientFeatureSection: React.FunctionComponent<IClientFeatureSectionProps> 
                 width="70%"
                 scrolling="no"
                 frameBorder="0"
+                loading="lazy"
                 allowFullScreen={true}
               ></iframe>
             )}

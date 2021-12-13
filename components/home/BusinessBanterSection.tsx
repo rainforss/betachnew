@@ -35,6 +35,7 @@ const BusinessBanterSection: React.FunctionComponent<IBusinessBanterSectionProps
             </Flex>
             <iframe
               title="Betach‘s Business Banter - Episode 6 featuring Professor Theo Stratopoulos"
+              loading="lazy"
               height="450px"
               width="80%"
               style={{ border: "none", minWidth: "min(100%, 430px)" }}
