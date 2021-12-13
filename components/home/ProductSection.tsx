@@ -1,4 +1,4 @@
-import { Image } from "@chakra-ui/image";
+import Image from "next/image";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { DynamicsPageSection, PageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
@@ -50,6 +50,8 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                     <Image
                       src={dp.fields.productImage.fields.file.url}
                       alt={dp.fields.productImage.fields.file.fileName}
+                      width={300}
+                      height={300}
                       objectFit="contain"
                     />
                     <Text as="h5" fontWeight="bold" color={betachGreen}>
@@ -113,12 +115,10 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                       key={dp.bsi_productofferingid}
                     >
                       <Image
-                        src={
-                          dp.bsi_ImageAsset_ProductOffering_bsi_Produc[0]
-                            .bsi_cdnurl
-                        }
+                        src={`${dp.bsi_ImageAsset_ProductOffering_bsi_Produc[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
                         alt={dp.bsi_name}
-                        width="80%"
+                        width={300}
+                        height={300}
                         objectFit="contain"
                       />
                       <Text as="h5" fontWeight="bold" color={betachGreen}>

@@ -79,10 +79,9 @@ const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps
                   {pageSection.fields.carouselImages.map((c) => (
                     <Center height="100px" key={c.sys.id}>
                       <Image
-                        mx="auto"
                         objectFit="contain"
-                        maxWidth="80%"
-                        maxH="100px"
+                        width={100}
+                        height={100}
                         src={c.fields.file.url}
                         alt={c.fields.file.fileName}
                       />
@@ -149,7 +148,7 @@ const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps
                           objectFit="contain"
                           maxWidth="80%"
                           maxH="100px"
-                          src={c.bsi_cdnurl}
+                          src={`${c.bsi_cdnurl}?fm=jpg&fl=progressive`}
                           alt={c.bsi_alttext}
                         />
                       </Center>

@@ -15,7 +15,7 @@ const BusinessBanterSection: React.FunctionComponent<IBusinessBanterSectionProps
         key={dynamicsPageSection.bsi_pagesectionid}
       >
         <Center
-          bgImage={dynamicsPageSection.bsi_Background.bsi_cdnurl}
+          bgImage={`${dynamicsPageSection.bsi_Background.bsi_cdnurl}?fm=jpg&fl=progressive`}
           bgSize="cover"
           bgPos="center"
           h="80vh"
