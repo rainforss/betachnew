@@ -126,8 +126,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
       }
   )[] = [];
   dynamicsPagesResult.forEach((pr) =>
-    paths.push({ params: { pageName: (pr.bsi_name as string).toLowerCase() } })
+    paths.push({
+      params: {
+        pageName: (pr.bsi_name as String).toLowerCase().replace(/ /g, "-"),
+      },
+    })
   );
+  console.log(paths);
   return {
     paths,
     fallback: false,
@@ -144,21 +149,23 @@ export const getStaticProps: GetStaticProps = async (req) => {
       "https://betachplayground.crm.dynamics.com"
     );
     const { pageName } = req.params as IParams;
+    const webpageName = pageName.replace(/-/g, " ");
+
     const dynamicsPageResult = (
       await retrieveMultiple(
         config,
         "bsi_webpages",
-        `$filter=bsi_name eq '${pageName}'&$select=bsi_webpageid`
+        `$filter=bsi_name eq '${webpageName}'&$select=bsi_webpageid`
       )
     ).value;
-    if (dynamicsPageResult.length === 0) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: true,
-        },
-      };
-    }
+    // if (dynamicsPageResult.length === 0) {
+    //   return {
+    //     redirect: {
+    //       destination: "/404",
+    //       permanent: true,
+    //     },
+    //   };
+    // }
 
     const dynamicsPageSections = (
       await retrieveMultiple(
