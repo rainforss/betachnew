@@ -158,14 +158,14 @@ export const getStaticProps: GetStaticProps = async (req) => {
         `$filter=bsi_name eq '${webpageName}'&$select=bsi_webpageid`
       )
     ).value;
-    // if (dynamicsPageResult.length === 0) {
-    //   return {
-    //     redirect: {
-    //       destination: "/404",
-    //       permanent: true,
-    //     },
-    //   };
-    // }
+    if (dynamicsPageResult.length === 0) {
+      return {
+        redirect: {
+          destination: "/404",
+          permanent: false,
+        },
+      };
+    }
 
     const dynamicsPageSections = (
       await retrieveMultiple(
