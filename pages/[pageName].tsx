@@ -131,13 +131,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
         locale?: string | undefined;
       }
   )[] = [];
-  dynamicsPagesResult.bsi_WebPage_Website_bsi_Website.forEach((pr: any) =>
-    paths.push({
-      params: {
-        pageName: (pr.bsi_name as String).toLowerCase().replace(/ /g, "-"),
-      },
-    })
-  );
+  dynamicsPagesResult.bsi_WebPage_Website_bsi_Website.forEach((pr: any) => {
+    if (pr.bsi_name !== "Blogs" && pr.bsi_name !== "Blog Template")
+      paths.push({
+        params: {
+          pageName: (pr.bsi_name as String).toLowerCase().replace(/ /g, "-"),
+        },
+      });
+  });
   return {
     paths,
     fallback: false,
