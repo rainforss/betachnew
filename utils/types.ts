@@ -13,6 +13,21 @@ export type SectionItem = {
   sectionId: string;
 };
 
+export type DynamicsBlog = {
+  bsi_name: string;
+  bsi_BlogCoverImage: {
+    bsi_name: string;
+    bsi_cdnurl: string;
+    bsi_alttext: string;
+  };
+  bsi_blogcovertext: string;
+  bsi_blogid: string;
+  bsi_urlslug: string;
+  bsi_author: string;
+  bsi_blogbody: string;
+  modifiedon: string;
+};
+
 export type DynamicsPageSection = {
   bsi_name: string;
   bsi_pagesectionid: string;
