@@ -120,7 +120,7 @@ const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps
               mb={16}
               bg={betachGreen}
             ></Box>
-            {dynamicsPageSection.bsi_ImageAsset_PageSection_bsi_PageSectio && (
+            {dynamicsPageSection.bsi_PageSection_bsi_ImageAsset_bsi_ImageA && (
               <Box w="90%" mx="auto">
                 <Carousel
                   swipeable={false}
@@ -140,7 +140,7 @@ const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps
                   dotListClass="custom-dot-list-style"
                   itemClass="carousel-item-padding-40-px"
                 >
-                  {dynamicsPageSection.bsi_ImageAsset_PageSection_bsi_PageSectio.map(
+                  {dynamicsPageSection.bsi_PageSection_bsi_ImageAsset_bsi_ImageA.map(
                     (c: any) => (
                       <Center height="100px" key={c.bsi_imageassetid}>
                         <Image

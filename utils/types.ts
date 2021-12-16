@@ -28,6 +28,18 @@ export type DynamicsBlog = {
   modifiedon: string;
 };
 
+export type xmlDynamicsBlog = {
+  bsi_name: string;
+  "bsi_imageasset3.bsi_alttext": string;
+  "bsi_imageasset3.bsi_cdnurl": string;
+  bsi_blogcovertext: string;
+  bsi_blogid: string;
+  bsi_urlslug: string;
+  bsi_author: string;
+  bsi_blogbody: string;
+  modifiedon: string;
+};
+
 export type DynamicsPageSection = {
   bsi_name: string;
   bsi_pagesectionid: string;
@@ -50,12 +62,12 @@ export type DynamicsPageSection = {
     bsi_relativeurl: string;
     bsi_ctabuttontext: string;
     bsi_ctabuttonlink: string;
-    bsi_ImageAsset_ProductOffering_bsi_Produc: Array<{
+    bsi_ProductOffering_bsi_ImageAsset_bsi_Im: Array<{
       bsi_cdnurl: string;
       bsi_name: string;
     }>;
   }>;
-  bsi_ImageAsset_PageSection_bsi_PageSectio: Array<{
+  bsi_PageSection_bsi_ImageAsset_bsi_ImageA: Array<{
     bsi_name: string;
     bsi_cdnurl: string;
   }>;

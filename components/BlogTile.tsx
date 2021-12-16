@@ -1,7 +1,6 @@
-import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Flex, Image, Link, Text } from "@chakra-ui/react";
 import * as React from "react";
 import NextLink from "next/link";
-import { useRouter } from "next/dist/client/router";
 
 interface IBlogTileProps {
   blogTitle: string;
@@ -14,11 +13,10 @@ interface IBlogTileProps {
 }
 
 const BlogTile: React.FunctionComponent<IBlogTileProps> = (props) => {
-  const router = useRouter();
   return (
     <article>
       <Flex direction="column" width="100%" style={{ gap: "15px" }}>
-        <NextLink href={`${router.pathname}/${props.blogSlug}`}>
+        <NextLink href={`/blogs/${props.blogSlug}`}>
           <Image
             src={`${props.blogCoverImageUrl}?fm=jpg&fl=progressive`}
             alt={props.blogCoverImageAltText}
@@ -27,18 +25,18 @@ const BlogTile: React.FunctionComponent<IBlogTileProps> = (props) => {
             objectFit="cover"
           />
         </NextLink>
-        <Text as="small">
+        <Text as="small" suppressHydrationWarning>
           {props.blogAuthor.map((b) => b)}{" "}
           {props.publishDate.toLocaleDateString()}
         </Text>
-        <NextLink href={`${router.pathname}/${props.blogSlug}`}>
+        <NextLink href={`/blogs/${props.blogSlug}`}>
           <Link fontSize="1.7rem" fontWeight="bold">
             {props.blogTitle}
           </Link>
         </NextLink>
 
         <Text as="p">{props.blogCoverText}</Text>
-        <NextLink href={`${router.pathname}/${props.blogSlug}`} passHref>
+        <NextLink href={`/blogs/${props.blogSlug}`} passHref>
           <Link fontSize="0.8rem">READ MORE &gt;&gt;</Link>
         </NextLink>
       </Flex>

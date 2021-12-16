@@ -115,7 +115,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                       key={dp.bsi_productofferingid}
                     >
                       <Image
-                        src={`${dp.bsi_ImageAsset_ProductOffering_bsi_Produc[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
+                        src={`${dp.bsi_ProductOffering_bsi_ImageAsset_bsi_Im[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
                         alt={dp.bsi_name}
                         width={300}
                         height={300}

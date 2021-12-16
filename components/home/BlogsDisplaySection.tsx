@@ -1,16 +1,24 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import * as React from "react";
-import { DynamicsBlog, DynamicsPageSection } from "../../utils/types";
+import {
+  DynamicsBlog,
+  DynamicsPageSection,
+  xmlDynamicsBlog,
+} from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import BlogTile from "../BlogTile";
 
 interface IBlogsDisplaySectionProps {
-  dynamicsBlogs: DynamicsBlog[];
+  dynamicsBlogs?: DynamicsBlog[];
   dynamicsPageSection: DynamicsPageSection;
 }
 
 const BlogsDisplaySection: React.FunctionComponent<IBlogsDisplaySectionProps> =
   ({ dynamicsBlogs, dynamicsPageSection }) => {
+    // If no blogs are fed into this section, simply render nothing to avoid broken pages
+    if (!dynamicsBlogs) {
+      return null;
+    }
     return (
       <AnchorSection
         sectionId={dynamicsPageSection.bsi_sectionid}

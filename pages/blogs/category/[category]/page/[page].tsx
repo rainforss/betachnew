@@ -3,33 +3,31 @@ import {
   retrieveMultiple,
   retrieve,
 } from "dataverse-webapi/lib/node";
-import { GetStaticProps } from "next";
-import { useRouter } from "next/dist/client/router";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
-import Layout from "../../components/Layout";
-import SectionControl from "../../components/SectionControl";
-import cca from "../../utils/cca";
-import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
+import Layout from "../../../../../components/Layout";
+import SectionControl from "../../../../../components/SectionControl";
+import cca from "../../../../../utils/cca";
+import { getClientCredentialsToken } from "../../../../../utils/getClientCredentialsToken";
 import {
   dynamicsPageSectionsQuery,
   productOfferingQuery,
   dynamicsHeaderMenuItemsQuery,
   dynamicsFooterMenuItemsQuery,
   generateBlogsODataQuery,
-} from "../../utils/queries";
+} from "../../../../../utils/queries";
 import {
-  DynamicsBlog,
   DynamicsPageSection,
+  DynamicsBlog,
   xmlDynamicsBlog,
-} from "../../utils/types";
-import sectionConfig from "../../components/designed-sections/sections.config";
-import {
-  generateBlogsQuery,
-  generatePageSectionsQuery,
-} from "../../utils/fetchXmlQueries";
-import { BLOGS_PLAGE_LIMIT } from "../../utils/constants";
+} from "../../../../../utils/types";
+import sectionConfig from "../../../../../components/designed-sections/sections.config";
+import { useRouter } from "next/dist/client/router";
+import { generateBlogsQuery } from "../../../../../utils/fetchXmlQueries";
+import { BLOGS_PLAGE_LIMIT } from "../../../../../utils/constants";
 
-interface IBlogsProps {
+interface IBlogCategoryProps {
   error?: any;
   // accessToken?: string;
   dynamicsPageSections: DynamicsPageSection[];
@@ -39,7 +37,12 @@ interface IBlogsProps {
   companyLogoUrl: string;
 }
 
-const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
+interface IParams extends ParsedUrlQuery {
+  category: string;
+  page: string;
+}
+
+const CategoryPage: React.FunctionComponent<IBlogCategoryProps> = (props) => {
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -59,10 +62,52 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   );
 };
 
-export default Blogs;
+export default CategoryPage;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const tokenResponse = await getClientCredentialsToken(cca);
+  const accessToken = tokenResponse?.accessToken;
+  const config = new WebApiConfig(
+    "9.1",
+    accessToken,
+    "https://betachplayground.crm.dynamics.com"
+  );
+  const dynamicsBlogCategoriesResult: any = (
+    await retrieveMultiple(
+      config,
+      "bsi_blogcategories",
+      "$select=bsi_name&$orderby=createdon asc&$expand=bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name)"
+    )
+  ).value;
+  const paths: (
+    | string
+    | {
+        params: IParams;
+        locale?: string | undefined;
+      }
+  )[] = [];
+  dynamicsBlogCategoriesResult.forEach((bcr: any) => {
+    const maxPage = Math.ceil(
+      bcr.bsi_BlogCategory_bsi_Blog_bsi_Blog.length / 1
+    );
+    for (let i = 1; i <= maxPage; i++) {
+      paths.push({
+        params: {
+          category: (bcr.bsi_name as String).toLowerCase().replace(/ /g, "-"),
+          page: i + "",
+        },
+      });
+    }
+  });
+  return {
+    paths,
+    fallback: false,
+  };
+};
 
 export const getStaticProps: GetStaticProps = async (req) => {
   try {
+    const { category, page } = req.params as IParams;
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig(
@@ -92,7 +137,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        `$filter=_bsi_webpage_value eq ${dynamicsPageResult[0].bsi_webpageid}&${dynamicsPageSectionsQuery}`,
+        `$filter= _bsi_webpage_value eq ${dynamicsPageResult[0].bsi_webpageid}&${dynamicsPageSectionsQuery}`,
         { representation: true }
       )
     ).value;
@@ -127,10 +172,11 @@ export const getStaticProps: GetStaticProps = async (req) => {
       dynamicsFooterMenuItemsQuery,
       { representation: true }
     );
+
     const dynamicsBlogsRequest = retrieveMultiple(
       config,
       "bsi_blogs",
-      `${generateBlogsODataQuery(1, "")}`,
+      `${generateBlogsODataQuery(parseInt(page), category)}`,
       { maxPageSize: BLOGS_PLAGE_LIMIT }
     );
 

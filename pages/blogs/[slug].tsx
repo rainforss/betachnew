@@ -15,11 +15,10 @@ import {
 } from "../../utils/queries";
 import * as React from "react";
 import { DynamicsPageSection } from "../../utils/types";
-import { useRouter } from "next/dist/client/router";
+
 import Layout from "../../components/Layout";
-import SectionControl from "../../components/SectionControl";
+
 import sectionConfig from "../../components/designed-sections/sections.config";
-import { useState, useEffect } from "react";
 
 interface IParams extends ParsedUrlQuery {
   slug: string;
@@ -36,55 +35,6 @@ interface ISlugProps {
 }
 
 const Slug: React.FunctionComponent<ISlugProps> = (props) => {
-  const [currentHash, setCurrentHash] = useState("");
-  const [changingHash, setChangingHash] = useState(false);
-  const [accessToken, setAccessToken] = useState("");
-  const router = useRouter();
-
-  useEffect(() => {
-    //Used to monitor section change, not supported on IE
-    const allSections = document.querySelectorAll("section");
-    const onSectionEntry = (entry: any[]) => {
-      entry.forEach((change: any) => {
-        if (change.isIntersecting && !changingHash) {
-          setChangingHash(true);
-          setCurrentHash(change.target.id);
-        }
-      });
-    };
-    const options = { threshold: [0.5] };
-    const observer = new IntersectionObserver(onSectionEntry, options);
-    for (let sec of allSections) {
-      observer.observe(sec);
-    }
-  });
-
-  useEffect(() => {
-    const onHashChangeStart = (url: string) => {
-      setChangingHash(true);
-      setCurrentHash(url.substr(2));
-    };
-
-    router.events.on("hashChangeStart", onHashChangeStart);
-
-    return () => {
-      setChangingHash(false);
-      router.events.off("hashChangeStart", onHashChangeStart);
-    };
-  }, [router.events]);
-
-  useEffect(() => {
-    async function getToken() {
-      const response: any = await fetch("/api/getToken");
-      const tokenResponse = await response.json();
-      const token = tokenResponse.accessToken;
-      setAccessToken(() => token);
-    }
-    if (!accessToken) {
-      getToken();
-    }
-  }, [accessToken]);
-
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -97,14 +47,9 @@ const Slug: React.FunctionComponent<ISlugProps> = (props) => {
           sectionConfig[s["bsi_DesignedSection"].bsi_name]({
             dynamicsPageSection: s,
             key: s.pagesectionid,
-            accessToken,
             dynamicsBlog: props.dynamicsBlogs[0],
           })
       )}
-      <SectionControl
-        dynamicsPageSections={props.dynamicsPageSections}
-        currentHash={currentHash}
-      />
     </Layout>
   );
 };
