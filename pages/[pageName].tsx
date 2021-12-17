@@ -113,11 +113,7 @@ const DynamicsPages: NextPage<DynamicsPagesProps> = (
 export const getStaticPaths: GetStaticPaths = async () => {
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
-  const config = new WebApiConfig(
-    "9.1",
-    accessToken,
-    "https://betachplayground.crm.dynamics.com"
-  );
+  const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
   const dynamicsPagesResult: any = await retrieve(
     config,
     "bsi_websites",
