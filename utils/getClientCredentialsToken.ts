@@ -5,7 +5,7 @@ export const getClientCredentialsToken = async (
 ) => {
   try {
     const clientCredentialRequest = {
-      scopes: ["https://betachplayground.crm.dynamics.com/.default"],
+      scopes: [`${process.env.CLIENT_URL}/.default`],
       skipCache: false,
     };
     const response = await cca.acquireTokenByClientCredential(

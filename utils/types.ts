@@ -55,14 +55,15 @@ export type DynamicsPageSection = {
   bsi_subheading: string;
   bsi_sectionid: string;
   bsi_featuredproducts: string;
-  bsi_ProductOffering_PageSection_bsi_PageS: Array<{
-    bsi_productofferingid: string;
+  bsi_AttachedComponent_bsi_PageSection_bsi: Array<{
+    bsi_attachedcomponentid: string;
     bsi_name: string;
-    bsi_productdescription: string;
-    bsi_relativeurl: string;
+    bsi_description: string;
     bsi_ctabuttontext: string;
     bsi_ctabuttonlink: string;
-    bsi_ProductOffering_bsi_ImageAsset_bsi_Im: Array<{
+    bsi_title: string;
+    bsi_subtitle: string;
+    bsi_AttachedComponent_bsi_ImageAsset_bsi_: Array<{
       bsi_cdnurl: string;
       bsi_name: string;
     }>;
@@ -77,6 +78,9 @@ export type DynamicsPageSection = {
   };
   bsi_Background: {
     bsi_cdnurl: string;
+  };
+  bsi_MarketingFormPage: {
+    msdyncrm_javascriptcode: string;
   };
 };
 

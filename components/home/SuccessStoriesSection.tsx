@@ -158,6 +158,14 @@ const SuccessStoriesSection: React.FunctionComponent<ISuccessStoriesSectionProps
               </Box>
             )}
           </Box>
+          <Box
+            suppressHydrationWarning
+            dangerouslySetInnerHTML={{
+              __html:
+                dynamicsPageSection.bsi_MarketingFormPage
+                  .msdyncrm_javascriptcode,
+            }}
+          ></Box>
         </AnchorSection>
       );
     }

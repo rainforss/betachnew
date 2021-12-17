@@ -16,7 +16,7 @@ import {
   dynamicsFooterMenuItemsQuery,
   dynamicsHeaderMenuItemsQuery,
   dynamicsPageSectionsQuery,
-  productOfferingQuery,
+  attachedComponentsQuery,
 } from "../utils/queries";
 import { ParsedUrlQuery } from "querystring";
 import { D365_WEBSITE_ID } from "../utils/constants";
@@ -149,11 +149,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
   try {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
-    const config = new WebApiConfig(
-      "9.1",
-      accessToken,
-      "https://betachplayground.crm.dynamics.com"
-    );
+    const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
     const { pageName } = req.params as IParams;
     const webpageName = pageName.replace(/-/g, " ");
 
@@ -183,21 +179,21 @@ export const getStaticProps: GetStaticProps = async (req) => {
     ).value;
 
     for (const section of dynamicsPageSections) {
-      const productOfferingRequest: any[] = [];
-      (section as any).bsi_ProductOffering_PageSection_bsi_PageS.forEach(
+      const attachedComponentsRequest: any[] = [];
+      (section as any).bsi_AttachedComponent_bsi_PageSection_bsi.forEach(
         (po: any) => {
-          productOfferingRequest.push(
+          attachedComponentsRequest.push(
             retrieve(
               config,
-              "bsi_productofferings",
-              po.bsi_productofferingid,
-              productOfferingQuery
+              "bsi_attachedcomponents",
+              po.bsi_attachedcomponentid,
+              attachedComponentsQuery
             )
           );
         }
       );
-      const result = await Promise.all(productOfferingRequest);
-      section.bsi_ProductOffering_PageSection_bsi_PageS = [...result];
+      const result = await Promise.all(attachedComponentsRequest);
+      section.bsi_AttachedComponent_bsi_PageSection_bsi = [...result];
     }
 
     const dynamicsHeaderMenuItemsRequest = retrieveMultiple(

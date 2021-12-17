@@ -104,18 +104,18 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
             </Text>
 
             <Flex>
-              {dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS &&
-                dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS.map(
-                  (dp: any, index: number) => (
+              {dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi &&
+                dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi.map(
+                  (dp, index: number) => (
                     <Flex
                       flexDirection="column"
                       align="center"
                       w="25%"
                       px={6}
-                      key={dp.bsi_productofferingid}
+                      key={dp.bsi_attachedcomponentid}
                     >
                       <Image
-                        src={`${dp.bsi_ProductOffering_bsi_ImageAsset_bsi_Im[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
+                        src={`${dp.bsi_AttachedComponent_bsi_ImageAsset_bsi_[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
                         alt={dp.bsi_name}
                         width={300}
                         height={300}
@@ -125,9 +125,9 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                         {dp.bsi_name}
                       </Text>
                       <Text as="p" textAlign="center" my={8} lineHeight="2">
-                        {dp.bsi_productdescription}
+                        {dp.bsi_description}
                       </Text>
-                      <NextLink href={dp.bsi_relativeurl}>
+                      <NextLink href={dp.bsi_ctabuttonlink}>
                         <Text
                           as="span"
                           py={4}
