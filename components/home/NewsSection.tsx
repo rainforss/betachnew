@@ -36,7 +36,7 @@ const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
                       color="blackAlpha.800"
                       fontSize="2.5rem"
                     >
-                      {dp.bsi_name}
+                      {dp.bsi_title}
                     </Text>
                     {dp.bsi_subtitle && (
                       <Text

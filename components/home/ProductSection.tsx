@@ -122,7 +122,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                         objectFit="contain"
                       />
                       <Text as="h5" fontWeight="bold" color={betachGreen}>
-                        {dp.bsi_name}
+                        {dp.bsi_title}
                       </Text>
                       <Text as="p" textAlign="center" my={8} lineHeight="2">
                         {dp.bsi_description}
