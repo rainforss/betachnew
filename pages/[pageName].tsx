@@ -114,12 +114,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
-  const dynamicsPagesResult: any = await retrieve(
-    config,
-    "bsi_websites",
-    D365_WEBSITE_ID,
-    "$select=bsi_name&$expand=bsi_WebPage_Website_bsi_Website($select=bsi_name)"
-  );
+  const dynamicsPagesResult: any = (
+    await retrieveMultiple(
+      config,
+      "bsi_websites",
+      "$select=bsi_name&$expand=bsi_WebPage_Website_bsi_Website($select=bsi_name)"
+    )
+  ).value[0];
   const paths: (
     | string
     | {
