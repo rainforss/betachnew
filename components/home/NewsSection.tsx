@@ -20,15 +20,15 @@ const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
       <Box w="100%" my={24}>
         <Flex flexDirection="column" w="90%" mx="auto" align="center">
           <Flex>
-            {dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS &&
-              dynamicsPageSection.bsi_ProductOffering_PageSection_bsi_PageS.map(
-                (dp: any) => (
+            {dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi &&
+              dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi.map(
+                (dp) => (
                   <Flex
                     flexDirection="column"
                     align="center"
                     w="33%"
                     px={6}
-                    key={dp.bsi_productofferingid}
+                    key={dp.bsi_attachedcomponentid}
                   >
                     <Text
                       as="h5"
@@ -38,7 +38,7 @@ const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
                     >
                       {dp.bsi_name}
                     </Text>
-                    {dp.bsi_subheading && (
+                    {dp.bsi_subtitle && (
                       <Text
                         as="h5"
                         fontWeight="bold"
@@ -46,13 +46,13 @@ const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
                         fontSize="1.3rem"
                         textAlign="center"
                       >
-                        {dp.bsi_subheading}
+                        {dp.bsi_subtitle}
                       </Text>
                     )}
                     <Text as="p" textAlign="center" my={8} lineHeight="2">
-                      {dp.bsi_productdescription}
+                      {dp.bsi_description}
                     </Text>
-                    <NextLink href={dp.bsi_relativeurl || "/test"} passHref>
+                    <NextLink href={dp.bsi_ctabuttonlink || "/test"} passHref>
                       <Link
                         as="span"
                         py={4}
@@ -61,7 +61,7 @@ const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
                         color="whiteAlpha.800"
                         borderRadius="300px"
                       >
-                        {dp.bsi_ctaButtonText || "Learn more"}
+                        {dp.bsi_ctabuttontext || "Learn more"}
                       </Link>
                     </NextLink>
                   </Flex>
