@@ -23,7 +23,6 @@ interface DynamicsProps {
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   const [currentHash, setCurrentHash] = useState("");
   const [changingHash, setChangingHash] = useState(false);
-  const [accessToken, setAccessToken] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -58,18 +57,6 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
     };
   }, [router.events]);
 
-  useEffect(() => {
-    async function getToken() {
-      const response: any = await fetch("/api/getToken");
-      const tokenResponse = await response.json();
-      const token = tokenResponse.accessToken;
-      setAccessToken(() => token);
-    }
-    if (!accessToken) {
-      getToken();
-    }
-  }, [accessToken]);
-
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -82,7 +69,6 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
           sectionConfig[s["bsi_DesignedSection"].bsi_name]({
             dynamicsPageSection: s,
             key: s.pagesectionid,
-            accessToken,
           })
       )}
       <SectionControl

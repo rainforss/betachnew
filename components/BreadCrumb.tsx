@@ -12,7 +12,6 @@ interface IBreadCrumbProps {}
 
 const BreadCrumb: React.FunctionComponent<IBreadCrumbProps> = (props) => {
   const router = useRouter();
-  console.log(router.asPath);
   if (router.asPath.split("/").length < 3) {
     return null;
   }
