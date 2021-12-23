@@ -22,7 +22,7 @@ export type DynamicsBlog = {
   };
   bsi_blogcovertext: string;
   bsi_blogid: string;
-  bsi_urlslug: string;
+  bsi_slug: string;
   bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor: Array<{
     bsi_name: string;
     bsi_slug: string;

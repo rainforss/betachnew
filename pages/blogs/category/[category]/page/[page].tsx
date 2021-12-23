@@ -6,6 +6,7 @@ import Layout from "../../../../../components/Layout";
 import cca from "../../../../../utils/cca";
 import { getAllPageContents } from "../../../../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../../../../utils/getClientCredentialsToken";
+import { dynamicsBlogCategoriesQuery } from "../../../../../utils/queries";
 import {
   DynamicsPageSection,
   xmlDynamicsBlog,
@@ -56,7 +57,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     await retrieveMultiple(
       config,
       "bsi_blogcategories",
-      "$select=bsi_name&$orderby=createdon asc&$expand=bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name)"
+      dynamicsBlogCategoriesQuery
     )
   ).value;
   const paths: (

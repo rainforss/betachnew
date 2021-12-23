@@ -10,6 +10,15 @@ export const dynamicsHeaderMenuItemsQuery =
 export const dynamicsFooterMenuItemsQuery =
   "$filter=_bsi_navigationmenu_value eq 3ee455da-ef5e-ec11-8f8f-000d3af47f33&$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)";
 
+export const dynamicsBlogSlugsQuery =
+  "$select=bsi_name,bsi_slug&$orderby=createdon asc";
+
+export const dynamicsBlogAuthorsQuery =
+  "$select=bsi_name,bsi_slug&$orderby=bsi_name asc&$expand=bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name)";
+
+export const dynamicsBlogCategoriesQuery =
+  "$select=bsi_name&$orderby=createdon asc&$expand=bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name)";
+
 export const generateBlogsODataQuery = (
   pageNumber: number,
   categorySlug?: string,
@@ -25,5 +34,5 @@ export const generateBlogsODataQuery = (
       ? `$filter=(bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor/any(b:b/bsi_slug eq '${authorSlug}'))&`
       : ""
   }${
-    blogSlug ? `$filter=bsi_urlslug eq '${blogSlug}'&` : ""
-  }$select=bsi_name,bsi_urlslug,modifiedon,bsi_blogcovertext,bsi_blogbody&$orderby=createdon asc&$skiptoken=<cookie pagenumber="${pageNumber}">&$expand=bsi_BlogCoverImage($select=bsi_cdnurl,bsi_alttext),bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name,bsi_slug),bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name,bsi_slug)`;
+    blogSlug ? `$filter=bsi_slug eq '${blogSlug}'&` : ""
+  }$select=bsi_name,bsi_slug,modifiedon,bsi_blogcovertext,bsi_blogbody&$orderby=createdon asc&$skiptoken=<cookie pagenumber="${pageNumber}">&$expand=bsi_BlogCoverImage($select=bsi_cdnurl,bsi_alttext),bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name,bsi_slug),bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name,bsi_slug)`;

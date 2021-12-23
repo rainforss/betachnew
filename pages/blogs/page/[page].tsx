@@ -7,6 +7,7 @@ import cca from "../../../utils/cca";
 import { BLOGS_PLAGE_LIMIT } from "../../../utils/constants";
 import { getAllPageContents } from "../../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../../utils/getClientCredentialsToken";
+import { dynamicsBlogSlugsQuery } from "../../../utils/queries";
 import { DynamicsPageSection, xmlDynamicsBlog } from "../../../utils/types";
 
 interface IBlogPageProps {
@@ -50,11 +51,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
   const dynamicsBlogsResult: any = (
-    await retrieveMultiple(
-      config,
-      "bsi_blogs",
-      "$select=bsi_name&$orderby=createdon asc"
-    )
+    await retrieveMultiple(config, "bsi_blogs", dynamicsBlogSlugsQuery)
   ).value;
   const paths: (
     | string

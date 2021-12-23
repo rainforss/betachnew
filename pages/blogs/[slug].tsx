@@ -7,6 +7,7 @@ import Layout from "../../components/Layout";
 import cca from "../../utils/cca";
 import { getAllPageContents } from "../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
+import { dynamicsBlogSlugsQuery } from "../../utils/queries";
 import { DynamicsPageSection } from "../../utils/types";
 
 interface IParams extends ParsedUrlQuery {
@@ -49,12 +50,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
-  const dynamicsBlogsResult: any = (
-    await retrieveMultiple(
-      config,
-      "bsi_blogs",
-      "$select=bsi_name,bsi_urlslug&$orderby=createdon asc"
-    )
+  const dynamicsBlogSlugsResult: any = (
+    await retrieveMultiple(config, "bsi_blogs", dynamicsBlogSlugsQuery)
   ).value;
   const paths: (
     | string
@@ -63,10 +60,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
         locale?: string | undefined;
       }
   )[] = [];
-  dynamicsBlogsResult.forEach((br: any) =>
+  dynamicsBlogSlugsResult.forEach((br: any) =>
     paths.push({
       params: {
-        slug: (br.bsi_urlslug as String).toLowerCase().replace(/ /g, "-"),
+        slug: (br.bsi_slug as String).toLowerCase().replace(/ /g, "-"),
       },
     })
   );
