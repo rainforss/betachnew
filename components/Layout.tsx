@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import * as React from "react";
+import BreadCrumb from "./BreadCrumb";
 import Footer from "./Footer";
 import Header from "./Header";
 
@@ -17,6 +18,7 @@ const Layout: React.FunctionComponent<ILayoutProps> = (props) => {
         menuItems={props.headerMenuItems}
         companyLogoUrl={props.companyLogoUrl}
       />
+      <BreadCrumb />
       {props.children}
       <Footer menuItems={props.footerMenuItems} />
     </Box>

@@ -4,7 +4,7 @@ export const CONTENTFUL_CDN_API_ROOT = "https://cdn.contentful.com";
 
 export const D365_WEBSITE_ID = "1eb4dbcd-8959-ec11-8f8f-0022481ccfea";
 
-export const BLOGS_PLAGE_LIMIT = 1;
+export const BLOGS_PLAGE_LIMIT = 4;
 
 export const royalblue = "#173f5e";
 

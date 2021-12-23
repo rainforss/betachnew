@@ -1,29 +1,33 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import * as React from "react";
-import sectionConfig from "../../components/designed-sections/sections.config";
-import Layout from "../../components/Layout";
-import cca from "../../utils/cca";
-import { getAllPageContents } from "../../utils/getAllPageContents";
-import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
-import { DynamicsPageSection } from "../../utils/types";
+import sectionConfig from "../../../../../components/designed-sections/sections.config";
+import Layout from "../../../../../components/Layout";
+import cca from "../../../../../utils/cca";
+import { BLOGS_PLAGE_LIMIT } from "../../../../../utils/constants";
+import { getAllPageContents } from "../../../../../utils/getAllPageContents";
+import { getClientCredentialsToken } from "../../../../../utils/getClientCredentialsToken";
+import {
+  DynamicsPageSection,
+  xmlDynamicsBlog,
+} from "../../../../../utils/types";
 
-interface IParams extends ParsedUrlQuery {
-  slug: string;
-}
-
-interface ISlugProps {
+interface IBlogAuthorProps {
   error?: any;
   // accessToken?: string;
   dynamicsPageSections: DynamicsPageSection[];
   dynamicsHeaderMenuItems: any[];
   dynamicsFooterMenuItems: any[];
-  dynamicsBlogs: any[];
+  dynamicsBlogs: xmlDynamicsBlog[];
   companyLogoUrl: string;
 }
 
-const Slug: React.FunctionComponent<ISlugProps> = (props) => {
+interface IParams extends ParsedUrlQuery {
+  author: string;
+  page: string;
+}
+
+const AuthorPage: React.FunctionComponent<IBlogAuthorProps> = (props) => {
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -36,24 +40,24 @@ const Slug: React.FunctionComponent<ISlugProps> = (props) => {
           sectionConfig[s["bsi_DesignedSection"].bsi_name]({
             dynamicsPageSection: s,
             key: s.pagesectionid,
-            dynamicsBlog: props.dynamicsBlogs[0],
+            dynamicsBlogs: props.dynamicsBlogs,
           })
       )}
     </Layout>
   );
 };
 
-export default Slug;
+export default AuthorPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
-  const dynamicsBlogsResult: any = (
+  const dynamicsBlogAuthorsResult: any = (
     await retrieveMultiple(
       config,
-      "bsi_blogs",
-      "$select=bsi_name,bsi_urlslug&$orderby=createdon asc"
+      "bsi_blogauthors",
+      "$select=bsi_name,bsi_slug&$orderby=bsi_name asc&$expand=bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name)"
     )
   ).value;
   const paths: (
@@ -63,13 +67,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
         locale?: string | undefined;
       }
   )[] = [];
-  dynamicsBlogsResult.forEach((br: any) =>
-    paths.push({
-      params: {
-        slug: (br.bsi_urlslug as String).toLowerCase().replace(/ /g, "-"),
-      },
-    })
-  );
+  dynamicsBlogAuthorsResult.forEach((ba: any) => {
+    const maxPage = Math.ceil(
+      ba.bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor.length / BLOGS_PLAGE_LIMIT
+    );
+    for (let i = 1; i <= maxPage; i++) {
+      paths.push({
+        params: {
+          author: ba.bsi_slug,
+          page: i + "",
+        },
+      });
+    }
+  });
   return {
     paths,
     fallback: false,
@@ -78,19 +88,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (req) => {
   try {
+    const { author, page } = req.params as IParams;
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
-
-    const { slug } = req.params as IParams;
 
     const dynamicsPageResult: any[] = (
       await retrieveMultiple(
         config,
         "bsi_webpages",
-        `$filter=bsi_name eq 'Blog Template'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
+        `$filter=bsi_name eq 'Blogs'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
       )
     ).value;
+
     const {
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
@@ -99,11 +109,11 @@ export const getStaticProps: GetStaticProps = async (req) => {
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
-      1,
+      parseInt(page),
       "",
-      "",
-      slug
+      author
     );
+
     return {
       props: {
         dynamicsPageSections: dynamicsPageSections,

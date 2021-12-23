@@ -4,7 +4,6 @@ import NextLink from "next/link";
 import {
   FaFacebookF,
   FaLinkedinIn,
-  FaSearch,
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";

@@ -1,6 +1,6 @@
 import { Box, Flex, Link } from "@chakra-ui/layout";
 import * as React from "react";
-import { PageSection, SectionItem } from "../utils/types";
+import { PageSection } from "../utils/types";
 import NextLink from "next/link";
 import { Text } from "@chakra-ui/react";
 

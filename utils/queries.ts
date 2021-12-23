@@ -12,10 +12,18 @@ export const dynamicsFooterMenuItemsQuery =
 
 export const generateBlogsODataQuery = (
   pageNumber: number,
-  categorySlug: string
+  categorySlug?: string,
+  authorSlug?: string,
+  blogSlug?: string
 ) =>
   `${
-    categorySlug !== ""
+    categorySlug
       ? `$filter=(bsi_BlogCategory_bsi_Blog_bsi_Blog/any(b:b/bsi_slug eq '${categorySlug}'))&`
       : ""
-  }$select=bsi_name,bsi_urlslug,modifiedon,bsi_blogcovertext,bsi_blogbody,bsi_author&$orderby=createdon asc&$skiptoken=<cookie pagenumber="${pageNumber}">&$expand=bsi_BlogCoverImage($select=bsi_cdnurl,bsi_alttext)`;
+  }${
+    authorSlug
+      ? `$filter=(bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor/any(b:b/bsi_slug eq '${authorSlug}'))&`
+      : ""
+  }${
+    blogSlug ? `$filter=bsi_urlslug eq '${blogSlug}'&` : ""
+  }$select=bsi_name,bsi_urlslug,modifiedon,bsi_blogcovertext,bsi_blogbody&$orderby=createdon asc&$skiptoken=<cookie pagenumber="${pageNumber}">&$expand=bsi_BlogCoverImage($select=bsi_cdnurl,bsi_alttext),bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name,bsi_slug),bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name,bsi_slug)`;

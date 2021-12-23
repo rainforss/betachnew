@@ -1,10 +1,12 @@
-import { Flex, Image, Link, Text } from "@chakra-ui/react";
+import { Badge, Flex, Image, Link, Text } from "@chakra-ui/react";
 import * as React from "react";
 import NextLink from "next/link";
+import { DynamicsBlog } from "../utils/types";
 
 interface IBlogTileProps {
   blogTitle: string;
-  blogAuthor: string[];
+  blogAuthors: DynamicsBlog["bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor"];
+  blogTags: DynamicsBlog["bsi_BlogCategory_bsi_Blog_bsi_Blog"];
   blogSlug: string;
   publishDate: Date;
   blogCoverText: string;
@@ -25,8 +27,29 @@ const BlogTile: React.FunctionComponent<IBlogTileProps> = (props) => {
             objectFit="cover"
           />
         </NextLink>
+        <Flex justify="space-between">
+          <Flex align="center">
+            {props.blogAuthors.map((b) => (
+              <NextLink
+                href={`/blogs/author/${b.bsi_slug}/page/1`}
+                passHref
+                key={b.bsi_slug}
+              >
+                <Link mr={3}>{b.bsi_name}</Link>
+              </NextLink>
+            ))}
+          </Flex>
+          <Flex align="center">
+            {props.blogTags.map((b) => (
+              <Badge colorScheme="teal" ml={2} key={b.bsi_slug}>
+                <NextLink href={`/blogs/category/${b.bsi_slug}/page/1`}>
+                  {b.bsi_name}
+                </NextLink>
+              </Badge>
+            ))}
+          </Flex>
+        </Flex>
         <Text as="small" suppressHydrationWarning>
-          {props.blogAuthor.map((b) => b)}{" "}
           {props.publishDate.toLocaleDateString()}
         </Text>
         <NextLink href={`/blogs/${props.blogSlug}`}>

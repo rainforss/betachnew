@@ -1,25 +1,15 @@
+import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { DynamicsPageSection, PageSection } from "../utils/types";
-import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
-import cca from "../utils/cca";
-import {
-  retrieveMultiple,
-  WebApiConfig,
-  retrieve,
-} from "dataverse-webapi/lib/node";
 import { useRouter } from "next/dist/client/router";
-import React, { useState, useEffect } from "react";
+import { ParsedUrlQuery } from "querystring";
+import React, { useEffect, useState } from "react";
+import sectionConfig from "../components/designed-sections/sections.config";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
-import sectionConfig from "../components/designed-sections/sections.config";
-import {
-  dynamicsFooterMenuItemsQuery,
-  dynamicsHeaderMenuItemsQuery,
-  dynamicsPageSectionsQuery,
-  attachedComponentsQuery,
-} from "../utils/queries";
-import { ParsedUrlQuery } from "querystring";
-import { D365_WEBSITE_ID } from "../utils/constants";
+import cca from "../utils/cca";
+import { getAllPageContents } from "../utils/getAllPageContents";
+import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
+import { DynamicsPageSection, PageSection } from "../utils/types";
 
 interface DynamicsPagesProps {
   pageSections?: PageSection[];
@@ -157,63 +147,11 @@ export const getStaticProps: GetStaticProps = async (req) => {
         `$filter=bsi_name eq '${webpageName}'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
       )
     ).value;
-    if (dynamicsPageResult.length === 0) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-      };
-    }
-
-    const dynamicsPageSections = (
-      await retrieveMultiple(
-        config,
-        "bsi_pagesections",
-        `$filter= _bsi_webpage_value eq ${dynamicsPageResult[0].bsi_webpageid}&${dynamicsPageSectionsQuery}`,
-        { representation: true }
-      )
-    ).value;
-
-    for (const section of dynamicsPageSections) {
-      const attachedComponentsRequest: any[] = [];
-      (section as any).bsi_AttachedComponent_bsi_PageSection_bsi.forEach(
-        (po: any) => {
-          attachedComponentsRequest.push(
-            retrieve(
-              config,
-              "bsi_attachedcomponents",
-              po.bsi_attachedcomponentid,
-              attachedComponentsQuery
-            )
-          );
-        }
-      );
-      const result = await Promise.all(attachedComponentsRequest);
-      section.bsi_AttachedComponent_bsi_PageSection_bsi = [...result];
-    }
-
-    const dynamicsHeaderMenuItemsRequest = retrieveMultiple(
-      config,
-      "bsi_navigationmenuitems",
-      dynamicsHeaderMenuItemsQuery,
-      { representation: true }
-    );
-    const dynamicsFooterMenuItemsRequest = retrieveMultiple(
-      config,
-      "bsi_navigationmenuitems",
-      dynamicsFooterMenuItemsQuery,
-      { representation: true }
-    );
-
-    const promises = [
-      dynamicsHeaderMenuItemsRequest,
-      dynamicsFooterMenuItemsRequest,
-    ];
-
-    const layoutResults = await Promise.all(promises);
-
-    const [dynamicsHeaderMenuItems, dynamicsFooterMenuItems] = layoutResults;
+    const {
+      dynamicsPageSections,
+      dynamicsHeaderMenuItems,
+      dynamicsFooterMenuItems,
+    } = await getAllPageContents(config, dynamicsPageResult[0].bsi_webpageid);
     return {
       props: {
         dynamicsPageSections: dynamicsPageSections,

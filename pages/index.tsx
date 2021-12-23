@@ -1,23 +1,14 @@
+import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticProps, NextPage } from "next";
-import { DynamicsPageSection, PageSection } from "../utils/types";
-import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
-import cca from "../utils/cca";
-import {
-  retrieveMultiple,
-  WebApiConfig,
-  retrieve,
-} from "dataverse-webapi/lib/node";
 import { useRouter } from "next/dist/client/router";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import sectionConfig from "../components/designed-sections/sections.config";
 import Layout from "../components/Layout";
 import SectionControl from "../components/SectionControl";
-import sectionConfig from "../components/designed-sections/sections.config";
-import {
-  dynamicsFooterMenuItemsQuery,
-  dynamicsHeaderMenuItemsQuery,
-  dynamicsPageSectionsQuery,
-  attachedComponentsQuery,
-} from "../utils/queries";
+import cca from "../utils/cca";
+import { getAllPageContents } from "../utils/getAllPageContents";
+import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
+import { DynamicsPageSection, PageSection } from "../utils/types";
 
 interface DynamicsProps {
   pageSections?: PageSection[];
@@ -107,7 +98,6 @@ export const getStaticProps: GetStaticProps = async () => {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
-    console.log(accessToken);
     const dynamicsPageResult: any[] = (
       await retrieveMultiple(
         config,
@@ -115,65 +105,11 @@ export const getStaticProps: GetStaticProps = async () => {
         `$filter=bsi_name eq 'Home'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
       )
     ).value;
-    if (dynamicsPageResult.length === 0) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-      };
-    }
-
-    const dynamicsPageSections = (
-      await retrieveMultiple(
-        config,
-        "bsi_pagesections",
-        `$filter= _bsi_webpage_value eq ${dynamicsPageResult[0].bsi_webpageid}&${dynamicsPageSectionsQuery}`,
-        { representation: true }
-      )
-    ).value;
-
-    for (const section of dynamicsPageSections) {
-      const attachedComponentsRequest: any[] = [];
-      (section as any).bsi_AttachedComponent_bsi_PageSection_bsi.forEach(
-        (po: any) => {
-          attachedComponentsRequest.push(
-            retrieve(
-              config,
-              "bsi_attachedcomponents",
-              po.bsi_attachedcomponentid,
-              attachedComponentsQuery
-            )
-          );
-        }
-      );
-      const result = await Promise.all(attachedComponentsRequest);
-      section.bsi_AttachedComponent_bsi_PageSection_bsi = [...result];
-    }
-
-    const dynamicsHeaderMenuItemsRequest = retrieveMultiple(
-      config,
-      "bsi_navigationmenuitems",
-      dynamicsHeaderMenuItemsQuery,
-      { representation: true }
-    );
-    const dynamicsFooterMenuItemsRequest = retrieveMultiple(
-      config,
-      "bsi_navigationmenuitems",
-      dynamicsFooterMenuItemsQuery,
-      { representation: true }
-    );
-
-    const promises = [
-      dynamicsHeaderMenuItemsRequest,
-      dynamicsFooterMenuItemsRequest,
-    ];
-
-    const layoutResults = await Promise.all(promises);
-
-    const [dynamicsHeaderMenuItems, dynamicsFooterMenuItems] = layoutResults;
-
-    console.log(dynamicsHeaderMenuItems);
+    const {
+      dynamicsPageSections,
+      dynamicsHeaderMenuItems,
+      dynamicsFooterMenuItems,
+    } = await getAllPageContents(config, dynamicsPageResult[0].bsi_webpageid);
     return {
       props: {
         dynamicsPageSections: dynamicsPageSections,

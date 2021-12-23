@@ -1,10 +1,6 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import * as React from "react";
-import {
-  DynamicsBlog,
-  DynamicsPageSection,
-  xmlDynamicsBlog,
-} from "../../utils/types";
+import { DynamicsBlog, DynamicsPageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import BlogTile from "../BlogTile";
 
@@ -38,7 +34,8 @@ const BlogsDisplaySection: React.FunctionComponent<IBlogsDisplaySectionProps> =
             <Box key={db.bsi_blogid} width="47%" mb={8}>
               <BlogTile
                 blogTitle={db.bsi_name}
-                blogAuthor={db.bsi_author.split(";")}
+                blogAuthors={db.bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor}
+                blogTags={db.bsi_BlogCategory_bsi_Blog_bsi_Blog}
                 blogSlug={db.bsi_urlslug}
                 blogCoverImageUrl={db.bsi_BlogCoverImage.bsi_cdnurl}
                 blogCoverImageAltText={db.bsi_BlogCoverImage.bsi_alttext}
