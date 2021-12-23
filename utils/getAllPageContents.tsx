@@ -62,7 +62,7 @@ export const getAllPageContents = async (
     );
 
     const dynamicsBlogsRequest =
-      !blogCategory && !blogAuthor && !blogSlug
+      !blogCategory || !blogAuthor || !blogSlug
         ? retrieveMultiple(
             config,
             "bsi_blogs",
