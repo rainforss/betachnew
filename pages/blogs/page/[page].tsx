@@ -80,7 +80,9 @@ export const getStaticProps: GetStaticProps = async (req) => {
   try {
     const { page } = req.params as IParams;
     const tokenResponse = await getClientCredentialsToken(cca);
+    console.log(tokenResponse);
     const accessToken = tokenResponse?.accessToken;
+
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
 
     const dynamicsPageResult: any[] = (
@@ -115,7 +117,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
       },
     };
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error);
     return {
       props: {
         error,

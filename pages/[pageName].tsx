@@ -93,10 +93,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const dynamicsPagesResult: any = (
     await retrieveMultiple(
       config,
-      "bsi_websites",
-      "$select=bsi_name&$expand=bsi_WebPage_Website_bsi_Website($select=bsi_name)"
+      "bsi_webpages",
+      "$filter=bsi_published ne false and _bsi_parentwebpageid_value eq null&$select=bsi_name,bsi_pageurl"
     )
-  ).value[0];
+  ).value;
   const paths: (
     | string
     | {
@@ -104,11 +104,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
         locale?: string | undefined;
       }
   )[] = [];
-  dynamicsPagesResult.bsi_WebPage_Website_bsi_Website.forEach((pr: any) => {
+  dynamicsPagesResult.forEach((pr: any) => {
     if (pr.bsi_name !== "Blogs" && pr.bsi_name !== "Blog Template")
       paths.push({
         params: {
-          pageName: (pr.bsi_name as String).toLowerCase().replace(/ /g, "-"),
+          pageName: pr.bsi_pageurl.replace(/\//g, ""),
         },
       });
   });

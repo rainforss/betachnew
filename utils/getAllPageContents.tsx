@@ -25,16 +25,15 @@ export const getAllPageContents = async (
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        `$filter= _bsi_webpage_value eq ${webpageId}&${dynamicsPageSectionsQuery}`,
+        `$filter= _bsi_webpage_value eq ${webpageId} and bsi_published ne false&${dynamicsPageSectionsQuery}`,
         { representation: true }
       )
     ).value;
-
     for (const section of dynamicsPageSections) {
-      const productOfferingRequest: any[] = [];
+      const attachedComponentsRequest: any[] = [];
       (section as any).bsi_AttachedComponent_bsi_PageSection_bsi.forEach(
         (po: any) => {
-          productOfferingRequest.push(
+          attachedComponentsRequest.push(
             retrieve(
               config,
               "bsi_attachedcomponents",
@@ -44,7 +43,7 @@ export const getAllPageContents = async (
           );
         }
       );
-      const result = await Promise.all(productOfferingRequest);
+      const result = await Promise.all(attachedComponentsRequest);
       section.bsi_AttachedComponent_bsi_PageSection_bsi = [...result];
     }
 

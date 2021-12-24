@@ -91,6 +91,7 @@ export const getStaticProps: GetStaticProps = async () => {
         `$filter=bsi_name eq 'Home'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
       )
     ).value;
+    console.log(dynamicsPageResult);
     const {
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
