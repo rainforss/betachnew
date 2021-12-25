@@ -20,6 +20,7 @@ const Layout: React.FunctionComponent<ILayoutProps> = (props) => {
   const exitPreview = () => {
     fetch(`/api/exit-preview?pathName=${encodeURIComponent(router.asPath)}`);
   };
+  React.useEffect(() => {}, [props.preview]);
   return (
     <Box w="100%">
       <Header
