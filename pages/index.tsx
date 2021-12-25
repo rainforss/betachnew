@@ -18,6 +18,7 @@ interface DynamicsProps {
   dynamicsHeaderMenuItems: any[];
   dynamicsFooterMenuItems: any[];
   companyLogoUrl: string;
+  preview: boolean;
 }
 
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
@@ -62,6 +63,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
       companyLogoUrl={props.companyLogoUrl}
+      preview={props.preview}
     >
       {props.dynamicsPageSections?.map(
         (s: any) =>
@@ -79,7 +81,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   try {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
@@ -91,14 +93,18 @@ export const getStaticProps: GetStaticProps = async () => {
         `$filter=bsi_name eq 'Home'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
       )
     ).value;
-    console.log(dynamicsPageResult);
     const {
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
-    } = await getAllPageContents(config, dynamicsPageResult[0].bsi_webpageid);
+    } = await getAllPageContents(
+      config,
+      dynamicsPageResult[0].bsi_webpageid,
+      preview
+    );
     return {
       props: {
+        preview: !!preview,
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,

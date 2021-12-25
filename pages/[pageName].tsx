@@ -19,6 +19,7 @@ interface DynamicsPagesProps {
   dynamicsHeaderMenuItems: any[];
   dynamicsFooterMenuItems: any[];
   companyLogoUrl: string;
+  preview: boolean;
 }
 
 interface IParams extends ParsedUrlQuery {
@@ -69,6 +70,7 @@ const DynamicsPages: NextPage<DynamicsPagesProps> = (
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
       companyLogoUrl={props.companyLogoUrl}
+      preview={props.preview}
     >
       {props.dynamicsPageSections?.map(
         (s: any) =>
@@ -118,12 +120,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async (req) => {
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  preview = false,
+}) => {
   try {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
-    const { pageName } = req.params as IParams;
+    const { pageName } = params as IParams;
     const webpageName = pageName.replace(/-/g, " ");
 
     const dynamicsPageResult: any[] = (
@@ -137,9 +142,14 @@ export const getStaticProps: GetStaticProps = async (req) => {
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
-    } = await getAllPageContents(config, dynamicsPageResult[0].bsi_webpageid);
+    } = await getAllPageContents(
+      config,
+      dynamicsPageResult[0].bsi_webpageid,
+      preview
+    );
     return {
       props: {
+        preview: preview,
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,

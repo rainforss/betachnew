@@ -15,6 +15,7 @@ interface IBlogsProps {
   dynamicsFooterMenuItems: any[];
   dynamicsBlogs: xmlDynamicsBlog[];
   companyLogoUrl: string;
+  preview: boolean;
 }
 
 const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
@@ -23,6 +24,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
       companyLogoUrl={props.companyLogoUrl}
+      preview={props.preview}
     >
       {props.dynamicsPageSections?.map(
         (s: any) =>
@@ -39,7 +41,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
 export default Blogs;
 
-export const getStaticProps: GetStaticProps = async (req) => {
+export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   try {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
@@ -61,6 +63,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
+      preview,
       1,
       "",
       ""
@@ -68,6 +71,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
 
     return {
       props: {
+        preview: preview,
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,

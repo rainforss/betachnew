@@ -66,6 +66,7 @@ export type DynamicsPageSection = {
     bsi_attachedcomponentid: string;
     bsi_name: string;
     bsi_description: string;
+    bsi_hasctabutton: boolean;
     bsi_ctabuttontext: string;
     bsi_ctabuttonlink: string;
     bsi_title: string;

@@ -80,7 +80,6 @@ export const getStaticProps: GetStaticProps = async (req) => {
   try {
     const { page } = req.params as IParams;
     const tokenResponse = await getClientCredentialsToken(cca);
-    console.log(tokenResponse);
     const accessToken = tokenResponse?.accessToken;
 
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
@@ -101,6 +100,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
+      false,
       parseInt(page),
       "",
       ""

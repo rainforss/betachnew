@@ -95,23 +95,25 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
               </Text>
             </Flex>
 
-            <NextLink
-              href={
-                dynamicsPageSection.bsi_ctabuttonlink ||
-                "https://outlook.office365.com/owa/calendar/BetachSolutions@betach.com/bookings/"
-              }
-            >
-              <Text
-                as="span"
-                py={4}
-                px={6}
-                bg={royalblue}
-                color="whiteAlpha.800"
-                borderRadius="300px"
+            {dynamicsPageSection.bsi_hasctabutton && (
+              <NextLink
+                href={
+                  dynamicsPageSection.bsi_ctabuttonlink ||
+                  "https://outlook.office365.com/owa/calendar/BetachSolutions@betach.com/bookings/"
+                }
               >
-                {dynamicsPageSection.bsi_ctabuttontext || "Get Started"}
-              </Text>
-            </NextLink>
+                <Text
+                  as="span"
+                  py={4}
+                  px={6}
+                  bg={royalblue}
+                  color="whiteAlpha.800"
+                  borderRadius="300px"
+                >
+                  {dynamicsPageSection.bsi_ctabuttontext || "Get Started"}
+                </Text>
+              </NextLink>
+            )}
           </Flex>
         </Center>
       </AnchorSection>

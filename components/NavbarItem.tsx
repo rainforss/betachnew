@@ -10,7 +10,7 @@ interface INavbarItemProps {
 
 const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
   return (
-    <NextLink href={props.faceMenuItem.bsi_linkurl} passHref>
+    <NextLink href={props.faceMenuItem.bsi_linkurl || "#"} passHref>
       <Link
         mx={2}
         py={2}

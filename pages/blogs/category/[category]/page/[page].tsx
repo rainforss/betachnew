@@ -109,6 +109,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
+      false,
       parseInt(page),
       category,
       ""

@@ -22,6 +22,7 @@ interface ISlugProps {
   dynamicsFooterMenuItems: any[];
   dynamicsBlogs: any[];
   companyLogoUrl: string;
+  preview: boolean;
 }
 
 const Slug: React.FunctionComponent<ISlugProps> = (props) => {
@@ -30,6 +31,7 @@ const Slug: React.FunctionComponent<ISlugProps> = (props) => {
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
       companyLogoUrl={props.companyLogoUrl}
+      preview={props.preview}
     >
       {props.dynamicsPageSections?.map(
         (s: any) =>
@@ -73,13 +75,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async (req) => {
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  preview = false,
+}) => {
   try {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
 
-    const { slug } = req.params as IParams;
+    const { slug } = params as IParams;
 
     const dynamicsPageResult: any[] = (
       await retrieveMultiple(
@@ -96,6 +101,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
+      preview,
       1,
       "",
       "",
@@ -103,6 +109,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
     );
     return {
       props: {
+        preview: preview,
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,

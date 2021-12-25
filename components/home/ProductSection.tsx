@@ -106,7 +106,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
             <Flex>
               {dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi &&
                 dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi.map(
-                  (dp, index: number) => (
+                  (dp) => (
                     <Flex
                       flexDirection="column"
                       align="center"
@@ -127,19 +127,20 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                       <Text as="p" textAlign="center" my={8} lineHeight="2">
                         {dp.bsi_description}
                       </Text>
-                      <NextLink href={dp.bsi_ctabuttonlink}>
-                        <Text
-                          as="span"
-                          py={4}
-                          px={6}
-                          bg={royalblue}
-                          color="whiteAlpha.800"
-                          borderRadius="300px"
-                        >
-                          {dynamicsPageSection.bsi_ctabuttontext ||
-                            "Learn more"}
-                        </Text>
-                      </NextLink>
+                      {dp.bsi_hasctabutton && (
+                        <NextLink href={dp.bsi_ctabuttonlink || "/test"}>
+                          <Text
+                            as="span"
+                            py={4}
+                            px={6}
+                            bg={royalblue}
+                            color="whiteAlpha.800"
+                            borderRadius="300px"
+                          >
+                            {dp.bsi_ctabuttontext}
+                          </Text>
+                        </NextLink>
+                      )}
                     </Flex>
                   )
                 )}

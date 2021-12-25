@@ -32,7 +32,7 @@ const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
             {m.bsi_NavigationMenuSubItem_NavigationMenuI.map((b: any) =>
               b.bsi_linkurl ? (
                 <NextLink
-                  href={b.bsi_linkurl}
+                  href={b.bsi_linkurl || "#"}
                   key={b.bsi_navigationmenusubitemid}
                   passHref
                 >

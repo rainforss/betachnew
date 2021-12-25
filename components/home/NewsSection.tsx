@@ -52,18 +52,20 @@ const NewsSection: React.FunctionComponent<INewsSectionProps> = ({
                     <Text as="p" textAlign="center" my={8} lineHeight="2">
                       {dp.bsi_description}
                     </Text>
-                    <NextLink href={dp.bsi_ctabuttonlink || "/test"} passHref>
-                      <Link
-                        as="span"
-                        py={4}
-                        px={6}
-                        bg={royalblue}
-                        color="whiteAlpha.800"
-                        borderRadius="300px"
-                      >
-                        {dp.bsi_ctabuttontext || "Learn more"}
-                      </Link>
-                    </NextLink>
+                    {dp.bsi_hasctabutton && (
+                      <NextLink href={dp.bsi_ctabuttonlink || "/test"} passHref>
+                        <Link
+                          as="span"
+                          py={4}
+                          px={6}
+                          bg={royalblue}
+                          color="whiteAlpha.800"
+                          borderRadius="300px"
+                        >
+                          {dp.bsi_ctabuttontext}
+                        </Link>
+                      </NextLink>
+                    )}
                   </Flex>
                 )
               )}

@@ -15,6 +15,7 @@ import {
 export const getAllPageContents = async (
   config: WebApiConfig,
   webpageId: string,
+  includeDraft: boolean = false,
   blogPageNumber?: number,
   blogCategory?: string,
   blogAuthor?: string,
@@ -25,7 +26,9 @@ export const getAllPageContents = async (
       await retrieveMultiple(
         config,
         "bsi_pagesections",
-        `$filter= _bsi_webpage_value eq ${webpageId} and bsi_published ne false&${dynamicsPageSectionsQuery}`,
+        `$filter= _bsi_webpage_value eq ${webpageId} ${
+          includeDraft ? "" : "and bsi_published ne false"
+        }&${dynamicsPageSectionsQuery}`,
         { representation: true }
       )
     ).value;
@@ -38,25 +41,29 @@ export const getAllPageContents = async (
               config,
               "bsi_attachedcomponents",
               po.bsi_attachedcomponentid,
-              attachedComponentsQuery
+              (includeDraft ? "" : "$filter= bsi_published ne false&") +
+                attachedComponentsQuery
             )
           );
         }
       );
       const result = await Promise.all(attachedComponentsRequest);
+
       section.bsi_AttachedComponent_bsi_PageSection_bsi = [...result];
     }
 
     const dynamicsHeaderMenuItemsRequest = retrieveMultiple(
       config,
       "bsi_navigationmenuitems",
-      dynamicsHeaderMenuItemsQuery,
+      "$filter=_bsi_navigationmenu_value eq 3fe455da-ef5e-ec11-8f8f-000d3af47f33&" +
+        dynamicsHeaderMenuItemsQuery,
       { representation: true }
     );
     const dynamicsFooterMenuItemsRequest = retrieveMultiple(
       config,
       "bsi_navigationmenuitems",
-      dynamicsFooterMenuItemsQuery,
+      "$filter=_bsi_navigationmenu_value eq 3ee455da-ef5e-ec11-8f8f-000d3af47f33&" +
+        dynamicsFooterMenuItemsQuery,
       { representation: true }
     );
 
@@ -67,6 +74,7 @@ export const getAllPageContents = async (
             "bsi_blogs",
             `${generateBlogsODataQuery(
               blogPageNumber || 1,
+              includeDraft,
               blogCategory,
               blogAuthor,
               blogSlug
