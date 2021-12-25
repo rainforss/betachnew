@@ -17,9 +17,9 @@ const clientConfig: Configuration = {
       `https://login.microsoftonline.com/${process.env.TENANT_ID}/`,
     ],
   },
-  cache: {
-    cachePlugin,
-  },
+  // cache: {
+  //   cachePlugin,
+  // },
 };
 
 const confidentialClientApplication = new msal.ConfidentialClientApplication(
