@@ -1,5 +1,6 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticPaths, GetStaticPathsContext, GetStaticProps } from "next";
+import { useRouter } from "next/dist/client/router";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
 import sectionConfig from "../../components/designed-sections/sections.config";
@@ -26,6 +27,12 @@ interface ISlugProps {
 }
 
 const Slug: React.FunctionComponent<ISlugProps> = (props) => {
+  const router = useRouter();
+  if (typeof window !== "undefined") {
+    if (props.dynamicsBlogs.length === 0) {
+      router.push("/404");
+    }
+  }
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -107,14 +114,6 @@ export const getStaticProps: GetStaticProps = async ({
       "",
       slug
     );
-    if ((dynamicsBlogs.value as any[]).length === 0) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-      };
-    }
     return {
       props: {
         preview: preview,
