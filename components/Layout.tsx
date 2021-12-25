@@ -17,10 +17,13 @@ interface ILayoutProps {
 
 const Layout: React.FunctionComponent<ILayoutProps> = (props) => {
   const router = useRouter();
-  const exitPreview = () => {
-    fetch(`/api/exit-preview?pathName=${encodeURIComponent(router.asPath)}`);
+
+  const exitPreview = async () => {
+    await fetch(
+      `/api/exit-preview?pathName=${encodeURIComponent(router.asPath)}`
+    );
+    router.reload();
   };
-  React.useEffect(() => {}, [props.preview]);
   return (
     <Box w="100%">
       <Header
