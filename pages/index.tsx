@@ -86,6 +86,7 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
+    console.log(tokenResponse);
     const dynamicsPageResult: any[] = (
       await retrieveMultiple(
         config,
