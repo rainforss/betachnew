@@ -5,7 +5,7 @@ import AnchorSection from "../AnchorSection";
 import NextLink from "next/link";
 
 interface ISingleBlogSectionProps {
-  dynamicsBlog: DynamicsBlog;
+  dynamicsBlog?: DynamicsBlog;
   dynamicsPageSection: DynamicsPageSection;
 }
 
@@ -13,6 +13,9 @@ const SingleBlogSection: React.FunctionComponent<ISingleBlogSectionProps> = ({
   dynamicsBlog,
   dynamicsPageSection,
 }) => {
+  if (!dynamicsBlog) {
+    return null;
+  }
   return (
     <AnchorSection
       sectionId={dynamicsPageSection.bsi_sectionid}

@@ -31,6 +31,7 @@ export const generateBlogsODataQuery = (
       preview ? "" : "$filter=bsi_published ne false"
     }&$select=bsi_name,bsi_slug,modifiedon,bsi_blogcovertext,bsi_blogbody&$orderby=createdon asc&$skiptoken=<cookie pagenumber="${pageNumber}">&$expand=bsi_BlogCoverImage($select=bsi_cdnurl,bsi_alttext),bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name,bsi_slug),bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name,bsi_slug)`;
   }
+
   return `$filter=${preview ? "" : "bsi_published ne false and "}${
     categorySlug
       ? `(bsi_BlogCategory_bsi_Blog_bsi_Blog/any(b:b/bsi_slug eq '${categorySlug}'))`

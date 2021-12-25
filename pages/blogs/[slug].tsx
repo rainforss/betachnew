@@ -1,5 +1,5 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticPathsContext, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
 import sectionConfig from "../../components/designed-sections/sections.config";
@@ -8,7 +8,7 @@ import cca from "../../utils/cca";
 import { getAllPageContents } from "../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
 import { dynamicsBlogSlugsQuery } from "../../utils/queries";
-import { DynamicsPageSection } from "../../utils/types";
+import { DynamicsBlog, DynamicsPageSection } from "../../utils/types";
 
 interface IParams extends ParsedUrlQuery {
   slug: string;
@@ -20,7 +20,7 @@ interface ISlugProps {
   dynamicsPageSections: DynamicsPageSection[];
   dynamicsHeaderMenuItems: any[];
   dynamicsFooterMenuItems: any[];
-  dynamicsBlogs: any[];
+  dynamicsBlogs: DynamicsBlog[];
   companyLogoUrl: string;
   preview: boolean;
 }
@@ -107,6 +107,14 @@ export const getStaticProps: GetStaticProps = async ({
       "",
       slug
     );
+    if ((dynamicsBlogs.value as any[]).length === 0) {
+      return {
+        redirect: {
+          destination: "/404",
+          permanent: false,
+        },
+      };
+    }
     return {
       props: {
         preview: preview,
