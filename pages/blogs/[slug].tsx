@@ -114,6 +114,11 @@ export const getStaticProps: GetStaticProps = async ({
       "",
       slug
     );
+    if ((dynamicsBlogs.value as any).length === 0) {
+      return {
+        notFound: true,
+      };
+    }
     return {
       props: {
         preview: preview,
