@@ -62,15 +62,27 @@ export type DynamicsPageSection = {
   bsi_subheading: string;
   bsi_sectionid: string;
   bsi_featuredproducts: string;
+  bsi_backgroundcolor: string;
+  bsi_mainheadingtextcolor: string;
+  bsi_subheadingtextcolor: string;
+  bsi_paragraphtextcolor: string;
+  bsi_ctabuttontextcolor: string;
+  bsi_ctabuttonbgcolor: string;
   bsi_AttachedComponent_bsi_PageSection_bsi: Array<{
     bsi_attachedcomponentid: string;
     bsi_name: string;
     bsi_description: string;
+    bsi_descriptiontextcolor: string;
     bsi_hasctabutton: boolean;
     bsi_ctabuttontext: string;
     bsi_ctabuttonlink: string;
+    bsi_ctabuttonbgcolor: string;
+    bsi_ctabuttontextcolor: string;
+    bsi_backgroundcolor: string;
     bsi_title: string;
+    bsi_titletextcolor: string;
     bsi_subtitle: string;
+    bsi_subtitletextcolor: string;
     bsi_AttachedComponent_bsi_ImageAsset_bsi_: Array<{
       bsi_cdnurl: string;
       bsi_name: string;

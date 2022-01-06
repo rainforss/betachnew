@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
-import "@fontsource/montserrat";
+import "@fontsource/montserrat/500.css";
 import theme from "../utils/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
