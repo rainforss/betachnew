@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import cca from "../../utils/cca";
 import { getAllPageContents } from "../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
+import { dynamicsWebpageQuery } from "../../utils/queries";
 import { DynamicsPageSection, xmlDynamicsBlog } from "../../utils/types";
 
 interface IBlogsProps {
@@ -51,7 +52,7 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
       await retrieveMultiple(
         config,
         "bsi_webpages",
-        `$filter=bsi_name eq 'Blogs'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
+        `$filter=bsi_name eq 'Blogs'&${dynamicsWebpageQuery}`
       )
     ).value;
 
@@ -66,7 +67,10 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
       preview,
       1,
       "",
-      ""
+      "",
+      undefined,
+      dynamicsPageResult[0].bsi_Website.bsi_HeaderMenu.bsi_headermenuid,
+      dynamicsPageResult[0].bsi_Website.bsi_FooterMenu.bsi_footermenuid
     );
 
     return {

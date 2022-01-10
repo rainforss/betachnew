@@ -8,7 +8,10 @@ import Layout from "../../components/Layout";
 import cca from "../../utils/cca";
 import { getAllPageContents } from "../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
-import { dynamicsBlogSlugsQuery } from "../../utils/queries";
+import {
+  dynamicsBlogSlugsQuery,
+  dynamicsWebpageQuery,
+} from "../../utils/queries";
 import { DynamicsBlog, DynamicsPageSection } from "../../utils/types";
 
 interface IParams extends ParsedUrlQuery {
@@ -97,7 +100,7 @@ export const getStaticProps: GetStaticProps = async ({
       await retrieveMultiple(
         config,
         "bsi_webpages",
-        `$filter=bsi_name eq 'Blog Template'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
+        `$filter=bsi_name eq 'Blog Template'&${dynamicsWebpageQuery}`
       )
     ).value;
     const {
@@ -112,7 +115,9 @@ export const getStaticProps: GetStaticProps = async ({
       1,
       "",
       "",
-      slug
+      slug,
+      dynamicsPageResult[0].bsi_Website.bsi_HeaderMenu.bsi_headermenuid,
+      dynamicsPageResult[0].bsi_Website.bsi_FooterMenu.bsi_footermenuid
     );
     if ((dynamicsBlogs.value as any).length === 0) {
       return {

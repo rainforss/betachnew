@@ -13,6 +13,9 @@ export const dynamicsFooterMenuItemsQuery =
 export const dynamicsBlogSlugsQuery =
   "$select=bsi_name,bsi_slug&$orderby=createdon asc";
 
+export const dynamicsWebpageQuery =
+  "$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl),bsi_HeaderMenu($select=bsi_name),bsi_FooterMenu($select=bsi_name))";
+
 export const dynamicsBlogAuthorsQuery =
   "$select=bsi_name,bsi_slug&$orderby=bsi_name asc&$expand=bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor($select=bsi_name)";
 

@@ -19,7 +19,9 @@ export const getAllPageContents = async (
   blogPageNumber?: number,
   blogCategory?: string,
   blogAuthor?: string,
-  blogSlug?: string
+  blogSlug?: string,
+  headerMenuId?: string,
+  footerMenuId?: string
 ) => {
   try {
     const dynamicsPageSections = (
@@ -55,15 +57,17 @@ export const getAllPageContents = async (
     const dynamicsHeaderMenuItemsRequest = retrieveMultiple(
       config,
       "bsi_navigationmenuitems",
-      "$filter=_bsi_navigationmenu_value eq 3fe455da-ef5e-ec11-8f8f-000d3af47f33&" +
-        dynamicsHeaderMenuItemsQuery,
+      `$filter=_bsi_navigationmenu_value eq ${
+        headerMenuId || "3fe455da-ef5e-ec11-8f8f-000d3af47f33"
+      }&` + dynamicsHeaderMenuItemsQuery,
       { representation: true }
     );
     const dynamicsFooterMenuItemsRequest = retrieveMultiple(
       config,
       "bsi_navigationmenuitems",
-      "$filter=_bsi_navigationmenu_value eq 3ee455da-ef5e-ec11-8f8f-000d3af47f33&" +
-        dynamicsFooterMenuItemsQuery,
+      `$filter=_bsi_navigationmenu_value eq ${
+        footerMenuId || "3ee455da-ef5e-ec11-8f8f-000d3af47f33"
+      }&` + dynamicsFooterMenuItemsQuery,
       { representation: true }
     );
 

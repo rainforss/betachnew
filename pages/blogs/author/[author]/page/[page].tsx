@@ -7,7 +7,10 @@ import cca from "../../../../../utils/cca";
 import { BLOGS_PLAGE_LIMIT } from "../../../../../utils/constants";
 import { getAllPageContents } from "../../../../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../../../../utils/getClientCredentialsToken";
-import { dynamicsBlogAuthorsQuery } from "../../../../../utils/queries";
+import {
+  dynamicsBlogAuthorsQuery,
+  dynamicsWebpageQuery,
+} from "../../../../../utils/queries";
 import {
   DynamicsPageSection,
   xmlDynamicsBlog,
@@ -94,7 +97,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
       await retrieveMultiple(
         config,
         "bsi_webpages",
-        `$filter=bsi_name eq 'Blogs'&$select=bsi_webpageid&$expand=bsi_Website($select=bsi_name;$expand=bsi_CompanyLogo($select=bsi_cdnurl))`
+        `$filter=bsi_name eq 'Blogs'&${dynamicsWebpageQuery}`
       )
     ).value;
 
@@ -109,7 +112,10 @@ export const getStaticProps: GetStaticProps = async (req) => {
       false,
       parseInt(page),
       "",
-      author
+      author,
+      undefined,
+      dynamicsPageResult[0].bsi_Website.bsi_HeaderMenu.bsi_headermenuid,
+      dynamicsPageResult[0].bsi_Website.bsi_FooterMenu.bsi_footermenuid
     );
 
     return {
