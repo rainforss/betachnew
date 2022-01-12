@@ -86,21 +86,27 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
       <AnchorSection
         sectionId={dynamicsPageSection.bsi_sectionid || "introduction"}
         key={dynamicsPageSection.bsi_pagesectionid}
+        py={36}
+        width="95%"
+        mx="auto"
+        borderBottom="2px solid rgb(241,241,241)"
       >
-        <Box w="100%" mb={24}>
-          <Flex flexDirection="column" w="90%" mx="auto" align="center">
-            <Heading
-              color="blackAlpha.900"
-              fontSize="1.5rem"
-              fontWeight="bold"
-              mb={6}
-              mt={24}
-            >
-              {dynamicsPageSection.bsi_mainheading ||
+        <Box w="100%">
+          <Flex flexDirection="column" w="100%" mx="auto" align="center">
+            <Heading color="blackAlpha.900" fontSize="1.5rem" fontWeight="bold">
+              {dynamicsPageSection.bsi_overline ||
                 "Explore Dynamics 365 applications"}
             </Heading>
-            <Text as="h3" fontSize="2.5rem" fontWeight="extrabold" mb={24}>
-              {dynamicsPageSection.bsi_subheading || "Choose your fit."}
+            <Text
+              as="h3"
+              fontSize="2.5rem"
+              fontWeight="extrabold"
+              p={4}
+              borderStyle="dotted"
+              borderColor="#9be368"
+              borderWidth="0 0 5px 0"
+            >
+              {dynamicsPageSection.bsi_mainheading || "Choose your fit."}
             </Text>
 
             <Flex>
@@ -117,25 +123,42 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                       <Image
                         src={`${dp.bsi_AttachedComponent_bsi_ImageAsset_bsi_[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
                         alt={dp.bsi_name}
-                        width={300}
-                        height={300}
+                        width={150}
+                        height={150}
                         objectFit="contain"
                       />
-                      <Text as="h5" fontWeight="bold" color={betachGreen}>
+                      <Text
+                        as="h5"
+                        fontWeight="bold"
+                        fontSize="1.2rem"
+                        color={betachGreen}
+                      >
                         {dp.bsi_title}
                       </Text>
                       <Text as="p" textAlign="center" my={8} lineHeight="2">
                         {dp.bsi_description}
                       </Text>
                       {dp.bsi_hasctabutton && (
-                        <NextLink href={dp.bsi_ctabuttonlink || "/test"}>
+                        <NextLink
+                          href={dp.bsi_ctabuttonlink || "/test"}
+                          passHref
+                        >
                           <Text
-                            as="span"
-                            py={4}
+                            as="a"
+                            py={2}
                             px={6}
                             bg={royalblue}
                             color="whiteAlpha.800"
                             borderRadius="300px"
+                            transition="ease all 0.5s"
+                            _hover={{
+                              backgroundColor: "#9be368",
+                              boxShadow:
+                                "0px 12px 20px rgba(46, 229, 157, 0.4)",
+                              color: "#fff",
+                              transform: "translateY(-2px)",
+                            }}
+                            boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
                           >
                             {dp.bsi_ctabuttontext}
                           </Text>

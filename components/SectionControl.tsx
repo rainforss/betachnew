@@ -104,7 +104,7 @@ const SectionControl: React.FunctionComponent<ISectionControlProps> = (
                         transform: "translate(0,-25%)",
                       }}
                     >
-                      {s.bsi_name}
+                      {s.bsi_sectionid}
                     </Text>
                   </Box>
                 </Link>

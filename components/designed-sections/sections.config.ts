@@ -1,12 +1,13 @@
 import { FunctionComponent } from "react";
-import BusinessBanterSection from "../home/BusinessBanterSection";
-import ClientFeatureSection from "../home/ClientFeatureSection";
-import HeroSection from "../home/HeroSection";
-import NewsSection from "../home/NewsSection";
-import ProductSection from "../home/ProductSection";
-import SuccessStoriesSection from "../home/SuccessStoriesSection";
-import BlogsDisplaySection from "../home/BlogsDisplaySection";
-import SingleBlogSection from "../home/SingleBlogSection";
+import BusinessBanterSection from "./BusinessBanterSection";
+import ClientFeatureSection from "./ClientFeatureSection";
+import HeroSection from "./HeroSection";
+import NewsSection from "./NewsSection";
+import ProductSection from "./ProductSection";
+import SuccessStoriesSection from "./SuccessStoriesSection";
+import BlogsDisplaySection from "./BlogsDisplaySection";
+import SingleBlogSection from "./SingleBlogSection";
+import ContactFormSection from "./ContactFormSection";
 
 const sections: { [key: string]: FunctionComponent<any> } = {
   BusinessBanterSection,
@@ -17,6 +18,7 @@ const sections: { [key: string]: FunctionComponent<any> } = {
   SuccessStoriesSection,
   BlogsDisplaySection,
   SingleBlogSection,
+  ContactFormSection,
 };
 
 export default sections;

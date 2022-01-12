@@ -81,6 +81,8 @@ export type DynamicsPageSection = {
     bsi_ctabuttonbgcolor: string;
     bsi_ctabuttontextcolor: string;
     bsi_backgroundcolor: string;
+    bsi_overline: string;
+    bsi_overlinetextcolor: string;
     bsi_title: string;
     bsi_titletextcolor: string;
     bsi_subtitle: string;
@@ -100,6 +102,7 @@ export type DynamicsPageSection = {
   };
   bsi_Background: {
     bsi_cdnurl: string;
+    bsi_alttext: string;
   };
   bsi_MarketingFormPage: {
     msdyncrm_javascriptcode: string;

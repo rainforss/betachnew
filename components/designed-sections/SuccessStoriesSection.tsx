@@ -1,4 +1,5 @@
-import { Box, Center, Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import Image from "next/image";
 import * as React from "react";
 import Carousel from "react-multi-carousel";
 import { DynamicsPageSection, PageSection } from "../../utils/types";
@@ -44,7 +45,6 @@ const SuccessStoriesSection: React.FunctionComponent<
               fontSize="2.5rem"
               fontWeight="bold"
               mb={6}
-              mt={24}
             >
               {pageSection.fields.sectionMainHeading || "Success Stories"}
             </Heading>
@@ -93,20 +93,33 @@ const SuccessStoriesSection: React.FunctionComponent<
       <AnchorSection
         sectionId={dynamicsPageSection.bsi_sectionid || "success-stories"}
         key={dynamicsPageSection.bsi_pagesectionid}
+        py={24}
       >
-        <Box w="100%" mb={24} pb={24}>
+        <Box w="100%">
           <Flex flexDirection="column" w="90%" mx="auto" align="center">
+            <Text
+              as="h4"
+              color={betachGreen}
+              fontWeight="bold"
+              fontSize="1.2rem"
+              textTransform="uppercase"
+            >
+              {dynamicsPageSection.bsi_overline}
+            </Text>
             <Heading
+              as="h2"
               color="blackAlpha.900"
               fontSize="2.5rem"
               fontWeight="bold"
-              mb={6}
-              mt={24}
+              mb={24}
+              p={4}
+              borderStyle="dotted"
+              borderColor="#9be368"
+              borderWidth="0 0 5px 0"
             >
               {dynamicsPageSection.bsi_mainheading || "Success Stories"}
             </Heading>
           </Flex>
-          <Box w="90%" h="20px" mx="auto" mt={8} mb={16} bg={betachGreen}></Box>
           {dynamicsPageSection.bsi_PageSection_bsi_ImageAsset_bsi_ImageA && (
             <Box w="90%" mx="auto">
               <Carousel
@@ -131,10 +144,9 @@ const SuccessStoriesSection: React.FunctionComponent<
                   (c: any) => (
                     <Center height="100px" key={c.bsi_imageassetid}>
                       <Image
-                        mx="auto"
                         objectFit="contain"
-                        maxWidth="80%"
-                        maxH="100px"
+                        width="200px"
+                        height="100px"
                         src={`${c.bsi_cdnurl}?fm=jpg&fl=progressive`}
                         alt={c.bsi_alttext}
                       />

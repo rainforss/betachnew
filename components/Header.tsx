@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Link, Text } from "@chakra-ui/react";
 import * as React from "react";
 import Navbar from "./Navbar";
 
@@ -28,12 +28,14 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         h="100%"
         align="center"
       >
-        <Image
-          src={companyLogoUrl}
-          alt="Betach Logo"
-          w="200px"
-          objectFit="contain"
-        />
+        <Link href="/">
+          <Image
+            src={companyLogoUrl}
+            alt="Betach Logo"
+            w="200px"
+            objectFit="contain"
+          />
+        </Link>
         <Navbar menuItems={menuItems} />
         <Text
           as="a"

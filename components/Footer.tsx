@@ -55,14 +55,11 @@ const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
           w="30%"
           h="100%"
           justifyContent="flex-start"
+          align="center"
           flexDirection="column"
+          style={{ gap: "35px" }}
         >
-          <Flex
-            w="60%"
-            justifyContent="space-between"
-            color="whiteAlpha.900"
-            mb={8}
-          >
+          <Flex w="60%" justifyContent="space-between" color="whiteAlpha.900">
             <Icon fontSize="1.2rem" as={FaFacebookF} />
             <Icon fontSize="1.2rem" as={FaTwitter} />
             <Icon fontSize="1.2rem" as={FaYoutube} />
@@ -72,17 +69,25 @@ const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
             Sign up for our newsletter to get the latest updates on news &
             events!
           </Text>
-          <NextLink href="https://betachmarketing.microsoftcrmportals.com/subscribe">
+          <NextLink
+            href="https://betachmarketing.microsoftcrmportals.com/subscribe"
+            passHref
+          >
             <Text
-              as="span"
-              py={4}
+              as="a"
+              py={2}
               px={6}
-              mt={12}
-              bg={betachGreen}
-              color="whiteAlpha.800"
+              transition="ease all 0.5s"
+              _hover={{
+                backgroundColor: "#9be368",
+                boxShadow: "0px 15px 20px rgba(46, 229, 157, 0.4)",
+                color: "#fff",
+                transform: "translateY(-2px)",
+              }}
+              color={"black"}
               borderRadius="300px"
-              width="fit-content"
-              alignSelf="center"
+              bgColor={"white"}
+              boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
             >
               SIGN UP
             </Text>

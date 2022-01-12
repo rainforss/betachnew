@@ -17,7 +17,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
     >
       {menuItems.map((mi) => (
         <MenuItemDropdown
-          key={mi.bsi_linkurl}
+          key={mi.bsi_navigationmenuid}
           faceMenuItem={mi}
           dropdownItems={mi.bsi_NavigationMenuSubItem_NavigationMenuI}
         />
