@@ -9,7 +9,12 @@ interface INavbarProps {
 
 const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
   return (
-    <Flex justify="space-around" fontSize="0.8rem" align="center">
+    <Flex
+      justify="space-around"
+      fontSize="1rem"
+      fontWeight="bold"
+      align="center"
+    >
       {menuItems.map((mi) => (
         <MenuItemDropdown
           key={mi.bsi_linkurl}

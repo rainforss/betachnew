@@ -116,8 +116,8 @@ export const getStaticProps: GetStaticProps = async ({
       "",
       "",
       slug,
-      dynamicsPageResult[0].bsi_Website.bsi_HeaderMenu.bsi_headermenuid,
-      dynamicsPageResult[0].bsi_Website.bsi_FooterMenu.bsi_footermenuid
+      dynamicsPageResult[0].bsi_Website.bsi_HeaderMenu.bsi_navigationmenuid,
+      dynamicsPageResult[0].bsi_Website.bsi_FooterMenu.bsi_navigationmenuid
     );
     if ((dynamicsBlogs.value as any).length === 0) {
       return {

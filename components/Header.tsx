@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import * as React from "react";
 import Navbar from "./Navbar";
 
@@ -12,8 +12,22 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
   companyLogoUrl,
 }) => {
   return (
-    <Box height="150px">
-      <Flex justify="space-between" w="70%" mx="auto" h="100%" align="center">
+    <Box
+      height="150px"
+      position="absolute"
+      top={0}
+      left={0}
+      width="100%"
+      zIndex={99}
+    >
+      <Flex
+        justify="space-between"
+        w="100%"
+        px={16}
+        mx="auto"
+        h="100%"
+        align="center"
+      >
         <Image
           src={companyLogoUrl}
           alt="Betach Logo"
@@ -21,6 +35,25 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           objectFit="contain"
         />
         <Navbar menuItems={menuItems} />
+        <Text
+          as="a"
+          href="#"
+          py={2}
+          px={6}
+          transition="ease all 0.5s"
+          color="black"
+          background="white"
+          boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
+          borderRadius="500px"
+          _hover={{
+            backgroundColor: "#9be368",
+            boxShadow: "0px 15px 20px rgba(46, 229, 157, 0.4)",
+            color: "#fff",
+            transform: "translateY(-2px)",
+          }}
+        >
+          GET IN TOUCH
+        </Text>
       </Flex>
     </Box>
   );

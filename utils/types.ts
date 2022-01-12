@@ -58,11 +58,13 @@ export type DynamicsPageSection = {
   bsi_youtubevideoid: string;
   bsi_youtubevideoalttext: string;
   _bsi_designedsection_value: string;
+  bsi_overline: string;
   bsi_mainheading: string;
   bsi_subheading: string;
   bsi_sectionid: string;
   bsi_featuredproducts: string;
   bsi_backgroundcolor: string;
+  bsi_overlinetextcolor: string;
   bsi_mainheadingtextcolor: string;
   bsi_subheadingtextcolor: string;
   bsi_paragraphtextcolor: string;

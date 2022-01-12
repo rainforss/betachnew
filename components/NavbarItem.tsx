@@ -15,13 +15,10 @@ const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
         mx={2}
         py={2}
         px={props.dropdownItems?.length !== 0 ? 1 : 4}
-        bgColor={props.dropdownItems?.length !== 0 ? "transparent" : royalblue}
+        bgColor={"transparent"}
         borderRadius="300px"
-        color={
-          props.dropdownItems?.length !== 0
-            ? "blackAlpha.800"
-            : "whiteAlpha.800"
-        }
+        color={"blackAlpha.800"}
+        textTransform="uppercase"
       >
         {props.faceMenuItem.bsi_name}
       </Link>

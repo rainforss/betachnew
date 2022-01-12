@@ -54,6 +54,7 @@ export const getAllPageContents = async (
       section.bsi_AttachedComponent_bsi_PageSection_bsi = [...result];
     }
 
+    console.log(headerMenuId);
     const dynamicsHeaderMenuItemsRequest = retrieveMultiple(
       config,
       "bsi_navigationmenuitems",
