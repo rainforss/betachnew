@@ -134,7 +134,12 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
             <Flex
               w="270vw"
               align="center"
-              transform={`translateX(-${activeComponent * (100 / 3)}%)`}
+              transform={`translateX(-${
+                activeComponent *
+                (100 /
+                  dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi
+                    .length)
+              }%)`}
             >
               {dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi.map(
                 (a, index) => {
