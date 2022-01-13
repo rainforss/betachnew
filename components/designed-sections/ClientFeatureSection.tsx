@@ -83,8 +83,8 @@ const ClientFeatureSection: React.FunctionComponent<
         key={dynamicsPageSection.bsi_pagesectionid}
         py={24}
       >
-        <Center minH="100vh" flexDirection="column" mx="auto">
-          <Flex flexDirection="column" align="center" w="70%">
+        <Center minH={["30vh", "60vh"]} flexDirection="column" mx="auto">
+          <Flex flexDirection="column" align="center" w={["90%", "70%"]}>
             <Text
               as="h4"
               color={betachGreen}
@@ -96,13 +96,14 @@ const ClientFeatureSection: React.FunctionComponent<
             </Text>
             <Text
               as="h2"
-              fontSize="2.5rem"
+              fontSize={["2rem", "2.5rem"]}
               fontWeight="700"
               mb={4}
               pb={4}
               borderStyle="dotted"
               borderColor="#9be368"
               borderWidth="0 0 5px 0"
+              textTransform="uppercase"
             >
               {dynamicsPageSection.bsi_mainheading ||
                 "Tarin Resources | Betach Solutions"}
@@ -135,10 +136,10 @@ const ClientFeatureSection: React.FunctionComponent<
             )}
           </Flex>
           {dynamicsPageSection.bsi_videourl && (
-            <Box h="60vh" w="80%" mx="auto">
+            <Box h={["30vh", "60vh"]} w={["95%", "80%"]} mx="auto">
               <iframe
                 src={dynamicsPageSection.bsi_videourl}
-                srcDoc={`<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href=https://www.youtube.com/embed/${dynamicsPageSection.bsi_youtubevideoid}?autoplay=1><img src=https://img.youtube.com/vi/${dynamicsPageSection.bsi_youtubevideoid}/maxresdefault.jpg alt='${dynamicsPageSection.bsi_youtubevideoalttext}'><span>▶</span></a>`}
+                srcDoc={`<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href=https://www.youtube.com/embed/${dynamicsPageSection.bsi_youtubevideoid}?autoplay=1><img src=https://img.youtube.com/vi/${dynamicsPageSection.bsi_youtubevideoid}/maxresdefault.jpg style="object-fit:cover;" alt='${dynamicsPageSection.bsi_youtubevideoalttext}'><span>▶</span></a>`}
                 height="100%"
                 width="100%"
                 scrolling="no"

@@ -15,15 +15,16 @@ interface IFooterProps {
 
 const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
   return (
-    <Box w="100%" h="35vh" bg="blackAlpha.900">
-      <Flex w="90%" mx="auto" py="5vh">
+    <Box w="100%" minH="35vh" bg="blackAlpha.900">
+      <Flex w="90%" mx="auto" py="5vh" flexWrap="wrap">
         {menuItems.map((m) => (
           <Flex
             key={m.bsi_navigationmenuitemid}
-            w="22%"
+            w={[`100%`, `${70 / menuItems.length}%`]}
             h="80%"
-            px={6}
-            justifyContent="flex-start"
+            p={6}
+            justifyContent={["center", "flex-start"]}
+            align={["center", "unset"]}
             flexDirection="column"
           >
             <Text as="h5" color="whiteAlpha.900" mb={8}>
@@ -52,8 +53,9 @@ const Footer: React.FunctionComponent<IFooterProps> = ({ menuItems }) => {
         ))}
 
         <Flex
-          w="30%"
-          h="100%"
+          w={["100%", "30%"]}
+          h="80%"
+          p={6}
           justifyContent="flex-start"
           align="center"
           flexDirection="column"

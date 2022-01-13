@@ -93,51 +93,61 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
       >
         <Box w="100%">
           <Flex flexDirection="column" w="100%" mx="auto" align="center">
-            <Heading color="blackAlpha.900" fontSize="1.5rem" fontWeight="bold">
+            <Heading
+              color="#9be368"
+              fontSize={["1.25rem", "1.5rem"]}
+              fontWeight="bold"
+              textTransform="uppercase"
+            >
               {dynamicsPageSection.bsi_overline ||
                 "Explore Dynamics 365 applications"}
             </Heading>
             <Text
               as="h3"
-              fontSize="2.5rem"
+              fontSize={["2rem", "2.5rem"]}
               fontWeight="extrabold"
               p={4}
+              mb={4}
               borderStyle="dotted"
               borderColor="#9be368"
               borderWidth="0 0 5px 0"
+              textTransform="uppercase"
             >
               {dynamicsPageSection.bsi_mainheading || "Choose your fit."}
             </Text>
 
-            <Flex>
+            <Flex flexWrap="wrap">
               {dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi &&
                 dynamicsPageSection.bsi_AttachedComponent_bsi_PageSection_bsi.map(
                   (dp) => (
                     <Flex
                       flexDirection="column"
                       align="center"
-                      w="25%"
+                      justify="space-between"
+                      w={["50%", "25%"]}
                       px={6}
                       key={dp.bsi_attachedcomponentid}
                     >
-                      <Image
-                        src={`${dp.bsi_AttachedComponent_bsi_ImageAsset_bsi_[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
-                        alt={dp.bsi_name}
-                        width={150}
-                        height={150}
-                        objectFit="contain"
-                      />
-                      <Text
-                        as="h5"
-                        fontWeight="bold"
-                        fontSize="1.2rem"
-                        color={betachGreen}
-                      >
-                        {dp.bsi_title}
-                      </Text>
-                      <Text as="p" textAlign="center" my={8} lineHeight="2">
-                        {dp.bsi_description}
-                      </Text>
+                      <Flex flexDirection="column" align="center">
+                        <Image
+                          src={`${dp.bsi_AttachedComponent_bsi_ImageAsset_bsi_[0].bsi_cdnurl}?fm=jpg&fl=progressive`}
+                          alt={dp.bsi_name}
+                          width={150}
+                          height={150}
+                          objectFit="contain"
+                        />
+                        <Text
+                          as="h5"
+                          fontWeight="bold"
+                          fontSize="1.2rem"
+                          color={betachGreen}
+                        >
+                          {dp.bsi_title}
+                        </Text>
+                        <Text as="p" textAlign="center" my={8} lineHeight="2">
+                          {dp.bsi_description}
+                        </Text>
+                      </Flex>
                       {dp.bsi_hasctabutton && (
                         <NextLink
                           href={dp.bsi_ctabuttonlink || "/test"}

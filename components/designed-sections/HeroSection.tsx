@@ -82,7 +82,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
             </Heading>
             <Heading
               color="black"
-              fontSize="3.5rem"
+              fontSize={["2.5rem", "3.5rem"]}
               mb={6}
               opacity={1}
               textTransform="uppercase"
@@ -170,7 +170,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
                             </Heading>
                             <Heading
                               color="black"
-                              fontSize="3.5rem"
+                              fontSize={["2.5rem", "3.5rem"]}
                               mb={6}
                               opacity={1}
                               textTransform="uppercase"

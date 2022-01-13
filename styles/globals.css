@@ -35,3 +35,14 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.dialogProviderContainerStyle {
+  width: 100% !important;
+}
+
+@media only screen and (max-width: 480px) {
+  html,
+  body {
+    font-size: 8px;
+  }
+}

@@ -20,7 +20,8 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
       sectionId={dynamicsPageSection.bsi_sectionid}
       key={dynamicsPageSection.bsi_pagesectionid}
       w="100%"
-      h="100vh"
+      minH="80vh"
+      h="fit-content"
       position="relative"
       overflow="hidden"
     >
@@ -31,7 +32,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
         bgSize="cover"
         bgPos="center"
         w="100%"
-        minH="100vh"
+        minH="80vh"
         bgAttachment="fixed"
         bgRepeat="no-repeat"
         flexDirection="column"
@@ -39,15 +40,15 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
       ></Center>
       <Flex
         w="100%"
-        h="100vh"
-        minH="100vh"
+        minH="80vh"
         justify="space-between"
         position="absolute"
+        flexDirection={["column", "row"]}
         top={0}
         mx="auto"
         p={16}
       >
-        <Flex w="45%" flexDir="column">
+        <Flex w={["100%", "45%"]} flexDir="column">
           <Text
             as="h4"
             color={betachGreen}
@@ -81,7 +82,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
           <Text as="p">{dynamicsPageSection.bsi_paragraph}</Text>
         </Flex>
         <Box
-          w="45%"
+          w={["100%", "45%"]}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html:
