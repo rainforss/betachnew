@@ -12,6 +12,8 @@ interface IContactFormSectionProps {
 const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
   dynamicsPageSection,
 }) => {
+  const formContainerRef = React.createRef<HTMLDivElement>();
+
   if (!dynamicsPageSection) {
     return null;
   }
@@ -20,35 +22,36 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
       sectionId={dynamicsPageSection.bsi_sectionid}
       key={dynamicsPageSection.bsi_pagesectionid}
       w="100%"
-      minH="80vh"
-      h="fit-content"
+      minH={["80vh", "100vh"]}
       position="relative"
       overflow="hidden"
+      bgImage={`${dynamicsPageSection.bsi_Background.bsi_cdnurl}?fm=jpg&fl=progressive`}
+      bgSize="cover"
+      bgPos="center"
     >
-      <Center
+      {/* <Center
         id="hero-background"
         bgImage={`${dynamicsPageSection.bsi_Background.bsi_cdnurl}?fm=jpg&fl=progressive`}
         opacity={0.45}
         bgSize="cover"
         bgPos="center"
         w="100%"
-        minH="80vh"
+        minH={["80vh", "100vh"]}
         bgAttachment="fixed"
         bgRepeat="no-repeat"
         flexDirection="column"
         position="relative"
-      ></Center>
+      ></Center> */}
       <Flex
         w="100%"
-        minH="80vh"
+        minH={["80vh", "100vh"]}
         justify="space-between"
-        position="absolute"
         flexDirection={["column", "row"]}
-        top={0}
         mx="auto"
         p={16}
+        ref={formContainerRef}
       >
-        <Flex w={["100%", "45%"]} flexDir="column">
+        <Flex w={["100%", "45%"]} flexDir="column" mb={[12, 0]}>
           <Text
             as="h4"
             color={betachGreen}
@@ -60,13 +63,14 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
           </Text>
           <Text
             as="h2"
-            fontSize="2.5rem"
+            fontSize={["1.75rem", "2.5rem"]}
             fontWeight="700"
             mb={4}
             pb={4}
             borderStyle="dotted"
             borderColor="#9be368"
             borderWidth="0 0 5px 0"
+            textTransform="uppercase"
           >
             {dynamicsPageSection.bsi_mainheading}
           </Text>

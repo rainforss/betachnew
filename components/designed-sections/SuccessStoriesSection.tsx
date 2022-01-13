@@ -109,13 +109,14 @@ const SuccessStoriesSection: React.FunctionComponent<
             <Heading
               as="h2"
               color="blackAlpha.900"
-              fontSize="2.5rem"
+              fontSize={["1.75rem", "2.5rem"]}
               fontWeight="bold"
               mb={24}
               p={4}
               borderStyle="dotted"
               borderColor="#9be368"
               borderWidth="0 0 5px 0"
+              textTransform="uppercase"
             >
               {dynamicsPageSection.bsi_mainheading || "Success Stories"}
             </Heading>

@@ -104,7 +104,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
             </Heading>
             <Text
               as="h3"
-              fontSize={["2rem", "2.5rem"]}
+              fontSize={["1.75rem", "2.5rem"]}
               fontWeight="extrabold"
               p={4}
               mb={4}

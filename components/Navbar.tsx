@@ -89,6 +89,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
         fontWeight="bold"
         align="center"
         display="none"
+        w={["33%", "auto"]}
         sx={{ "@media screen and (min-width: 480px)": { display: "flex" } }}
       >
         {menuItems.map((mi) => (
@@ -100,7 +101,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
         ))}
       </Flex>
       <MotionBox
-        w="calc(100vw - 3px)"
+        w="calc(100vw)"
         h="100vh"
         bg="white"
         position="absolute"

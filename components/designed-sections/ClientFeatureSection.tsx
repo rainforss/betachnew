@@ -96,7 +96,7 @@ const ClientFeatureSection: React.FunctionComponent<
             </Text>
             <Text
               as="h2"
-              fontSize={["2rem", "2.5rem"]}
+              fontSize={["1.75rem", "2.5rem"]}
               fontWeight="700"
               mb={4}
               pb={4}

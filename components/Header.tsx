@@ -28,7 +28,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         h="100%"
         align="center"
       >
-        <Link w="33%" href="/">
+        <Link w={["33%", "200px"]} href="/">
           <Image
             src={companyLogoUrl}
             alt="Betach Logo"
