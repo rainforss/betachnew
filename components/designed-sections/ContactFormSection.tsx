@@ -47,6 +47,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
         minH={["80vh", "100vh"]}
         justify="space-between"
         flexDirection={["column", "row"]}
+        bgColor="rgba(255,255,255,0.75)"
         mx="auto"
         p={16}
         ref={formContainerRef}
