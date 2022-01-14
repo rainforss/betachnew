@@ -1,85 +1,20 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/layout";
 import * as React from "react";
 import { betachGreen } from "../../utils/constants";
-import { DynamicsPageSection, PageSection } from "../../utils/types";
+import { DynamicsPageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 
 interface IClientFeatureSectionProps {
-  pageSection?: PageSection;
   dynamicsPageSection?: DynamicsPageSection;
 }
 
 const ClientFeatureSection: React.FunctionComponent<
   IClientFeatureSectionProps
-> = ({ pageSection, dynamicsPageSection }) => {
-  if (pageSection) {
-    return (
-      <AnchorSection
-        sectionId={pageSection.fields.sectionId || "tarin-resources-casestudy"}
-        key={pageSection.sys.id}
-      >
-        <Center minH="120vh" flexDirection="column" mx="auto">
-          <Flex flexDirection="column" align="center" w="70%">
-            <Text
-              as="h4"
-              color={betachGreen}
-              fontWeight="bold"
-              fontSize="1.2rem"
-              textTransform="uppercase"
-            >
-              {pageSection.fields.sectionMainHeading || "Featured Client"}
-            </Text>
-            <Text as="h2" fontSize="2.5rem" fontWeight="700" my={2}>
-              {pageSection.fields.sectionSubHeading ||
-                "Tarin Resources | Betach Solutions"}
-            </Text>
-            <Text as="p" textAlign="center">
-              {pageSection.fields.sectionParagraph ||
-                "Betach worked alongside Tarin Resources to provide them with a powerful solution to manage their expert knowledge regarding data and technology, allowing their clients the freedom to be successful by utilizing the best data and services available."}
-            </Text>
-            {pageSection.fields.featuredProducts && (
-              <Text as="span" fontSize="1.2rem" fontWeight="900" mt={6} mb={10}>
-                Built on{" "}
-                {pageSection.fields.featuredProducts.map((p, index) => {
-                  if (index === 0) {
-                    return (
-                      <Text key={p} as="span">
-                        {p}
-                      </Text>
-                    );
-                  } else {
-                    return (
-                      <Text key={p} as="span">
-                        ,&nbsp;{p}
-                      </Text>
-                    );
-                  }
-                })}
-              </Text>
-            )}
-          </Flex>
-          {pageSection.fields.videoUrl && (
-            <iframe
-              src={pageSection.fields.videoUrl}
-              srcDoc={`<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href=https://www.youtube.com/embed/${pageSection.fields.youtubeVideoId}?autoplay=1><img src=https://img.youtube.com/vi/${pageSection.fields.youtubeVideoId}/maxresdefault.jpg alt='${pageSection.fields.youtubeVideoAltText}'><span>▶</span></a>`}
-              height="700"
-              width="70%"
-              scrolling="no"
-              frameBorder="0"
-              allowFullScreen={true}
-            ></iframe>
-          )}
-          <Box h="50px" bgColor={betachGreen} w="70%" my={8}></Box>
-        </Center>
-      </AnchorSection>
-    );
-  }
+> = ({ dynamicsPageSection }) => {
   if (dynamicsPageSection) {
     return (
       <AnchorSection
-        sectionId={
-          dynamicsPageSection.bsi_sectionid || "tarin-resources-casestudy"
-        }
+        sectionId={dynamicsPageSection.bsi_sectionid}
         key={dynamicsPageSection.bsi_pagesectionid}
         py={24}
       >
@@ -87,16 +22,17 @@ const ClientFeatureSection: React.FunctionComponent<
           <Flex flexDirection="column" align="center" w={["90%", "70%"]}>
             <Text
               as="h4"
-              color={betachGreen}
+              color={dynamicsPageSection.bsi_overlinetextcolor || "inherit"}
               fontWeight="bold"
               fontSize="1.2rem"
               textTransform="uppercase"
             >
-              {dynamicsPageSection.bsi_overline || "Featured Client"}
+              {dynamicsPageSection.bsi_overline}
             </Text>
             <Text
               as="h2"
               fontSize={["1.75rem", "2.5rem"]}
+              color={dynamicsPageSection.bsi_mainheadingtextcolor || "inherit"}
               fontWeight="700"
               mb={4}
               pb={4}
@@ -105,12 +41,14 @@ const ClientFeatureSection: React.FunctionComponent<
               borderWidth="0 0 5px 0"
               textTransform="uppercase"
             >
-              {dynamicsPageSection.bsi_mainheading ||
-                "Tarin Resources | Betach Solutions"}
+              {dynamicsPageSection.bsi_mainheading}
             </Text>
-            <Text as="p" textAlign="center">
-              {dynamicsPageSection.bsi_paragraph ||
-                "Betach worked alongside Tarin Resources to provide them with a powerful solution to manage their expert knowledge regarding data and technology, allowing their clients the freedom to be successful by utilizing the best data and services available."}
+            <Text
+              as="p"
+              textAlign="center"
+              color={dynamicsPageSection.bsi_paragraphtextcolor || "inherit"}
+            >
+              {dynamicsPageSection.bsi_paragraph}
             </Text>
             {dynamicsPageSection.bsi_featuredproducts && (
               <Text as="span" fontSize="1.2rem" fontWeight="900" mt={6} mb={10}>

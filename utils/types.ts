@@ -93,8 +93,11 @@ export type DynamicsPageSection = {
     }>;
   }>;
   bsi_PageSection_bsi_ImageAsset_bsi_ImageA: Array<{
+    bsi_imageassetid: string;
     bsi_name: string;
     bsi_cdnurl: string;
+    bsi_alttext: string;
+    bsi_referencingurl: string;
   }>;
 
   bsi_DesignedSection: {

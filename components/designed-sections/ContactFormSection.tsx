@@ -1,8 +1,7 @@
 import * as React from "react";
 import { DynamicsPageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
-import Image from "next/image";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { betachGreen } from "../../utils/constants";
 
 interface IContactFormSectionProps {

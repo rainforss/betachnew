@@ -6,85 +6,16 @@ import NextLink from "next/link";
 import { betachGreen, royalblue } from "../../utils/constants";
 
 interface IProductSectionProps {
-  pageSection?: PageSection;
   dynamicsPageSection?: DynamicsPageSection;
-  accessToken: string;
 }
 
 const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
-  pageSection,
   dynamicsPageSection,
 }) => {
-  if (pageSection) {
-    return (
-      <AnchorSection
-        sectionId={pageSection.fields.sectionId || "introduction"}
-        key={pageSection.sys.id}
-      >
-        <Box w="100%" mb={24}>
-          <Flex flexDirection="column" w="90%" mx="auto" align="center">
-            <Heading
-              color="blackAlpha.900"
-              fontSize="1.5rem"
-              fontWeight="bold"
-              mb={6}
-              mt={24}
-            >
-              {pageSection.fields.sectionMainHeading ||
-                "Explore Dynamics 365 applications"}
-            </Heading>
-            <Text as="h3" fontSize="2.5rem" fontWeight="extrabold" mb={24}>
-              {pageSection.fields.sectionSubHeading || "Choose your fit."}
-            </Text>
-
-            <Flex>
-              {pageSection.fields.displayedProducts &&
-                pageSection.fields.displayedProducts.map((dp) => (
-                  <Flex
-                    flexDirection="column"
-                    align="center"
-                    w="25%"
-                    px={6}
-                    key={dp.sys.id}
-                  >
-                    <Image
-                      src={dp.fields.productImage.fields.file.url}
-                      alt={dp.fields.productImage.fields.file.fileName}
-                      width={300}
-                      height={300}
-                      objectFit="contain"
-                    />
-                    <Text as="h5" fontWeight="bold" color={betachGreen}>
-                      {dp.fields.productName}
-                    </Text>
-                    <Text as="p" textAlign="center" my={8} lineHeight="2">
-                      {dp.fields.productDescription}
-                    </Text>
-                    <NextLink href={dp.fields.relativeUrl}>
-                      <Text
-                        as="span"
-                        py={4}
-                        px={6}
-                        bg={royalblue}
-                        color="whiteAlpha.800"
-                        borderRadius="300px"
-                      >
-                        {pageSection.fields.ctaButtonText || "Learn more"}
-                      </Text>
-                    </NextLink>
-                  </Flex>
-                ))}
-            </Flex>
-          </Flex>
-        </Box>
-      </AnchorSection>
-    );
-  }
-
   if (dynamicsPageSection) {
     return (
       <AnchorSection
-        sectionId={dynamicsPageSection.bsi_sectionid || "introduction"}
+        sectionId={dynamicsPageSection.bsi_sectionid}
         key={dynamicsPageSection.bsi_pagesectionid}
         py={36}
         width="95%"
@@ -94,17 +25,17 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
         <Box w="100%">
           <Flex flexDirection="column" w="100%" mx="auto" align="center">
             <Heading
-              color="#9be368"
+              color={dynamicsPageSection.bsi_overlinetextcolor || "inherit"}
               fontSize={["1.25rem", "1.5rem"]}
               fontWeight="bold"
               textTransform="uppercase"
             >
-              {dynamicsPageSection.bsi_overline ||
-                "Explore Dynamics 365 applications"}
+              {dynamicsPageSection.bsi_overline}
             </Heading>
             <Text
               as="h3"
               fontSize={["1.75rem", "2.5rem"]}
+              color={dynamicsPageSection.bsi_mainheadingtextcolor || "inherit"}
               fontWeight="extrabold"
               p={4}
               mb={4}
@@ -113,7 +44,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
               borderWidth="0 0 5px 0"
               textTransform="uppercase"
             >
-              {dynamicsPageSection.bsi_mainheading || "Choose your fit."}
+              {dynamicsPageSection.bsi_mainheading}
             </Text>
 
             <Flex flexWrap="wrap">
@@ -140,11 +71,17 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                           as="h5"
                           fontWeight="bold"
                           fontSize="1.2rem"
-                          color={betachGreen}
+                          color={dp.bsi_titletextcolor || "inherit"}
                         >
                           {dp.bsi_title}
                         </Text>
-                        <Text as="p" textAlign="center" my={8} lineHeight="2">
+                        <Text
+                          as="p"
+                          textAlign="center"
+                          my={8}
+                          lineHeight="2"
+                          color={dp.bsi_descriptiontextcolor || "inherit"}
+                        >
                           {dp.bsi_description}
                         </Text>
                       </Flex>
@@ -157,8 +94,10 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                             as="a"
                             py={2}
                             px={6}
-                            bg={royalblue}
-                            color="whiteAlpha.800"
+                            bgColor={
+                              dp.bsi_ctabuttonbgcolor || "whiteAlpha.900"
+                            }
+                            color={dp.bsi_ctabuttontextcolor || "inherit"}
                             borderRadius="300px"
                             transition="ease all 0.5s"
                             _hover={{

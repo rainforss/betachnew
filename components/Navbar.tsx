@@ -18,9 +18,7 @@ const MotionBox = motion<BoxProps>(Box);
 const MotionFlex = motion<FlexProps>(Flex);
 
 const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
-  const [isLargerThan480] = useMediaQuery("(min-width: 480px)");
   const [menuOpen, setMenuOpen] = useState(false);
-  const controls = useAnimation();
 
   const menu: Variants = {
     open: (origin) => ({

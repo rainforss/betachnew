@@ -81,27 +81,24 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
               {dynamicsPageSection.bsi_overline}
             </Heading>
             <Heading
-              color="black"
+              color={dynamicsPageSection.bsi_mainheadingtextcolor || "inherit"}
               fontSize={["2.5rem", "3.5rem"]}
               mb={6}
               opacity={1}
               textTransform="uppercase"
             >
-              {dynamicsPageSection.bsi_mainheading ||
-                "Your Dynamics 365 Experts"}
+              {dynamicsPageSection.bsi_mainheading}
             </Heading>
-            <Text as="h3" opacity={1} color="black" mb={12}>
-              {dynamicsPageSection.bsi_subheading ||
-                "Saving your business time and money by boosting productivity, collaboration, and operational agility."}
+            <Text
+              as="h3"
+              opacity={1}
+              color={dynamicsPageSection.bsi_subheadingtextcolor || "inherit"}
+              mb={12}
+            >
+              {dynamicsPageSection.bsi_subheading}
             </Text>
             {dynamicsPageSection.bsi_hasctabutton && (
-              <NextLink
-                href={
-                  dynamicsPageSection.bsi_ctabuttonlink ||
-                  "https://outlook.office365.com/owa/calendar/BetachSolutions@betach.com/bookings/"
-                }
-                passHref
-              >
+              <NextLink href={dynamicsPageSection.bsi_ctabuttonlink} passHref>
                 <Text
                   as="a"
                   py={2}
@@ -118,7 +115,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
                   bgColor={dynamicsPageSection.bsi_ctabuttonbgcolor || "white"}
                   boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
                 >
-                  {dynamicsPageSection.bsi_ctabuttontext || "Get Started"}
+                  {dynamicsPageSection.bsi_ctabuttontext}
                 </Text>
               </NextLink>
             )}
@@ -175,20 +172,13 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
                               opacity={1}
                               textTransform="uppercase"
                             >
-                              {a.bsi_title || "Your Dynamics 365 Experts"}
+                              {a.bsi_title}
                             </Heading>
                             <Text as="h3" opacity={1} color="black" mb={12}>
-                              {a.bsi_subtitle ||
-                                "Saving your business time and money by boosting productivity, collaboration, and operational agility."}
+                              {a.bsi_subtitle}
                             </Text>
                             {a.bsi_hasctabutton && (
-                              <NextLink
-                                href={
-                                  a.bsi_ctabuttonlink ||
-                                  "https://outlook.office365.com/owa/calendar/BetachSolutions@betach.com/bookings/"
-                                }
-                                passHref
-                              >
+                              <NextLink href={a.bsi_ctabuttonlink} passHref>
                                 <Text
                                   as="a"
                                   py={2}
@@ -206,7 +196,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
                                   bgColor={a.bsi_ctabuttonbgcolor || "white"}
                                   boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
                                 >
-                                  {a.bsi_ctabuttontext || "Get Started"}
+                                  {a.bsi_ctabuttontext}
                                 </Text>
                               </NextLink>
                             )}

@@ -1,7 +1,6 @@
 import { Link } from "@chakra-ui/layout";
 import * as React from "react";
 import NextLink from "next/link";
-import { royalblue } from "../utils/constants";
 
 interface INavbarItemProps {
   faceMenuItem: any;
