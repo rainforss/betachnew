@@ -64,10 +64,12 @@ export type DynamicsPageSection = {
   bsi_sectionid: string;
   bsi_featuredproducts: string;
   bsi_backgroundcolor: string;
+  bsi_bordercolor: string;
   bsi_overlinetextcolor: string;
   bsi_mainheadingtextcolor: string;
   bsi_subheadingtextcolor: string;
   bsi_paragraphtextcolor: string;
+  bsi_ctabuttonhoverbgcolor: string;
   bsi_ctabuttontextcolor: string;
   bsi_ctabuttonbgcolor: string;
   bsi_AttachedComponent_bsi_PageSection_bsi: Array<{
@@ -79,8 +81,10 @@ export type DynamicsPageSection = {
     bsi_ctabuttontext: string;
     bsi_ctabuttonlink: string;
     bsi_ctabuttonbgcolor: string;
+    bsi_ctabuttonhoverbgcolor: string;
     bsi_ctabuttontextcolor: string;
     bsi_backgroundcolor: string;
+    bsi_bordercolor: string;
     bsi_overline: string;
     bsi_overlinetextcolor: string;
     bsi_title: string;

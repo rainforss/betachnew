@@ -2,18 +2,17 @@ import { Box, Center, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import * as React from "react";
 import Carousel from "react-multi-carousel";
-import { DynamicsPageSection, PageSection } from "../../utils/types";
+import { DynamicsPageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import "react-multi-carousel/lib/styles.css";
 
 interface ISuccessStoriesSectionProps {
-  pageSection?: PageSection;
   dynamicsPageSection?: DynamicsPageSection;
 }
 
 const SuccessStoriesSection: React.FunctionComponent<
   ISuccessStoriesSectionProps
-> = ({ pageSection, dynamicsPageSection }) => {
+> = ({ dynamicsPageSection }) => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -58,7 +57,7 @@ const SuccessStoriesSection: React.FunctionComponent<
               mb={24}
               p={4}
               borderStyle="dotted"
-              borderColor="#9be368"
+              borderColor={dynamicsPageSection.bsi_bordercolor || "transparent"}
               borderWidth="0 0 5px 0"
               textTransform="uppercase"
             >

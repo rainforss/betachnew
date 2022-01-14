@@ -40,7 +40,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
               p={4}
               mb={4}
               borderStyle="dotted"
-              borderColor="#9be368"
+              borderColor={dynamicsPageSection.bsi_bordercolor || "transparent"}
               borderWidth="0 0 5px 0"
               textTransform="uppercase"
             >

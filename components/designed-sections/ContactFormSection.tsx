@@ -11,8 +11,6 @@ interface IContactFormSectionProps {
 const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
   dynamicsPageSection,
 }) => {
-  const formContainerRef = React.createRef<HTMLDivElement>();
-
   if (!dynamicsPageSection) {
     return null;
   }
@@ -49,12 +47,11 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
         bgColor="rgba(255,255,255,0.75)"
         mx="auto"
         p={16}
-        ref={formContainerRef}
       >
         <Flex w={["100%", "45%"]} flexDir="column" mb={[12, 0]}>
           <Text
             as="h4"
-            color={betachGreen}
+            color={dynamicsPageSection.bsi_overlinetextcolor || "inherit"}
             fontWeight="bold"
             fontSize="1.2rem"
             textTransform="uppercase"
@@ -65,10 +62,11 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
             as="h2"
             fontSize={["1.75rem", "2.5rem"]}
             fontWeight="700"
+            color={dynamicsPageSection.bsi_mainheadingtextcolor || "inherit"}
             mb={4}
             pb={4}
             borderStyle="dotted"
-            borderColor="#9be368"
+            borderColor={dynamicsPageSection.bsi_bordercolor || "transparent"}
             borderWidth="0 0 5px 0"
             textTransform="uppercase"
           >
@@ -76,6 +74,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
           </Text>
           <Text
             as="h4"
+            color={dynamicsPageSection.bsi_subheadingtextcolor || "inherit"}
             fontWeight="bold"
             fontSize="1.2rem"
             textTransform="uppercase"
@@ -83,7 +82,12 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
           >
             {dynamicsPageSection.bsi_subheading}
           </Text>
-          <Text as="p">{dynamicsPageSection.bsi_paragraph}</Text>
+          <Text
+            as="p"
+            color={dynamicsPageSection.bsi_paragraphtextcolor || "inherit"}
+          >
+            {dynamicsPageSection.bsi_paragraph}
+          </Text>
         </Flex>
         <Box
           w={["100%", "45%"]}
