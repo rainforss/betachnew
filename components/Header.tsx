@@ -1,4 +1,13 @@
-import { Box, Center, Flex, Image, Link, Text } from "@chakra-ui/react";
+import { EmailIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Center,
+  Flex,
+  IconButton,
+  Image,
+  Link,
+  Text,
+} from "@chakra-ui/react";
 import * as React from "react";
 import Navbar from "./Navbar";
 
@@ -28,7 +37,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         h="100%"
         align="center"
       >
-        <Link w={["33%", "200px"]} href="/">
+        <Link w={{ base: "22%", lg: "200px" }} href="/">
           <Image
             src={companyLogoUrl}
             alt="Betach Logo"
@@ -37,12 +46,14 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           />
         </Link>
         <Navbar menuItems={menuItems} />
-        <Center w={["33%", "auto"]}>
+        <Center w={["auto", "auto"]}>
           <Text
             as="a"
             href="#"
             py={2}
-            px={6}
+            px={{ base: 4, xl: 6 }}
+            display={{ base: "none", md: "inline" }}
+            fontSize={["0.7rem", "0.8rem"]}
             transition="ease all 0.5s"
             color="black"
             background="white"
@@ -57,6 +68,15 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           >
             GET IN TOUCH
           </Text>
+          <IconButton
+            display={{ base: "block", md: "none" }}
+            colorScheme="teal"
+            fontSize={{ base: "2rem", md: "1rem" }}
+            w={{ base: "5rem", md: "auto" }}
+            h={{ base: "5rem", md: "2.5rem" }}
+            aria-label="Get in touch"
+            icon={<EmailIcon />}
+          />
         </Center>
       </Flex>
     </Box>

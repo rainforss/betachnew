@@ -55,7 +55,7 @@ const ProductSection: React.FunctionComponent<IProductSectionProps> = ({
                       flexDirection="column"
                       align="center"
                       justify="space-between"
-                      w={["50%", "25%"]}
+                      w={{ base: "50%", md: "25%" }}
                       px={6}
                       key={dp.bsi_attachedcomponentid}
                     >

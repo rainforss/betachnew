@@ -18,7 +18,7 @@ const NavbarItem: React.FunctionComponent<INavbarItemProps> = (props) => {
         borderRadius="300px"
         color={"blackAlpha.800"}
         textTransform="uppercase"
-        fontSize={["2rem", "1rem"]}
+        fontSize={{ base: "2rem", lg: "0.9rem" }}
       >
         {props.faceMenuItem.bsi_name}
       </Link>

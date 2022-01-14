@@ -88,7 +88,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
         align="center"
         display="none"
         w={["33%", "auto"]}
-        sx={{ "@media screen and (min-width: 480px)": { display: "flex" } }}
+        sx={{ "@media screen and (min-width: 992px)": { display: "flex" } }}
       >
         {menuItems.map((mi) => (
           <MenuItemDropdown
@@ -99,14 +99,14 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
         ))}
       </Flex>
       <MotionBox
-        w="calc(100vw)"
+        w="calc(100vw - 3px)"
         h="100vh"
         bg="white"
         position="absolute"
         top="0"
         left="0"
         display="block"
-        sx={{ "@media screen and (min-width: 480px)": { display: "none" } }}
+        sx={{ "@media screen and (min-width: 992px)": { display: "none" } }}
         clipPath="circle(25px at 50% 70.5px)"
         animate={menuOpen ? "expand" : "collapse"}
         variants={menu}
@@ -116,7 +116,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
           w="30px"
           h="21px"
           mx="auto"
-          display={["flex", "none"]}
+          display={{ base: "flex", lg: "none" }}
           flexDirection="column"
           justify="space-between"
           onClick={() => setMenuOpen((prevstate) => !prevstate)}

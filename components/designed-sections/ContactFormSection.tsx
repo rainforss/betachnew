@@ -19,7 +19,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
       sectionId={dynamicsPageSection.bsi_sectionid}
       key={dynamicsPageSection.bsi_pagesectionid}
       w="100%"
-      minH={["80vh", "100vh"]}
+      minH={{ base: "60vh", md: "80vh" }}
       position="relative"
       overflow="hidden"
       bgImage={`${dynamicsPageSection.bsi_Background.bsi_cdnurl}?fm=jpg&fl=progressive`}
@@ -41,14 +41,14 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
       ></Center> */}
       <Flex
         w="100%"
-        minH={["80vh", "100vh"]}
+        minH={{ base: "60vh", md: "80vh" }}
         justify="space-between"
-        flexDirection={["column", "row"]}
+        flexDirection={{ base: "column", md: "row" }}
         bgColor="rgba(255,255,255,0.75)"
         mx="auto"
         p={16}
       >
-        <Flex w={["100%", "45%"]} flexDir="column" mb={[12, 0]}>
+        <Flex w={{ base: "100%", md: "45%" }} flexDir="column" mb={[12, 0]}>
           <Text
             as="h4"
             color={dynamicsPageSection.bsi_overlinetextcolor || "inherit"}
@@ -90,7 +90,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
           </Text>
         </Flex>
         <Box
-          w={["100%", "45%"]}
+          w={{ base: "100%", md: "45%" }}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html:
