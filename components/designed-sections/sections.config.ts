@@ -8,6 +8,9 @@ import SuccessStoriesSection from "./SuccessStoriesSection";
 import BlogsDisplaySection from "./BlogsDisplaySection";
 import SingleBlogSection from "./SingleBlogSection";
 import ContactFormSection from "./ContactFormSection";
+import ProductOverviewSection from "./ProductOverviewSection";
+import ProductFeatureVideoLeftSection from "./ProductFeatureVideoLeftSection";
+import ProductFeatureVideoRightSection from "./ProductFeatureVideoRightSection";
 
 const sections: { [key: string]: FunctionComponent<any> } = {
   BusinessBanterSection,
@@ -19,6 +22,9 @@ const sections: { [key: string]: FunctionComponent<any> } = {
   BlogsDisplaySection,
   SingleBlogSection,
   ContactFormSection,
+  ProductOverviewSection,
+  ProductFeatureVideoLeftSection,
+  ProductFeatureVideoRightSection,
 };
 
 export default sections;

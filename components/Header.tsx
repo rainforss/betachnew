@@ -71,6 +71,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
           <IconButton
             display={{ base: "block", md: "none" }}
             colorScheme="teal"
+            margin="0px"
             fontSize={{ base: "2rem", md: "1rem" }}
             w={{ base: "5rem", md: "auto" }}
             h={{ base: "5rem", md: "2.5rem" }}

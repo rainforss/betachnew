@@ -5,7 +5,6 @@ import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
 import sectionConfig from "../components/designed-sections/sections.config";
 import Layout from "../components/Layout";
-import SectionControl from "../components/SectionControl";
 import cca from "../utils/cca";
 import { getAllPageContents } from "../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
@@ -81,10 +80,6 @@ const DynamicsPages: NextPage<DynamicsPagesProps> = (
             key: s.pagesectionid,
           })
       )}
-      <SectionControl
-        dynamicsPageSections={props.dynamicsPageSections}
-        currentHash={currentHash}
-      />
     </Layout>
   );
 };
