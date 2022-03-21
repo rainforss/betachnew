@@ -6,24 +6,20 @@ import cca from "../../utils/cca";
 import { getAllPageContents } from "../../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
 import { dynamicsWebpageQuery } from "../../utils/queries";
-import { DynamicsPageSection, xmlDynamicsBlog } from "../../utils/types";
+import {
+  DynamicsPageProps,
+  DynamicsPageSection,
+  xmlDynamicsBlog,
+} from "../../utils/types";
 
-interface IBlogsProps {
-  error?: any;
-  // accessToken?: string;
-  dynamicsPageSections: DynamicsPageSection[];
-  dynamicsHeaderMenuItems: any[];
-  dynamicsFooterMenuItems: any[];
-  dynamicsBlogs: xmlDynamicsBlog[];
-  companyLogoUrl: string;
-  preview: boolean;
-}
+interface IBlogsProps extends DynamicsPageProps {}
 
 const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
       preview={props.preview}
     >
@@ -61,6 +57,7 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
       dynamicsBlogs,
+      dynamicsSocialPlatforms,
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
@@ -80,6 +77,7 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
         dynamicsBlogs: dynamicsBlogs.value,
+        dynamicsSocialPlatforms: dynamicsSocialPlatforms.value,
         companyLogoUrl:
           dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },

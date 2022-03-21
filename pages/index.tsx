@@ -7,23 +7,16 @@ import cca from "../utils/cca";
 import { getAllPageContents } from "../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
 import { dynamicsWebpageQuery } from "../utils/queries";
-import { DynamicsPageSection, PageSection } from "../utils/types";
+import { DynamicsPageProps } from "../utils/types";
 
-interface DynamicsProps {
-  pageSections?: PageSection[];
-  error?: any;
-  dynamicsPageSections: DynamicsPageSection[];
-  dynamicsHeaderMenuItems: any[];
-  dynamicsFooterMenuItems: any[];
-  companyLogoUrl: string;
-  preview: boolean;
-}
+interface DynamicsProps extends DynamicsPageProps {}
 
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
       preview={props.preview}
     >
@@ -32,6 +25,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
           sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
           sectionConfig[s["bsi_DesignedSection"].bsi_name]({
             dynamicsPageSection: s,
+            dynamicsBlogs: props.dynamicsBlogs,
             key: s.pagesectionid,
           })
       )}
@@ -55,6 +49,8 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
+      dynamicsBlogs,
+      dynamicsSocialPlatforms,
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
@@ -72,6 +68,8 @@ export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
+        dynamicsBlogs: dynamicsBlogs.value,
+        dynamicsSocialPlatforms: dynamicsSocialPlatforms.value,
         companyLogoUrl:
           dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },

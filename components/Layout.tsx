@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/layout";
 import { Button, Tooltip } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import * as React from "react";
+import { DynamicsSocialPlatform } from "../utils/types";
 import BreadCrumb from "./BreadCrumb";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -11,6 +12,7 @@ interface ILayoutProps {
   children?: React.ReactNode | string;
   headerMenuItems: any[];
   footerMenuItems: any[];
+  dynamicsSocialPlatforms: DynamicsSocialPlatform[];
   companyLogoUrl: string;
   preview?: boolean;
 }
@@ -48,7 +50,10 @@ const Layout: React.FunctionComponent<ILayoutProps> = (props) => {
         </Tooltip>
       )}
       {props.children}
-      <Footer menuItems={props.footerMenuItems} />
+      <Footer
+        menuItems={props.footerMenuItems}
+        dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
+      />
     </Box>
   );
 };

@@ -14,6 +14,7 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
   if (!dynamicsPageSection) {
     return null;
   }
+
   return (
     <AnchorSection
       sectionId={dynamicsPageSection.bsi_sectionid}

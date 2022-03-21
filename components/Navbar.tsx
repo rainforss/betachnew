@@ -1,14 +1,7 @@
-import { SearchIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Flex,
-  useMediaQuery,
-  BoxProps,
-  FlexProps,
-} from "@chakra-ui/react";
+import { Box, Flex, BoxProps, FlexProps } from "@chakra-ui/react";
 import MenuItemDropdown from "./NavbarItem";
-import { motion, useAnimation, Variants } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, Variants } from "framer-motion";
+import { useState } from "react";
 
 interface INavbarProps {
   menuItems: any[];
@@ -82,6 +75,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
   return (
     <>
       <Flex
+        as="nav"
         justify="space-around"
         fontSize="1rem"
         fontWeight="bold"

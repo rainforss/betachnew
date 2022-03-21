@@ -9,6 +9,7 @@ import {
   dynamicsFooterMenuItemsQuery,
   dynamicsHeaderMenuItemsQuery,
   dynamicsPageSectionsQuery,
+  dynamicsSocialPlatformsQuery,
   generateBlogsODataQuery,
 } from "./queries";
 
@@ -87,22 +88,36 @@ export const getAllPageContents = async (
           )
         : { value: {} };
 
+    const dynamicsSocialPlatformRequest = retrieveMultiple(
+      config,
+      "bsi_socialplatforms",
+      `${
+        includeDraft ? "" : "$filter=bsi_published ne false&"
+      }${dynamicsSocialPlatformsQuery}`
+    );
+
     const promises = [
       dynamicsHeaderMenuItemsRequest,
       dynamicsFooterMenuItemsRequest,
       dynamicsBlogsRequest,
+      dynamicsSocialPlatformRequest,
     ];
 
     const otherResults = await Promise.all(promises);
 
-    const [dynamicsHeaderMenuItems, dynamicsFooterMenuItems, dynamicsBlogs] =
-      otherResults;
+    const [
+      dynamicsHeaderMenuItems,
+      dynamicsFooterMenuItems,
+      dynamicsBlogs,
+      dynamicsSocialPlatforms,
+    ] = otherResults;
 
     return {
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
       dynamicsBlogs,
+      dynamicsSocialPlatforms,
     };
   } catch (error) {
     throw error;

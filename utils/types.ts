@@ -35,6 +35,13 @@ export type DynamicsBlog = {
   modifiedon: string;
 };
 
+export type DynamicsSocialPlatform = {
+  bsi_name: string;
+  bsi_socialplatformid: string;
+  bsi_socialplatformchannel: number;
+  bsi_socialplatformurl: string;
+};
+
 export type xmlDynamicsBlog = {
   bsi_name: string;
   "bsi_imageasset3.bsi_alttext": string;
@@ -46,6 +53,18 @@ export type xmlDynamicsBlog = {
   bsi_blogbody: string;
   modifiedon: string;
 };
+
+export interface DynamicsPageProps {
+  error?: any;
+  dynamicsPageName: string;
+  dynamicsPageSections: DynamicsPageSection[];
+  dynamicsHeaderMenuItems: any[];
+  dynamicsFooterMenuItems: any[];
+  dynamicsBlogs: DynamicsBlog[];
+  dynamicsSocialPlatforms: any[];
+  companyLogoUrl: string;
+  preview: boolean;
+}
 
 export type DynamicsPageSection = {
   bsi_name: string;

@@ -9,18 +9,9 @@ import cca from "../utils/cca";
 import { getAllPageContents } from "../utils/getAllPageContents";
 import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
 import { dynamicsWebpageQuery } from "../utils/queries";
-import { DynamicsPageSection, PageSection } from "../utils/types";
+import { DynamicsBlog, DynamicsPageProps } from "../utils/types";
 
-interface DynamicsPagesProps {
-  pageSections?: PageSection[];
-  error?: any;
-  // accessToken?: string;
-  dynamicsPageSections: DynamicsPageSection[];
-  dynamicsHeaderMenuItems: any[];
-  dynamicsFooterMenuItems: any[];
-  companyLogoUrl: string;
-  preview: boolean;
-}
+interface DynamicsPagesProps extends DynamicsPageProps {}
 
 interface IParams extends ParsedUrlQuery {
   pageName: string;
@@ -29,46 +20,11 @@ interface IParams extends ParsedUrlQuery {
 const DynamicsPages: NextPage<DynamicsPagesProps> = (
   props: DynamicsPagesProps
 ) => {
-  const [currentHash, setCurrentHash] = useState("");
-  const [changingHash, setChangingHash] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    //Used to monitor section change, not supported on IE
-    const allSections = document.querySelectorAll("section");
-    const onSectionEntry = (entry: any[]) => {
-      entry.forEach((change: any) => {
-        if (change.isIntersecting && !changingHash) {
-          setChangingHash(true);
-          setCurrentHash(change.target.id);
-        }
-      });
-    };
-    const options = { threshold: [0.5] };
-    const observer = new IntersectionObserver(onSectionEntry, options);
-    for (let sec of allSections) {
-      observer.observe(sec);
-    }
-  });
-
-  useEffect(() => {
-    const onHashChangeStart = (url: string) => {
-      setChangingHash(true);
-      setCurrentHash(url.substr(2));
-    };
-
-    router.events.on("hashChangeStart", onHashChangeStart);
-
-    return () => {
-      setChangingHash(false);
-      router.events.off("hashChangeStart", onHashChangeStart);
-    };
-  }, [router.events]);
-
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
       preview={props.preview}
     >
@@ -77,6 +33,7 @@ const DynamicsPages: NextPage<DynamicsPagesProps> = (
           sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
           sectionConfig[s["bsi_DesignedSection"].bsi_name]({
             dynamicsPageSection: s,
+            dynamicsBlogs: props.dynamicsBlogs,
             key: s.pagesectionid,
           })
       )}
@@ -138,6 +95,8 @@ export const getStaticProps: GetStaticProps = async ({
       dynamicsPageSections,
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
+      dynamicsBlogs,
+      dynamicsSocialPlatforms,
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
@@ -155,6 +114,8 @@ export const getStaticProps: GetStaticProps = async ({
         dynamicsPageSections: dynamicsPageSections,
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
+        dynamicsSocialPlatforms: dynamicsSocialPlatforms.value,
+        dynamicsBlogs: dynamicsBlogs.value as DynamicsBlog[],
         companyLogoUrl:
           dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },

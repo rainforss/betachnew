@@ -22,6 +22,9 @@ export const dynamicsBlogAuthorsQuery =
 export const dynamicsBlogCategoriesQuery =
   "$select=bsi_name&$orderby=createdon asc&$expand=bsi_BlogCategory_bsi_Blog_bsi_Blog($select=bsi_name)";
 
+export const dynamicsSocialPlatformsQuery =
+  "$select=bsi_name,bsi_socialplatformurl,bsi_socialplatformchannel";
+
 export const generateBlogsODataQuery = (
   pageNumber: number,
   preview: boolean = false,

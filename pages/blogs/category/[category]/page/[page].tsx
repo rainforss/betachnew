@@ -10,20 +10,9 @@ import {
   dynamicsBlogCategoriesQuery,
   dynamicsWebpageQuery,
 } from "../../../../../utils/queries";
-import {
-  DynamicsPageSection,
-  xmlDynamicsBlog,
-} from "../../../../../utils/types";
+import { DynamicsPageProps } from "../../../../../utils/types";
 
-interface IBlogCategoryProps {
-  error?: any;
-  // accessToken?: string;
-  dynamicsPageSections: DynamicsPageSection[];
-  dynamicsHeaderMenuItems: any[];
-  dynamicsFooterMenuItems: any[];
-  dynamicsBlogs: xmlDynamicsBlog[];
-  companyLogoUrl: string;
-}
+interface IBlogCategoryProps extends DynamicsPageProps {}
 
 interface IParams extends ParsedUrlQuery {
   category: string;
@@ -35,6 +24,7 @@ const CategoryPage: React.FunctionComponent<IBlogCategoryProps> = (props) => {
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
     >
       {props.dynamicsPageSections?.map(
@@ -109,6 +99,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
       dynamicsBlogs,
+      dynamicsSocialPlatforms,
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
@@ -127,6 +118,7 @@ export const getStaticProps: GetStaticProps = async (req) => {
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
         dynamicsBlogs: dynamicsBlogs.value,
+        dynamicsSocialPlatforms: dynamicsSocialPlatforms.value,
         companyLogoUrl:
           dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },

@@ -1,5 +1,5 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
-import { GetStaticPaths, GetStaticPathsContext, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/dist/client/router";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
@@ -12,22 +12,13 @@ import {
   dynamicsBlogSlugsQuery,
   dynamicsWebpageQuery,
 } from "../../utils/queries";
-import { DynamicsBlog, DynamicsPageSection } from "../../utils/types";
+import { DynamicsPageProps } from "../../utils/types";
 
 interface IParams extends ParsedUrlQuery {
   slug: string;
 }
 
-interface ISlugProps {
-  error?: any;
-  // accessToken?: string;
-  dynamicsPageSections: DynamicsPageSection[];
-  dynamicsHeaderMenuItems: any[];
-  dynamicsFooterMenuItems: any[];
-  dynamicsBlogs: DynamicsBlog[];
-  companyLogoUrl: string;
-  preview: boolean;
-}
+interface ISlugProps extends DynamicsPageProps {}
 
 const Slug: React.FunctionComponent<ISlugProps> = (props) => {
   const router = useRouter();
@@ -40,6 +31,7 @@ const Slug: React.FunctionComponent<ISlugProps> = (props) => {
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
       footerMenuItems={props.dynamicsFooterMenuItems}
+      dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
       preview={props.preview}
     >
@@ -108,6 +100,7 @@ export const getStaticProps: GetStaticProps = async ({
       dynamicsHeaderMenuItems,
       dynamicsFooterMenuItems,
       dynamicsBlogs,
+      dynamicsSocialPlatforms,
     } = await getAllPageContents(
       config,
       dynamicsPageResult[0].bsi_webpageid,
@@ -131,6 +124,7 @@ export const getStaticProps: GetStaticProps = async ({
         dynamicsHeaderMenuItems: dynamicsHeaderMenuItems.value,
         dynamicsFooterMenuItems: dynamicsFooterMenuItems.value,
         dynamicsBlogs: dynamicsBlogs.value,
+        dynamicsSocialPlatforms: dynamicsSocialPlatforms.value,
         companyLogoUrl:
           dynamicsPageResult[0].bsi_Website.bsi_CompanyLogo.bsi_cdnurl,
       },
