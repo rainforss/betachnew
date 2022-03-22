@@ -72,15 +72,22 @@ const Footer: React.FunctionComponent<IFooterProps> = ({
         >
           <Flex w="60%" justifyContent="space-between" color="whiteAlpha.900">
             {dynamicsSocialPlatforms.map((p) => (
-              <Icon
-                fontSize="1.2rem"
+              <Link
+                href={p.bsi_socialplatformurl}
                 key={p.bsi_socialplatformid}
-                as={
-                  dynamicsSocialPlatformMap[
-                    p.bsi_socialplatformchannel as number
-                  ]
-                }
-              />
+                role="group"
+              >
+                <Icon
+                  fontSize="1.2rem"
+                  as={
+                    dynamicsSocialPlatformMap[
+                      p.bsi_socialplatformchannel as number
+                    ]
+                  }
+                  transition="transform 0.3s ease"
+                  _groupHover={{ transform: "scale(1.5,1.5)" }}
+                />
+              </Link>
             ))}
           </Flex>
           <Text as="p" color="whiteAlpha.700">

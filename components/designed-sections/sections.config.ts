@@ -11,6 +11,10 @@ import ContactFormSection from "./ContactFormSection";
 import ProductOverviewSection from "./ProductOverviewSection";
 import ProductFeatureVideoLeftSection from "./ProductFeatureVideoLeftSection";
 import ProductFeatureVideoRightSection from "./ProductFeatureVideoRightSection";
+import HalfBackgroundHeroSection from "./HalfBackgroundHeroSection";
+import OrganizationTeamSection from "./OrganizationTeamSection";
+import FeaturedPersonQuoteSection from "./FeaturedPersonQuoteSection";
+import TextOnlySection from "./TextOnlySection";
 
 const sections: { [key: string]: FunctionComponent<any> } = {
   BusinessBanterSection,
@@ -25,6 +29,10 @@ const sections: { [key: string]: FunctionComponent<any> } = {
   ProductOverviewSection,
   ProductFeatureVideoLeftSection,
   ProductFeatureVideoRightSection,
+  HalfBackgroundHeroSection,
+  OrganizationTeamSection,
+  FeaturedPersonQuoteSection,
+  TextOnlySection,
 };
 
 export default sections;
