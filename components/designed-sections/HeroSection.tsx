@@ -51,7 +51,11 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
     >
       <Center
         id="hero-background"
-        bgImage={`${dynamicsPageSection.bsi_Background.bsi_cdnurl}?fm=jpg&fl=progressive`}
+        bgImage={
+          dynamicsPageSection.bsi_Background
+            ? `${dynamicsPageSection.bsi_Background.bsi_cdnurl}?fm=jpg&fl=progressive`
+            : "none"
+        }
         opacity={0.6}
         bgSize="cover"
         bgPos="center"
