@@ -2,7 +2,7 @@ import * as React from "react";
 import { DynamicsPageSection } from "../../utils/types";
 import AnchorSection from "../AnchorSection";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { betachGreen } from "../../utils/constants";
+import Script from "next/script";
 
 interface IContactFormSectionProps {
   dynamicsPageSection?: DynamicsPageSection;
@@ -98,6 +98,14 @@ const ContactFormSection: React.FunctionComponent<IContactFormSectionProps> = ({
               dynamicsPageSection.bsi_MarketingFormPage.msdyncrm_javascriptcode,
           }}
         ></Box>
+        <Script
+          src="https://mktdplp102cdn.azureedge.net/public/latest/js/form-loader.js?v=1.77.1005"
+          strategy="lazyOnload"
+        />
+        <Script
+          src="https://mktdplp102cdn.azureedge.net/public/latest/js/ws-tracking.js?v=1.77.1005"
+          strategy="lazyOnload"
+        />
       </Flex>
     </AnchorSection>
   );

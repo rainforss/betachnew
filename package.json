@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@types/contentful-resolve-response": "^0.1.31",
+    "@types/jsdom": "^16.2.14",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
     "@types/react-google-recaptcha": "^2.1.5",
