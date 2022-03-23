@@ -11,7 +11,12 @@ import { DynamicsPageProps } from "../utils/types";
 
 interface DynamicsProps extends DynamicsPageProps {}
 
+type Section = {
+  dynamicsBlogs: object;
+};
+
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
+  console.log("render");
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -20,15 +25,26 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
       companyLogoUrl={props.companyLogoUrl}
       preview={props.preview}
     >
-      {props.dynamicsPageSections?.map(
-        (s: any) =>
-          sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
-          sectionConfig[s["bsi_DesignedSection"].bsi_name]({
-            dynamicsPageSection: s,
-            dynamicsBlogs: props.dynamicsBlogs,
-            key: s.pagesectionid,
-          })
-      )}
+      {props.dynamicsPageSections?.map((s) => {
+        // sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
+        //   sectionConfig[s["bsi_DesignedSection"].bsi_name]({
+        //     dynamicsPageSection: s,
+        //     dynamicsBlogs: props.dynamicsBlogs,
+        //     key: s.bsi_pagesectionid,
+        //   });
+        const Section = sectionConfig[s.bsi_DesignedSection.bsi_name];
+        // const allProps = {
+        //   dynamicsPageSection: s,
+        //   dynamicsBlogs: props.dynamicsBlogs,
+        // };
+        return (
+          <Section
+            key={s.bsi_pagesectionid}
+            dynamicsBlogs={props.dynamicsBlogs}
+            dynamicsPageSection={s}
+          />
+        );
+      })}
     </Layout>
   );
 };

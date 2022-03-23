@@ -5,10 +5,10 @@ export const attachedComponentsQuery =
   "$select=bsi_attachedcomponentid,bsi_name,bsi_description,bsi_descriptiontextcolor,bsi_hasctabutton,bsi_ctabuttontext,bsi_ctabuttontextcolor,bsi_ctabuttonbgcolor,bsi_ctabuttonhoverbgcolor,bsi_bordercolor,bsi_ctabuttonlink,bsi_overline,bsi_overlinetextcolor,bsi_title,bsi_titletextcolor,bsi_subtitle,bsi_subtitletextcolor,bsi_backgroundcolor&$expand=bsi_AttachedComponent_bsi_ImageAsset_bsi_($select=bsi_cdnurl,bsi_name)";
 
 export const dynamicsHeaderMenuItemsQuery =
-  "$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)";
+  "$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)&$orderby=bsi_sequence asc";
 
 export const dynamicsFooterMenuItemsQuery =
-  "$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)";
+  "$select=bsi_name,bsi_linkurl,bsi_navigationmenuitemid&$expand=bsi_NavigationMenuSubItem_NavigationMenuI($select=bsi_name,bsi_linkurl,bsi_navigationmenusubitemid)&$orderby=bsi_sequence asc";
 
 export const dynamicsBlogSlugsQuery =
   "$select=bsi_name,bsi_slug&$orderby=createdon asc";

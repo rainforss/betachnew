@@ -1,4 +1,10 @@
-import { Box, Flex, BoxProps, FlexProps } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  BoxProps,
+  FlexProps,
+  useDisclosure,
+} from "@chakra-ui/react";
 import MenuItemDropdown from "./NavbarItem";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
@@ -8,7 +14,7 @@ interface INavbarProps {
 }
 
 const MotionBox = motion<BoxProps>(Box);
-const MotionFlex = motion<FlexProps>(Flex);
+export const MotionFlex = motion<FlexProps>(Flex);
 
 const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -76,6 +82,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = ({ menuItems }) => {
     <>
       <Flex
         as="nav"
+        h="100%"
         justify="space-around"
         fontSize="1rem"
         fontWeight="bold"

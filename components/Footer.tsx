@@ -12,6 +12,7 @@ import NextLink from "next/link";
 import { DynamicsSocialPlatform } from "../utils/types";
 import { dynamicsSocialPlatformMap } from "../utils/constants";
 import ContactForm from "./ContactForm";
+import Script from "next/script";
 
 interface IFooterProps {
   menuItems: any[];
@@ -119,6 +120,14 @@ const Footer: React.FunctionComponent<IFooterProps> = ({
         onClose={onClose}
         onOpen={onOpen}
         sentTo={{ name: "", id: "" }}
+      />
+      <Script
+        src="https://mktdplp102cdn.azureedge.net/public/latest/js/form-loader.js?v=1.77.1005"
+        strategy="lazyOnload"
+      />
+      <Script
+        src="https://mktdplp102cdn.azureedge.net/public/latest/js/ws-tracking.js?v=1.77.1005"
+        strategy="lazyOnload"
       />
     </Box>
   );

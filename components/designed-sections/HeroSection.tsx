@@ -36,10 +36,7 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
     return () => {
       clearInterval(timer);
     };
-  }, [
-    dynamicsPageSection,
-    dynamicsPageSection?.bsi_AttachedComponent_bsi_PageSection_bsi.length,
-  ]);
+  }, [dynamicsPageSection]);
 
   if (!dynamicsPageSection) {
     return null;
@@ -98,26 +95,24 @@ const HeroSection: React.FunctionComponent<IHeroSectionProps> = ({
               {dynamicsPageSection.bsi_subheading}
             </Text>
             {dynamicsPageSection.bsi_hasctabutton && (
-              <NextLink href={dynamicsPageSection.bsi_ctabuttonlink} passHref>
-                <Text
-                  as="a"
-                  py={2}
-                  px={6}
-                  transition="ease all 0.5s"
-                  _hover={{
-                    backgroundColor: "#9be368",
-                    boxShadow: "0px 15px 20px rgba(46, 229, 157, 0.4)",
-                    color: "#fff",
-                    transform: "translateY(-2px)",
-                  }}
-                  color={dynamicsPageSection.bsi_ctabuttontextcolor || "black"}
-                  borderRadius="300px"
-                  bgColor={dynamicsPageSection.bsi_ctabuttonbgcolor || "white"}
-                  boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
-                >
-                  {dynamicsPageSection.bsi_ctabuttontext}
-                </Text>
-              </NextLink>
+              <Text
+                as="a"
+                py={2}
+                px={6}
+                transition="ease all 0.5s"
+                _hover={{
+                  backgroundColor: "#9be368",
+                  boxShadow: "0px 15px 20px rgba(46, 229, 157, 0.4)",
+                  color: "#fff",
+                  transform: "translateY(-2px)",
+                }}
+                color={dynamicsPageSection.bsi_ctabuttontextcolor || "black"}
+                borderRadius="300px"
+                bgColor={dynamicsPageSection.bsi_ctabuttonbgcolor || "white"}
+                boxShadow="0px 8px 15px rgba(0, 0, 0, 0.1)"
+              >
+                {dynamicsPageSection.bsi_ctabuttontext}
+              </Text>
             )}
           </Flex>
         ) : (

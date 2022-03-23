@@ -36,6 +36,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({
         mx="auto"
         h="100%"
         align="center"
+        position="relative"
       >
         <Link w={{ base: "22%", lg: "200px" }} href="/">
           <Image
