@@ -1,15 +1,17 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
 import { ParsedUrlQuery } from "querystring";
-import React, { useEffect, useState } from "react";
-import sectionConfig from "../components/designed-sections/sections.config";
-import Layout from "../components/Layout";
-import cca from "../utils/cca";
-import { getAllPageContents } from "../utils/getAllPageContents";
-import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
-import { dynamicsWebpageQuery } from "../utils/queries";
-import { DynamicsBlog, DynamicsPageProps } from "../utils/types";
+import React from "react";
+import sectionConfig from "../designed-sections/sections.config";
+import Layout from "../components/common/Layout";
+import { instantiateCca } from "../utils/msal/cca";
+import { getAllPageContents } from "../utils/dynamics-365/common/getAllPageContents";
+import { getClientCredentialsToken } from "../utils/msal/getClientCredentialsToken";
+import { dynamicsWebpageQuery } from "../utils/dynamics-365/common/queries";
+import {
+  DynamicsBlog,
+  DynamicsPageProps,
+} from "../types/dynamics-365/common/types";
 
 interface DynamicsPagesProps extends DynamicsPageProps {}
 
@@ -28,20 +30,22 @@ const DynamicsPages: NextPage<DynamicsPagesProps> = (
       companyLogoUrl={props.companyLogoUrl}
       preview={props.preview}
     >
-      {props.dynamicsPageSections?.map(
-        (s: any) =>
-          sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
-          sectionConfig[s["bsi_DesignedSection"].bsi_name]({
-            dynamicsPageSection: s,
-            dynamicsBlogs: props.dynamicsBlogs,
-            key: s.pagesectionid,
-          })
-      )}
+      {props.dynamicsPageSections?.map((s) => {
+        const Section = sectionConfig[s.bsi_DesignedSection.bsi_name];
+        return (
+          <Section
+            key={s.bsi_pagesectionid}
+            dynamicsBlogs={props.dynamicsBlogs}
+            dynamicsPageSection={s}
+          />
+        );
+      })}
     </Layout>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const cca = await instantiateCca();
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
@@ -78,6 +82,7 @@ export const getStaticProps: GetStaticProps = async ({
   preview = false,
 }) => {
   try {
+    const cca = await instantiateCca();
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);

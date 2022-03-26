@@ -1,17 +1,16 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import sectionConfig from "../../../../../components/designed-sections/sections.config";
-import Layout from "../../../../../components/Layout";
-import cca from "../../../../../utils/cca";
-import { BLOGS_PLAGE_LIMIT } from "../../../../../utils/constants";
-import { getAllPageContents } from "../../../../../utils/getAllPageContents";
-import { getClientCredentialsToken } from "../../../../../utils/getClientCredentialsToken";
+import sectionConfig from "../../../../../designed-sections/sections.config";
+import Layout from "../../../../../components/common/Layout";
+import { instantiateCca } from "../../../../../utils/msal/cca";
+import { getAllPageContents } from "../../../../../utils/dynamics-365/common/getAllPageContents";
+import { getClientCredentialsToken } from "../../../../../utils/msal/getClientCredentialsToken";
 import {
   dynamicsBlogAuthorsQuery,
   dynamicsWebpageQuery,
-} from "../../../../../utils/queries";
-import { DynamicsPageProps } from "../../../../../utils/types";
+} from "../../../../../utils/dynamics-365/common/queries";
+import { DynamicsPageProps } from "../../../../../types/dynamics-365/common/types";
 
 interface IBlogAuthorProps extends DynamicsPageProps {}
 
@@ -28,15 +27,16 @@ const AuthorPage: React.FunctionComponent<IBlogAuthorProps> = (props) => {
       dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
     >
-      {props.dynamicsPageSections?.map(
-        (s: any) =>
-          sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
-          sectionConfig[s["bsi_DesignedSection"].bsi_name]({
-            dynamicsPageSection: s,
-            key: s.pagesectionid,
-            dynamicsBlogs: props.dynamicsBlogs,
-          })
-      )}
+      {props.dynamicsPageSections?.map((s) => {
+        const Section = sectionConfig[s.bsi_DesignedSection.bsi_name];
+        return (
+          <Section
+            key={s.bsi_pagesectionid}
+            dynamicsBlogs={props.dynamicsBlogs}
+            dynamicsPageSection={s}
+          />
+        );
+      })}
     </Layout>
   );
 };
@@ -44,6 +44,7 @@ const AuthorPage: React.FunctionComponent<IBlogAuthorProps> = (props) => {
 export default AuthorPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const cca = await instantiateCca();
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
@@ -59,7 +60,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   )[] = [];
   dynamicsBlogAuthorsResult.forEach((ba: any) => {
     const maxPage = Math.ceil(
-      ba.bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor.length / BLOGS_PLAGE_LIMIT
+      ba.bsi_Blog_bsi_BlogAuthor_bsi_BlogAuthor.length /
+        parseInt(process.env.BLOGS_PAGE_SIZE!)
     );
     for (let i = 1; i <= maxPage; i++) {
       paths.push({
@@ -79,6 +81,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (req) => {
   try {
     const { author, page } = req.params as IParams;
+    const cca = await instantiateCca();
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);

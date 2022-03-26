@@ -1,16 +1,16 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import sectionConfig from "../../../../../components/designed-sections/sections.config";
-import Layout from "../../../../../components/Layout";
-import cca from "../../../../../utils/cca";
-import { getAllPageContents } from "../../../../../utils/getAllPageContents";
-import { getClientCredentialsToken } from "../../../../../utils/getClientCredentialsToken";
+import sectionConfig from "../../../../../designed-sections/sections.config";
+import Layout from "../../../../../components/common/Layout";
+import { instantiateCca } from "../../../../../utils/msal/cca";
+import { getAllPageContents } from "../../../../../utils/dynamics-365/common/getAllPageContents";
+import { getClientCredentialsToken } from "../../../../../utils/msal/getClientCredentialsToken";
 import {
   dynamicsBlogCategoriesQuery,
   dynamicsWebpageQuery,
-} from "../../../../../utils/queries";
-import { DynamicsPageProps } from "../../../../../utils/types";
+} from "../../../../../utils/dynamics-365/common/queries";
+import { DynamicsPageProps } from "../../../../../types/dynamics-365/common/types";
 
 interface IBlogCategoryProps extends DynamicsPageProps {}
 
@@ -27,15 +27,16 @@ const CategoryPage: React.FunctionComponent<IBlogCategoryProps> = (props) => {
       dynamicsSocialPlatforms={props.dynamicsSocialPlatforms}
       companyLogoUrl={props.companyLogoUrl}
     >
-      {props.dynamicsPageSections?.map(
-        (s: any) =>
-          sectionConfig[s["bsi_DesignedSection"].bsi_name] &&
-          sectionConfig[s["bsi_DesignedSection"].bsi_name]({
-            dynamicsPageSection: s,
-            key: s.pagesectionid,
-            dynamicsBlogs: props.dynamicsBlogs,
-          })
-      )}
+      {props.dynamicsPageSections?.map((s) => {
+        const Section = sectionConfig[s.bsi_DesignedSection.bsi_name];
+        return (
+          <Section
+            key={s.bsi_pagesectionid}
+            dynamicsBlogs={props.dynamicsBlogs}
+            dynamicsPageSection={s}
+          />
+        );
+      })}
     </Layout>
   );
 };
@@ -43,6 +44,7 @@ const CategoryPage: React.FunctionComponent<IBlogCategoryProps> = (props) => {
 export default CategoryPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const cca = await instantiateCca();
   const tokenResponse = await getClientCredentialsToken(cca);
   const accessToken = tokenResponse?.accessToken;
   const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
@@ -82,6 +84,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (req) => {
   try {
     const { category, page } = req.params as IParams;
+    const cca = await instantiateCca();
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);

@@ -5,8 +5,8 @@ import {
 } from "dataverse-webapi/lib/node";
 import { NextApiRequest, NextApiResponse } from "next";
 import fetch from "node-fetch";
-import cca from "../../utils/cca";
-import { getClientCredentialsToken } from "../../utils/getClientCredentialsToken";
+import { instantiateCca } from "../../utils/msal/cca";
+import { getClientCredentialsToken } from "../../utils/msal/getClientCredentialsToken";
 
 const contactformsubmission = async (
   req: NextApiRequest,
@@ -30,6 +30,7 @@ const contactformsubmission = async (
             .status(400)
             .json({ error: { message: "reCAPTCHA check failed" } });
         }
+        const cca = await instantiateCca();
         const tokenResponse = await getClientCredentialsToken(cca);
         const accessToken = tokenResponse?.accessToken;
         const config = new WebApiConfig(

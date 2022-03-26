@@ -1,22 +1,17 @@
 import { retrieveMultiple, WebApiConfig } from "dataverse-webapi/lib/node";
 import { GetStaticProps, NextPage } from "next";
 import React from "react";
-import sectionConfig from "../components/designed-sections/sections.config";
-import Layout from "../components/Layout";
-import cca from "../utils/cca";
-import { getAllPageContents } from "../utils/getAllPageContents";
-import { getClientCredentialsToken } from "../utils/getClientCredentialsToken";
-import { dynamicsWebpageQuery } from "../utils/queries";
-import { DynamicsPageProps } from "../utils/types";
+import sectionConfig from "../designed-sections/sections.config";
+import Layout from "../components/common/Layout";
+import { getAllPageContents } from "../utils/dynamics-365/common/getAllPageContents";
+import { getClientCredentialsToken } from "../utils/msal/getClientCredentialsToken";
+import { dynamicsWebpageQuery } from "../utils/dynamics-365/common/queries";
+import { DynamicsPageProps } from "../types/dynamics-365/common/types";
+import { instantiateCca } from "../utils/msal/cca";
 
 interface DynamicsProps extends DynamicsPageProps {}
 
-type Section = {
-  dynamicsBlogs: object;
-};
-
 const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
-  console.log("render");
   return (
     <Layout
       headerMenuItems={props.dynamicsHeaderMenuItems}
@@ -33,10 +28,6 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
         //     key: s.bsi_pagesectionid,
         //   });
         const Section = sectionConfig[s.bsi_DesignedSection.bsi_name];
-        // const allProps = {
-        //   dynamicsPageSection: s,
-        //   dynamicsBlogs: props.dynamicsBlogs,
-        // };
         return (
           <Section
             key={s.bsi_pagesectionid}
@@ -51,6 +42,7 @@ const Dynamics: NextPage<DynamicsProps> = (props: DynamicsProps) => {
 
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   try {
+    const cca = await instantiateCca();
     const tokenResponse = await getClientCredentialsToken(cca);
     const accessToken = tokenResponse?.accessToken;
     const config = new WebApiConfig("9.1", accessToken, process.env.CLIENT_URL);
