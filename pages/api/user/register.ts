@@ -5,15 +5,7 @@ import { instantiateCca } from "../../../utils/msal/cca";
 import bcrypt from "bcrypt";
 import { withSessionRoute } from "../../../utils/authentication/withSession";
 
-async function authenticateRoute(req: NextApiRequest, res: NextApiResponse) {
-  if (req.session.user) {
-    return res.status(400).json({
-      error: {
-        name: "Already authenticated",
-        message: "You have already logged in.",
-      },
-    });
-  }
+async function registerRoute(req: NextApiRequest, res: NextApiResponse) {
   const cca = await instantiateCca();
   const clientCredentialsRequest: ClientCredentialRequest = {
     scopes: [`${process.env.CLIENT_URL}/.default`],
@@ -32,64 +24,55 @@ async function authenticateRoute(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  const { username, password } = req.body;
-  switch (req.method) {
-    case "POST":
-      const users = await dynamicsContact(
-        tokenResponse.accessToken
-      ).getByUsername(username);
+  const { user } = req.body;
 
-      try {
-        if (!users || users.length === 0) {
-          const error = new Error("User not found");
-          error.name = "Credential Mismatch";
-          error.message = `User of ${username} is not found in the system. Please check your username and password.`;
-          throw error;
-        }
-        if (!bcrypt.compareSync(password, users[0].bsi_password)) {
-          const error = new Error("User not found");
-          error.name = "Credential Mismatch";
-          error.message = `User of ${username} is not found in the system. Please check your username and password.`;
-          throw error;
-        }
+  const users = await dynamicsContact(
+    tokenResponse.accessToken
+  ).getByUsernameOrEmail(user.username, user.email);
 
-        req.session.user = {
-          fullname: users[0].fullname,
-          email: users[0].emailaddress1,
-          id: users[0].contactid,
-          username: users[0].bsi_username,
-        };
-
-        await req.session.save();
-        return res.status(200).json({
-          id: users[0].contactid,
-          fullname: users[0].fullname,
-          email: users[0].emailaddress1,
-          username: users[0].bsi_username,
-        });
-      } catch (err: any) {
-        if (err.name === "Credential Mismatch") {
-          return res
-            .status(400)
-            .json({ error: { name: err.name, message: err.message } });
-        }
-        return res.status(500).json({
-          error: {
-            name: "Internal Server Error",
-            message: err.message,
-            stack: err.stack,
-          },
-        });
-      }
-
-    default:
-      return res.status(405).json({
+  try {
+    if (users && users.length > 0) {
+      return res.status(400).json({
         error: {
-          name: "Not Supported",
-          message: `Method ${req.method} is not allowed`,
+          name: "Duplicate account",
+          message:
+            "Bad request. Username or email address already taken, please try another one.",
         },
       });
+    }
+
+    user.password = await bcrypt.hash(user.password, 2);
+
+    const createdUser = await dynamicsContact(
+      tokenResponse.accessToken
+    ).createUser(user);
+
+    req.session.user = {
+      fullname: createdUser.firstname + " " + createdUser.lastname,
+      email: createdUser.emailaddress1 as string,
+      id: createdUser.contactid as string,
+      username: createdUser.bsi_username as string,
+    };
+
+    await req.session.save();
+
+    return res.status(200).json({
+      id: createdUser.contactid,
+      firstname: user.firstName,
+      lastname: user.lastName,
+      email: user.email,
+      username: user.username,
+    });
+  } catch (err: any) {
+    if (err.name === "Duplicate Account") {
+      return res
+        .status(400)
+        .json({ error: { name: err.name, message: err.message } });
+    }
+    return res.status(500).json({
+      error: { name: "Internal Server Error", message: err.message },
+    });
   }
 }
 
-export default withSessionRoute(authenticateRoute);
+export default withSessionRoute(registerRoute);

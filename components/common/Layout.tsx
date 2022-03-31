@@ -1,12 +1,15 @@
 import { NotAllowedIcon } from "@chakra-ui/icons";
+import dynamic from "next/dynamic";
 import { Box } from "@chakra-ui/layout";
 import { Button, Tooltip } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import * as React from "react";
 import { DynamicsSocialPlatform } from "../../types/dynamics-365/common/types";
 import BreadCrumb from "./BreadCrumb";
-import Footer from "./Footer";
+
 import Header from "./Header";
+
+const Footer = dynamic(() => import("./Footer"));
 
 interface ILayoutProps {
   children?: React.ReactNode | string;
